@@ -66,7 +66,8 @@ const cards = real.map((g, gi) => {
     const id = 'c' + n;
     const tag = p.fields.find((f) => f[0] === '一句话');
     const hint = (p.fields.find((f) => f[0] === '剪影') || ['', ''])[1];
-    const fields = p.fields.filter((f) => f[0] === '剪影' ? false : f[0] !== '一句话');
+    const HIDDEN = ['剪影', '一句话', '画师备注'];
+    const fields = p.fields.filter((f) => !HIDDEN.includes(f[0]));
     const rows = fields.map(([k, v]) => `        <div class="fld"><span class="fld__k">${esc(k)}</span><p class="fld__v">${inline(v)}</p></div>`).join('\n');
     const body = p.body.length ? `      <p class="card__tight">${inline(p.body.join(' '))}</p>\n` : '';
     return `    <article class="card" id="${id}" data-name="${esc(p.name)}" data-hint="${esc(hint)}">
