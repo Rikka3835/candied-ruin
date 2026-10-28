@@ -90,9 +90,22 @@
   function loadArt(idx, ex) {
     const img = castEl && castEl.querySelector("#castImg");
     if (!img) return;
-    img.onload = function () { img.hidden = false; const m = castEl.querySelector("#castMono"); if (m) m.style.visibility = "hidden"; const n = castEl.querySelector(".cast__note"); if (n) n.style.visibility = "hidden"; };
-    img.onerror = function () { img.hidden = true; const m = castEl.querySelector("#castMono"); if (m) m.style.visibility = ""; const n = castEl.querySelector(".cast__note"); if (n) n.style.visibility = ""; };
-    img.src = "/new/assets/cast/c" + idx + "/exp" + String(ex).padStart(2, "0") + ".png";
+    const base = "/new/assets/cast/c" + idx + "/exp" + String(ex).padStart(2, "0");
+    const exts = [".jpg"];
+    let i = 0;
+    img.onload = function () {
+      const onb = castEl.querySelector(".cast__rb.is-on");
+      if (!spoilerOn() && onb && onb.classList.contains("is-locked")) { img.hidden = true; return; }
+      img.hidden = false;
+      const m = castEl.querySelector("#castMono"); if (m) m.style.visibility = "hidden";
+      const n = castEl.querySelector(".cast__note"); if (n) n.style.visibility = "hidden";
+    };
+    img.onerror = function () {
+      i += 1;
+      if (i < exts.length) { img.src = base + exts[i]; return; }
+      img.hidden = true; const m = castEl.querySelector("#castMono"); if (m) m.style.visibility = ""; const n = castEl.querySelector(".cast__note"); if (n) n.style.visibility = "";
+    };
+    img.src = base + exts[0];
   }
   function fitCast() {
     if (!castEl) return;
@@ -100,10 +113,19 @@
     const locked = !spoilerOn() && on && on.classList.contains("is-locked");
     castEl.classList.toggle("is-locked", !!locked);
     if (locked) {
+      const li = castEl.querySelector("#castImg");
+      if (li) li.hidden = true;
+      const lm = castEl.querySelector("#castMono");
+      if (lm) lm.style.visibility = "";
+      const ln = castEl.querySelector(".cast__note");
+      if (ln) ln.style.visibility = "";
       castEl.querySelector("#castName").textContent = "？？？";
       castEl.querySelector("#castTag").textContent = on.dataset.hint || "还没出场";
       castEl.querySelector("#castMono").textContent = "？";
       castEl.querySelectorAll(".cast__meta dd").forEach(function (dd) { dd.textContent = "—"; });
+    } else if (on) {
+      const eb = castEl.querySelector('.cast__ex[aria-pressed="true"]');
+      loadArt(on.dataset.idx, eb ? eb.dataset.ex : 1);
     }
   }
   document.querySelectorAll(".cast__rb").forEach(function (b) { b.addEventListener("click", function () { selectCast(b); }); });
