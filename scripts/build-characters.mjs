@@ -36,7 +36,7 @@ const real = groups.filter((g) => g.people.length > 0);
 const total = real.reduce((n, g) => n + g.people.length, 0);
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-const inline = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+const inline = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/`([^`]+)`/g, '<code>$1</code>');
 
 const cn = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
 
@@ -242,7 +242,8 @@ const html = `<!DOCTYPE html>
   letter-spacing: 0.02em;
   color: var(--text-soft);
 }
-.fld:first-child .fld__v { color: var(--text); }
+.fld:first-child .fld__v code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9em; letter-spacing: 0.02em; color: var(--text); }
+.fld__v { color: var(--text); }
 .card__tight {
   margin: 1.3rem 0 0;
   font-size: 0.95rem;
