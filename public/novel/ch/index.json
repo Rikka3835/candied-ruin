@@ -101,7 +101,7 @@
         "芙兰",
         "奥莉薇娅"
       ],
-      "chars": 2672,
+      "chars": 2714,
       "minutes": 6,
       "updated": "2026-10-28",
       "file": "ch/007.html"
@@ -117,10 +117,24 @@
         "玛尔塔",
         "塞德里克（老塞）"
       ],
-      "chars": 2503,
+      "chars": 2570,
       "minutes": 6,
       "updated": "2026-10-28",
       "file": "ch/008.html"
+    },
+    {
+      "n": 9,
+      "vol": "第一卷 · 糖罐里的猫",
+      "title": "山坳",
+      "subtitle": "",
+      "cast": [
+        "芙兰",
+        "哈根"
+      ],
+      "chars": 2528,
+      "minutes": 6,
+      "updated": "2026-10-28",
+      "file": "ch/009.html"
     }
   ]
 }
