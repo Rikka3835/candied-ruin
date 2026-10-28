@@ -3,8 +3,8 @@ export async function onRequestGet({ params, env }) {
   if (!n) return new Response("bad request", { status: 400 });
   const key = `cast/${n}/plate-1200.jpg`;
   let buf = null;
-  if (env.ASSETS) {
-    try { buf = await env.ASSETS.get(key, "arrayBuffer"); } catch (e) {}
+  if (env.ART) {
+    try { buf = await env.ART.get(key, "arrayBuffer"); } catch (e) {}
   }
   if (!buf) {
     return new Response(null, {

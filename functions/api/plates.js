@@ -2,9 +2,9 @@ import { json } from "../_lib.js";
 
 export async function onRequestGet({ env }) {
   const slots = [];
-  if (env.ASSETS) {
+  if (env.ART) {
     try {
-      const list = await env.ASSETS.list({ prefix: "cast/", limit: 200 });
+      const list = await env.ART.list({ prefix: "cast/", limit: 200 });
       for (const k of list.keys) {
         const m = k.name.match(/^cast\/(\d+)\/plate-1200\.jpg$/);
         if (m) slots.push(Number(m[1]));

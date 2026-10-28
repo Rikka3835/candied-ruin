@@ -2,7 +2,7 @@ import { json, isAdmin } from "../_lib.js";
 
 export async function onRequestPost({ request, env }) {
   if (!(await isAdmin(request, env))) return json({ ok: false, error: "未登录" }, 401);
-  if (!env.ASSETS) return json({ ok: false, error: "存储未绑定" }, 500);
+  if (!env.ART) return json({ ok: false, error: "存储未绑定" }, 500);
 
   let body = {};
   try { body = await request.json(); } catch (e) {}
@@ -19,7 +19,7 @@ export async function onRequestPost({ request, env }) {
 
   if (bin.byteLength > 1500000) return json({ ok: false, error: "图太大（上限 1.5MB）" }, 413);
 
-  await env.ASSETS.put(`cast/${c}/plate-1200.jpg`, bin, { metadata: { at: Date.now() } });
+  await env.ART.put(`cast/${c}/plate-1200.jpg`, bin, { metadata: { at: Date.now() } });
   return json({ ok: true, c, bytes: bin.byteLength, url: `/api/plate/${c}` });
 }
 
@@ -27,6 +27,6 @@ export async function onRequestDelete({ request, env }) {
   if (!(await isAdmin(request, env))) return json({ ok: false, error: "未登录" }, 401);
   const c = Number(new URL(request.url).searchParams.get("c"));
   if (!(c >= 1 && c <= 12)) return json({ ok: false, error: "人物编号不对" }, 400);
-  await env.ASSETS.delete(`cast/${c}/plate-1200.jpg`);
+  await env.ART.delete(`cast/${c}/plate-1200.jpg`);
   return json({ ok: true });
 }
