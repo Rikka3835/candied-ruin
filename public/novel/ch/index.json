@@ -15,6 +15,21 @@
       "minutes": 6,
       "updated": "2026-10-28",
       "file": "ch/001.html"
+    },
+    {
+      "n": 2,
+      "vol": "第一卷 · 糖罐里的猫",
+      "title": "保人",
+      "subtitle": "",
+      "cast": [
+        "芙兰",
+        "玛尔塔",
+        "莉娜"
+      ],
+      "chars": 2636,
+      "minutes": 6,
+      "updated": "2026-10-28",
+      "file": "ch/002.html"
     }
   ]
 }
