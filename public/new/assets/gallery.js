@@ -95,6 +95,8 @@
     if (has) {
       const src = "/new/assets/cast/c" + b.dataset.idx + "/plate-1200.jpg";
       if (im && im.getAttribute("src") !== src) im.setAttribute("src", src);
+      const srcset = castEl.querySelector("#castWebp");
+      if (srcset) srcset.setAttribute("srcset", "/new/assets/cast/c" + b.dataset.idx + "/plate-1200.webp");
       if (a) { a.setAttribute("href", "/new/assets/cast/c" + b.dataset.idx + "/plate-2000.jpg"); a.hidden = false; }
       if (mono) mono.hidden = true;
       if (note) note.textContent = "设定原稿 · 点开看细节";

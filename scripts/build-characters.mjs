@@ -58,6 +58,7 @@ const exps = EXP.map((e, i) =>
 const firstPlate = rosterItems.find((p) => hasPlate(p.i));
 const plateSrc = firstPlate ? `/new/assets/cast/c${firstPlate.i}/plate-1200.jpg` : '';
 const plateHref = firstPlate ? `/new/assets/cast/c${firstPlate.i}/plate-2000.jpg` : '';
+const plateWebp = firstPlate ? `/new/assets/cast/c${firstPlate.i}/plate-1200.webp` : '';
 let n = 0;
 const cards = real.map((g, gi) => {
   const people = g.people.map((p) => {
@@ -300,7 +301,10 @@ const html = `<!DOCTYPE html>
       <section class="cast" id="cast" aria-label="人物立绘">
         <figure class="cast__art">
           <a class="cast__plate" id="castPlate" href="${plateHref}" target="_blank" rel="noopener" aria-label="点开查看设定原稿全尺寸"${plateSrc ? '' : ' hidden'}>
-            <img class="cast__img" id="castImg" src="${plateSrc}" width="1200" height="1600" alt="">
+            <picture>
+              <source id="castWebp" type="image/webp" srcset="${plateWebp}">
+              <img class="cast__img" id="castImg" src="${plateSrc}" width="1200" height="1600" alt="芙兰设定原稿">
+            </picture>
           </a>
           <span class="cast__mono" id="castMono"${plateSrc ? ' hidden' : ''}>琉</span>
           <figcaption class="cast__note" id="castNote">${plateSrc ? '设定原稿 · 4608×6144 · 点开看细节' : '原稿待补'}</figcaption>

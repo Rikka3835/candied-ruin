@@ -210,7 +210,10 @@
       <section class="cast" id="cast" aria-label="人物立绘">
         <figure class="cast__art">
           <a class="cast__plate" id="castPlate" href="/new/assets/cast/c1/plate-2000.jpg" target="_blank" rel="noopener" aria-label="点开查看设定原稿全尺寸">
-            <img class="cast__img" id="castImg" src="/new/assets/cast/c1/plate-1200.jpg" width="1200" height="1600" alt="">
+            <picture>
+              <source id="castWebp" type="image/webp" srcset="/new/assets/cast/c1/plate-1200.webp">
+              <img class="cast__img" id="castImg" src="/new/assets/cast/c1/plate-1200.jpg" width="1200" height="1600" alt="芙兰设定原稿">
+            </picture>
           </a>
           <span class="cast__mono" id="castMono" hidden>琉</span>
           <figcaption class="cast__note" id="castNote">设定原稿 · 4608×6144 · 点开看细节</figcaption>
