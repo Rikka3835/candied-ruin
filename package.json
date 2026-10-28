@@ -10,6 +10,8 @@
     "build:pages": "node scripts/build-pages.mjs",
     "build:chars": "node scripts/build-characters.mjs",
     "dev": "node scripts/preview-server.mjs public 8099",
-    "push": "bash scripts/push.sh"
+    "push": "bash scripts/push.sh",
+    "sync:state": "node scripts/novelops-sync.mjs",
+    "audit": "bash scripts/audit.sh"
   }
 }
