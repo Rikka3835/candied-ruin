@@ -98,6 +98,8 @@ const html = `<!DOCTYPE html>
   gap: clamp(2rem, 5vw, 4.5rem);
   margin-top: 3.2rem;
 }
+.arch__wrap.no-rail { grid-template-columns: minmax(0, 1fr); }
+.arch__rail.is-empty { display: none; }
 .arch__rail {
   position: sticky;
   top: calc(var(--nav-h, 72px) + 2.4rem);

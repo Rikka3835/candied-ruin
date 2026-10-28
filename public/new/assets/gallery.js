@@ -43,7 +43,20 @@
       lock.querySelector(".lock__r").textContent = at === null ? "还没出场" : "读到第 " + at + " 章解锁";
     });
     const railBox = document.querySelector(".arch__rail");
-    if (railBox) railBox.classList.toggle("is-empty", !railBox.querySelector(".rail__a:not(.is-locked)"));
+    const wrap = document.querySelector(".arch__wrap");
+    if (railBox) {
+      const anyOpen = !!railBox.querySelector(".rail__a:not(.is-locked)");
+      railBox.classList.toggle("is-empty", !anyOpen);
+      if (wrap) wrap.classList.toggle("no-rail", !anyOpen);
+      railBox.querySelectorAll(".rail__g").forEach(function (g) {
+        let ok = false, n = g.nextElementSibling;
+        while (n && !n.classList.contains("rail__g")) {
+          if (n.classList.contains("rail__a") && !n.classList.contains("is-locked")) { ok = true; break; }
+          n = n.nextElementSibling;
+        }
+        g.style.display = ok ? "" : "none";
+      });
+    }
     const counter = document.getElementById("galCount");
     if (counter) counter.textContent = "已解锁 " + open + " / " + cards.length;
   };
