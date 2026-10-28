@@ -1,0 +1,389 @@
+﻿/* 冒险者通行证 —— 入口按钮（演示 v2）
+   底是纯 CSS：占位门图已删，等真门图回来再接 .backdrop 的图层次。 */
+
+:root {
+  --ink-0: #07060E;
+  --ink-1: #0C0A1A;
+  --ink-2: #171233;
+  --gold: #FFB347;
+  --honey: #FFD9A0;
+  --caramel: #C9701A;
+  --paper-0: #FBF1DC;
+  --paper-1: #F2E3C4;
+  --paper-2: #E2CDA4;
+  --brown: #4A2C12;
+  --brown-soft: #6B4520;
+  --enter-y: 62%;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body.stage {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink-0);
+  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", SimSun, serif;
+  color: #F1EADB;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- 底 ---------- */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    /* 卡背后一圈很淡的暖光，把卡片从背景里“托”出来 */
+    radial-gradient(46% 30% at 50% 66%, rgba(255, 158, 78, .16) 0%, rgba(255, 158, 78, 0) 72%),
+    /* 地面：一条极淡的横向光带，给卡片一个落脚处 */
+    radial-gradient(60% 12% at 50% 80%, rgba(190, 172, 255, .1) 0%, rgba(190, 172, 255, 0) 78%),
+    /* 洞窟感：中间一点冷紫，四周迅速沉下去 */
+    radial-gradient(120% 96% at 50% 44%, #2B2359 0%, #1A1540 26%, #100D24 52%, #07060E 78%, #050409 100%);
+}
+
+/* 极细的颗粒，压掉渐变的“塑料感” */
+/* 四角压暗，避免“整屏一块渐变” */
+.backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(118% 92% at 50% 46%, rgba(5, 4, 9, 0) 42%, rgba(5, 4, 9, .55) 76%, rgba(5, 4, 9, .9) 100%);
+}
+
+.backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .22;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.5'/></svg>");
+}
+
+.dust {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---------- 通行证 ---------- */
+.pass {
+  position: absolute;
+  left: 50%;
+  top: var(--enter-y);
+  transform: translate(-50%, -50%);
+  width: max-content;
+  max-width: min(92vw, 420px);
+  display: flex;
+  justify-content: center;
+  perspective: 900px;
+  z-index: 4;
+  transition: opacity 460ms ease, transform 460ms cubic-bezier(.4, 0, .2, 1);
+}
+
+.pass__card {
+  position: relative;
+  width: min(90vw, 470px);
+  padding: 1.35rem 1.7rem 5.1rem;
+  border-radius: 4px;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 260ms ease, box-shadow 260ms ease;
+  background:
+    linear-gradient(158deg, var(--paper-0) 0%, var(--paper-1) 46%, var(--paper-2) 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, .55) inset,
+    0 -1px 0 rgba(120, 86, 40, .3) inset,
+    0 0 0 1px rgba(120, 86, 40, .45),
+    0 18px 40px -18px rgba(0, 0, 0, .85),
+    0 2px 0 rgba(255, 255, 255, .35) inset;
+}
+
+/* 纸纤维 + 轻微污渍 */
+.pass__card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: .35;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.7 0.035' numOctaves='3'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23f)' opacity='0.42'/></svg>");
+}
+
+/* 内框（烫金细线） */
+.pass__card::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(160, 112, 48, .42);
+  border-radius: 2px;
+  pointer-events: none;
+  box-shadow: 0 0 0 1px rgba(255, 246, 226, .5) inset;
+}
+
+.pass__head {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .8rem;
+  font-size: .62rem;
+  letter-spacing: .28em;
+  color: var(--brown-soft);
+  text-transform: uppercase;
+}
+
+.pass__brand { font-weight: 600; }
+.pass__no { letter-spacing: .13em; opacity: .8; }
+
+.pass__kicker {
+  position: relative;
+  margin: .7rem 0 .1rem;
+  font-size: .6rem;
+  letter-spacing: .3em;
+  color: #8A6027;
+}
+
+.pass__title {
+  position: relative;
+  margin: .2rem 0 .5rem;
+  font-size: clamp(1.15rem, 2.6vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: .1em;
+  color: var(--brown);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .6);
+}
+
+.pass__sub {
+  position: relative;
+  margin: 0;
+  font-size: .78rem;
+  letter-spacing: .06em;
+  color: rgba(74, 44, 18, .72);
+}
+
+/* 右侧压印 + 竖排编号 */
+.pass__mark {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 76px;
+  height: 76px;
+  transform: translateY(-52%);
+  opacity: .5;
+  pointer-events: none;
+}
+
+.pass__serial {
+  position: absolute;
+  right: 10px;
+  bottom: 14px;
+  font-size: .44rem;
+  opacity: .7;
+  letter-spacing: .18em;
+  color: rgba(107, 69, 32, .55);
+  writing-mode: vertical-rl;
+  pointer-events: none;
+}
+
+/* 右下折角 */
+.pass__fold {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(135deg, rgba(255, 250, 236, .95) 0 46%, rgba(196, 168, 118, 1) 46% 100%);
+  clip-path: polygon(100% 0, 0 100%, 100% 100%);
+  box-shadow: -1px -1px 2px rgba(120, 86, 40, .35);
+  border-bottom-right-radius: 3px;
+}
+
+/* ---------- 封蜡 ---------- */
+.seal {
+  position: absolute;
+  left: 50%;
+  bottom: -50px;
+  transform: translateX(-50%);
+  width: 116px;
+  height: 116px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .55));
+  transition: transform 220ms ease, filter 220ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.seal:focus-visible {
+  outline: 2px solid var(--honey);
+  outline-offset: 6px;
+  border-radius: 50%;
+}
+
+.seal__svg { display: block; width: 100%; height: 100%; }
+
+.seal__gloss { transition: transform 420ms ease; }
+
+.seal:hover { transform: translateX(-50%) scale(1.035); filter: drop-shadow(0 14px 22px rgba(0, 0, 0, .6)); }
+.seal:hover .seal__gloss { transform: translate(-5px, -4px); }
+.seal:active { transform: translateX(-50%) scale(.975); }
+
+.seal__hint {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 2px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: .62rem;
+  letter-spacing: .24em;
+  color: rgba(255, 214, 158, .78);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, .7);
+  pointer-events: none;
+}
+
+/* 封蜡被撕掉后 */
+.seal.is-gone { opacity: 0; transform: translateX(-50%) scale(.82); transition: opacity 130ms ease, transform 160ms ease; pointer-events: none; }
+.pass.is-open .seal { opacity: 0; transform: translateX(-50%) scale(.7); transition: opacity 180ms ease, transform 220ms ease; }
+
+/* 卡片被抽走 */
+.pass.is-open { opacity: 0; transform: translate(-50%, -50%) translateY(-26px) scale(1.04); }
+.pass.is-open .pass__card { box-shadow: none; }
+
+/* ---------- 碎蜡 / 糖浆拉丝 ---------- */
+.shards {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.shard {
+  position: absolute;
+  width: 26px;
+  height: 22px;
+  margin: -11px 0 0 -13px;
+  background: radial-gradient(120% 120% at 32% 26%, #FFE2B4 0%, #FFBE6B 42%, #D07C22 76%, #8C3F0C 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .45), 0 0 0 1px rgba(94, 38, 6, .55) inset;
+  will-change: transform, opacity;
+}
+
+.strand {
+  position: absolute;
+  width: 3px;
+  height: 46px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  transform-origin: 50% 0%;
+  background: linear-gradient(180deg, #FFD79A 0%, #FFB347 46%, rgba(201, 112, 26, 0) 100%);
+  will-change: transform, opacity;
+}
+
+/* ---------- 过曝与加载 ---------- */
+.flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 60% at 50% 62%, #FFFDF4 0%, #FFE9C4 38%, rgba(255, 220, 170, 0) 72%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 8;
+}
+
+.flash.is-on { animation: flashPop 420ms ease-out forwards; }
+
+@keyframes flashPop {
+  0% { opacity: 0; }
+  18% { opacity: .96; }
+  100% { opacity: 0; }
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .9rem;
+  background: radial-gradient(120% 90% at 50% 0%, #151134 0%, #0C0A1C 46%, #08070F 100%);
+}
+
+.loading.is-on { display: flex; }
+
+.loading__bubble { width: min(46vw, 230px); height: min(46vw, 230px); }
+
+.loading__text {
+  margin: 0;
+  font-size: .95rem;
+  letter-spacing: .22em;
+  color: #F3E7D2;
+}
+
+.loading__text em { font-style: normal; color: var(--honey); }
+
+.loading__note {
+  margin: 0;
+  font-size: .68rem;
+  letter-spacing: .1em;
+  color: rgba(226, 209, 180, .5);
+}
+
+.loading__skip {
+  margin-top: .4rem;
+  padding: .5rem 1.5rem;
+  font: inherit;
+  font-size: .74rem;
+  letter-spacing: .18em;
+  color: rgba(255, 226, 184, .85);
+  background: rgba(255, 179, 71, .07);
+  border: 1px solid rgba(255, 179, 71, .32);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.loading__skip:hover { background: rgba(255, 179, 71, .16); }
+
+/* ---------- 演示注记 ---------- */
+.demo-tag {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  z-index: 10;
+  font-size: .58rem;
+  letter-spacing: .1em;
+  color: rgba(226, 209, 180, .34);
+  pointer-events: none;
+}
+
+/* ---------- 手机 ---------- */
+@media (max-width: 720px) {
+  :root { --enter-y: 72%; }
+
+  .pass__card { width: min(88vw, 320px); padding: 1.05rem 1.15rem 3.1rem; }
+  .pass__serial { display: none; }
+  .pass__mark { width: 58px; height: 58px; right: 10px; }
+  .pass__title { font-size: 1rem; letter-spacing: .06em; }
+  .seal { width: 96px; height: 96px; bottom: -44px; }
+  .demo-tag { display: none; }
+}
+
+/* ---------- 减弱动效 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .pass, .pass__card, .seal, .seal:hover, .seal:active { transition: none; }
+  .seal:hover, .seal:active { transform: translateX(-50%); }
+}
+
+
+
+
+
+

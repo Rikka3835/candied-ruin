@@ -1,6 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /demo/
-Disallow: /new/index.html
-Disallow: /new/type.html
-Sitemap: https://candied-ruin.pages.dev/sitemap.xml
+Disallow: /admin

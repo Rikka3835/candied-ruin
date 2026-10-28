@@ -1,0 +1,11 @@
+﻿import { writeFile } from 'node:fs/promises';
+const list=await (await fetch('http://127.0.0.1:9336/json')).json(); const p=list.find(t=>t.type==='page');
+const ws=new WebSocket(p.webSocketDebuggerUrl); let id=0; const pending=new Map();
+ws.addEventListener('message',e=>{const m=JSON.parse(e.data);if(m.id&&pending.has(m.id)){const q=pending.get(m.id);pending.delete(m.id);m.error?q.reject(new Error(m.error.message)):q.resolve(m.result);}});
+await new Promise((r,j)=>{ws.addEventListener('open',r,{once:true});ws.addEventListener('error',j,{once:true});});
+const send=(method,params={})=>new Promise((resolve,reject)=>{const n=++id;pending.set(n,{resolve,reject});ws.send(JSON.stringify({id:n,method,params}));});
+await send('Runtime.enable');
+const r=await send('Runtime.evaluate',{expression:`JSON.stringify({text:document.body.innerText.slice(0,700), checks:[...document.querySelectorAll('[data-testid*=check], .checks, .commit-build-statuses, [aria-label*=Cloudflare]')].map(e=>e.innerText).slice(0,10), cf:[...document.querySelectorAll('a,span,div')].map(e=>e.innerText||'').filter(t=>/cloudflare|deploy/i.test(t)).slice(0,20)})`,returnByValue:true});
+console.log(r.result.value);
+const shot=await send('Page.captureScreenshot',{format:'png',fromSurface:true}); await writeFile('shots-browser/commit-top.png',Buffer.from(shot.data,'base64'));
+ws.close();

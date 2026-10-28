@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bubble-vanguard",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-10-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "bubble-vanguard-db",
+      "database_id": "cd114fea-d010-43c3-bcdb-bf05ab87d394"
+    }
+  ]
+}

@@ -28,6 +28,24 @@
 
   const loadIndex = async () => {
     if (index) return index;
+    // 先问站内写作后台（/api/chapters），拿不到再回落到构建时生成的静态目录
+    try {
+      const res = await fetch("/api/chapters", { cache: "no-cache" });
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data.chapters) && data.chapters.length) {
+          index = {
+            chapters: data.chapters.map((c) => ({
+              n: c.n, vol: c.vol, title: c.title, subtitle: c.subtitle || "",
+              cast: c.cast ? String(c.cast).split(/[、,，]/).filter(Boolean) : [],
+              chars: c.size || 0, minutes: Math.max(1, Math.round((c.size || 0) / 420)),
+              updated: c.updated, file: "ch/" + String(c.n).padStart(3, "0") + ".html"
+            }))
+          };
+          return index;
+        }
+      }
+    } catch (err) {}
     try {
       const res = await fetch("/novel/ch/index.json", { cache: "no-cache" });
       index = res.ok ? await res.json() : { chapters: [] };
@@ -62,8 +80,16 @@
     if (chTitle) chTitle.textContent = meta.title;
     renderNav(meta.n);
     try {
-      const res = await fetch("/novel/" + meta.file, { cache: "no-cache" });
-      const html = res.ok ? await res.text() : "";
+      let html = "";
+      const api = await fetch("/api/chapters/" + meta.n, { cache: "no-cache" });
+      if (api.ok) {
+        const data = await api.json();
+        html = data.html || "";
+      }
+      if (!html) {
+        const res = await fetch("/novel/" + meta.file, { cache: "no-cache" });
+        html = res.ok ? await res.text() : "";
+      }
       if (chBody) chBody.innerHTML = html || "<p>正文读取失败，刷新再试。</p>";
     } catch (err) {
       if (chBody) chBody.innerHTML = "<p>正文读取失败，刷新再试。</p>";

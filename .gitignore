@@ -1,19 +1,10 @@
-# 依赖与工具状态
 node_modules/
-.wrangler/
-.wrangler-dry/
-.dev.vars
-*.log
-
-# 生成物与本地资料（不入库）
 pages-dist/
 redirect-dist/
+.seed.json
+.cj.txt
 shots-new/
-backup/
 ref/
-data/
-.edge-*/
-
-# 系统
+*.log
 .DS_Store
-Thumbs.db
+.wrangler/

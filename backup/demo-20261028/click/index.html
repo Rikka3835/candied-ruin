@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>1D · 糖泡点击反馈</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--ground, #2a1a10); overflow: hidden; }
+  body { font-family: "Noto Serif SC", "Source Han Serif SC", serif; }
+  #bg, #gl, #fx { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  #gl { z-index: 1; }
+  #fx { z-index: 2; }
+  .hint {
+    position: fixed; left: 50%; bottom: 6vh; transform: translateX(-50%);
+    z-index: 3; color: rgba(255, 236, 208, .82); font-size: .82rem; letter-spacing: .18em;
+    text-shadow: 0 1px 2px rgba(6, 5, 12, .9); pointer-events: none; transition: opacity .4s;
+  }
+  .tag {
+    position: fixed; left: 12px; bottom: 10px; z-index: 3;
+    font: 12px/1.4 ui-monospace, monospace; color: rgba(255, 220, 170, .55);
+  }
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<canvas id="gl"></canvas>
+<canvas id="fx"></canvas>
+<div class="hint" id="hint">点任意位置 → 出糖泡 → 5 秒后炸（可以连点，也会连炸）</div>
+<div class="tag" id="tag">1D · click bubble</div>
+<script src="ballgl.js"></script>
+<script src="click.js"></script>
+</body>
+</html>

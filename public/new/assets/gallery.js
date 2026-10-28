@@ -52,5 +52,9 @@
   if (btn) btn.addEventListener("click", () => { write(SPOILER, spoilerOn() ? "0" : "1"); sync(); apply(); });
   sync(); apply();
   window.__galApply = apply;
-  fetch("/novel/ch/index.json").then((r) => r.json()).then((d) => { chapters = (d.chapters || []).slice().sort((a, b) => a.n - b.n); apply(); }).catch(() => {});
+  const useList = (d) => (d.chapters || []).map((c) => ({ n: c.n, cast: c.cast ? String(c.cast).split(/[、,，]/).filter(Boolean) : (c.cast || []) })).sort((a, b) => a.n - b.n);
+  fetch("/api/chapters").then((r) => (r.ok ? r.json() : null)).then((d) => {
+    if (d && d.chapters && d.chapters.length) { chapters = useList(d); apply(); return; }
+    return fetch("/novel/ch/index.json").then((r) => r.json()).then((x) => { chapters = useList(x); apply(); });
+  }).catch(() => {});
 })();

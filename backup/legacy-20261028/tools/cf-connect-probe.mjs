@@ -1,0 +1,12 @@
+﻿import { writeFile, mkdir } from 'node:fs/promises';
+const list=await (await fetch('http://127.0.0.1:9338/json')).json(); const p=list.find(t=>t.type==='page'&&t.url.includes('dash.cloudflare.com'));
+const ws=new WebSocket(p.webSocketDebuggerUrl); let id=0; const pending=new Map();
+ws.addEventListener('message',e=>{const m=JSON.parse(e.data);if(m.id&&pending.has(m.id)){const q=pending.get(m.id);pending.delete(m.id);m.error?q.reject(new Error(m.error.message)):q.resolve(m.result);}});
+await new Promise((r,j)=>{ws.addEventListener('open',r,{once:true});ws.addEventListener('error',j,{once:true});});
+const send=(method,params={})=>new Promise((resolve,reject)=>{const n=++id;pending.set(n,{resolve,reject});ws.send(JSON.stringify({id:n,method,params}));});
+await send('Page.enable'); await send('Runtime.enable');
+await new Promise(r=>setTimeout(r,3000));
+const r=await send('Runtime.evaluate',{expression:`(async()=>{const out={href:location.href,title:document.title,text:document.body.innerText.slice(0,600)}; try { const a=await fetch('/api/v4/accounts',{credentials:'include'}); out.accountsStatus=a.status; out.accounts=(await a.text()).slice(0,800); } catch(e){ out.accountsErr=String(e); } try { const p=await fetch('/api/v4/accounts/'+((JSON.parse(out.accounts||'{}').result||[])[0]?.id||'')+'/pages/projects',{credentials:'include'}); out.projectsStatus=p.status; out.projects=(await p.text()).slice(0,1000); } catch(e){ out.projectsErr=String(e); } return JSON.stringify(out); })()`,awaitPromise:true,returnByValue:true});
+console.log(r.result.value);
+const shot=await send('Page.captureScreenshot',{format:'png',fromSurface:true}); await mkdir('shots-browser',{recursive:true}); await writeFile('shots-browser/cf-dash.png',Buffer.from(shot.data,'base64'));
+ws.close();

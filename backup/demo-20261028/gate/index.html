@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>入口 · 冒险者通行证</title>
+<link rel="stylesheet" href="demo.css">
+</head>
+<body class="stage">
+
+  <!-- 底：纯 CSS（占位门图已删，等真门图回来再接背景层） -->
+  <div class="backdrop" aria-hidden="true"></div>
+  <canvas class="dust" id="dust" aria-hidden="true"></canvas>
+
+  <!-- 冒险者通行证 -->
+  <main class="pass" id="pass">
+    <div class="pass__card" id="card">
+      <div class="pass__head">
+        <span class="pass__brand">CANDIED&nbsp;RUIN</span>
+        <span class="pass__no">NO.&nbsp;0147</span>
+      </div>
+      <p class="pass__kicker">PAVLIA · 地下城入口</p>
+      <h1 class="pass__title">进入糖渍旧蜜的故事</h1>
+      <p class="pass__sub">一段从地下城开始的旅程</p>
+      <!-- 右侧压印的糖晶标记，让卡片不像空白的纸 -->
+      <svg class="pass__mark" viewBox="0 0 100 100" aria-hidden="true">
+        <g fill="none" stroke="#8A6027" stroke-opacity=".55" stroke-width="1.6">
+          <path d="M50 8l26 20v44L50 92 24 72V28z"/>
+          <path d="M50 8v30m0 0L24 28m26 10l26-10M24 72l26-34m26 34L50 38M50 92V38"/>
+        </g>
+      </svg>
+      <span class="pass__serial" aria-hidden="true">ADVENTURER&nbsp;PASS&nbsp;·&nbsp;帕芙利亚&nbsp;·&nbsp;第&nbsp;01&nbsp;号</span>
+      <span class="pass__fold" aria-hidden="true"></span>
+    </div>
+
+    <!-- 糖晶封蜡：主点击目标 -->
+    <button class="seal" id="seal" type="button" aria-label="撕开封蜡，进入帕芙利亚">
+      <svg class="seal__svg" viewBox="0 0 120 120" aria-hidden="true">
+        <defs>
+          <radialGradient id="waxBody" cx="38%" cy="30%" r="78%">
+            <stop offset="0%" stop-color="#FFE7BC"/>
+            <stop offset="38%" stop-color="#FFC470"/>
+            <stop offset="72%" stop-color="#DE8B2C"/>
+            <stop offset="100%" stop-color="#8C3F0C"/>
+          </radialGradient>
+          <radialGradient id="waxGloss" cx="34%" cy="26%" r="34%">
+            <stop offset="0%" stop-color="#FFFDF4" stop-opacity=".92"/>
+            <stop offset="100%" stop-color="#FFFDF4" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="waxEdge" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.05 0.062" numOctaves="3" seed="7"/>
+            <feDisplacementMap in="SourceGraphic" scale="13" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+          <filter id="waxSoft" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="2.2"/>
+          </filter>
+        </defs>
+
+        <g filter="url(#waxEdge)">
+          <!-- 底下一层暗蜡，给封蜡厚度 -->
+          <ellipse cx="61" cy="64" rx="48" ry="41" fill="#6E2C05" opacity=".55"/>
+          <ellipse class="seal__body" cx="60" cy="61" rx="47" ry="40" fill="url(#waxBody)"/>
+          <ellipse class="seal__rim" cx="60" cy="61" rx="47" ry="40" fill="none" stroke="#5E2606" stroke-opacity=".5" stroke-width="1.6"/>
+          <path d="M52 96c3 6 9 9 16 8 6-1 10-5 11-11-4 3-9 4-14 4-5 0-9-0-13-1z" fill="#C46A18" opacity=".85"/>
+        </g>
+
+        <!-- 内部糖浆涡流 -->
+        <!-- 压印章：糖晶菱形，略比蜡面暗 --> 
+        <g class="seal__stamp" opacity=".42">
+          <path d="M60 26l17 12v24L60 74 43 62V38z" fill="none" stroke="#7A3208" stroke-width="3"/>
+          <path d="M60 26v22m0 0L43 38m17 10l17-10" fill="none" stroke="#7A3208" stroke-width="2.4" opacity=".8"/>
+        </g>
+
+        <g class="seal__swirl" fill="none" stroke-linecap="round">
+          <path d="M60 30c16 0 27 13 27 30" stroke="#FFF3DC" stroke-opacity=".22" stroke-width="4"/>
+          <path d="M60 90c-17 0-28-14-28-30" stroke="#B45A12" stroke-opacity=".26" stroke-width="5"/>
+          <path d="M46 52c5-7 16-8 23-2" stroke="#FFF6E2" stroke-opacity=".3" stroke-width="3"/>
+        </g>
+
+        <!-- 高光：hover 时位移 -->
+        <g class="seal__gloss">
+          <ellipse cx="43" cy="40" rx="26" ry="18" fill="url(#waxGloss)" filter="url(#waxSoft)"/>
+          <circle cx="47" cy="34" r="5" fill="#FFFDF6" opacity=".85"/>
+        </g>
+      </svg>
+      <span class="seal__hint">撕开封蜡</span>
+    </button>
+
+    <!-- 碎蜡与糖浆拉丝由脚本填充（放在 .pass 外，卡片淡出时不会一起淡掉） -->
+  </main>
+
+  <div class="shards" id="shards" aria-hidden="true"></div>
+
+  <div class="flash" id="flash" aria-hidden="true"></div>
+
+  <section class="loading" id="loading" aria-hidden="true">
+    <canvas class="loading__bubble" id="bubble"></canvas>
+    <p class="loading__text">正在进入 <em>糖渍旧蜜</em></p>
+    <p class="loading__note">糖泡是占位；爆炸与四卡是下一步</p>
+    <button class="loading__skip" id="skip" type="button">跳过</button>
+  </section>
+
+  <footer class="demo-tag">演示 v2 · 冒险者通行证（门图已删）</footer>
+
+  <script src="demo.js" defer></script>
+</body>
+</html>
+
+
