@@ -1,0 +1,632 @@
+/* ============================================================
+   world.css — 前言 / 经文页（/world/）
+   用途：三篇文本（正典 / 残卷 / 一页账）+ 六神表 + 年表 + 读法
+   依赖：fonts-subset.css → site.css → paper.css（这里只做本页排版）
+   修改：色值集中在 .world 的 token 里；块间距在各节注释处
+   注意：本页全部用 400 字重（700 子集只收了站内标题用字，
+        本页标题里有「熬/被/典/残/账」，用 700 会掉回 400 导致粗细不匀）
+   ============================================================ */
+
+/* ---------- 1. 令牌 ---------- */
+.world {
+  --w-paper: #f6f1e7;
+  --w-paper-2: #efe7d8;
+  --w-card: rgba(255, 255, 255, 0.34);
+  --w-ash: #ecdfc7;
+  --w-ink: #221c18;
+  --w-ink-2: #4a4038;
+  --w-muted: #7c6c5a;
+  --w-line: rgba(34, 28, 24, 0.13);
+  --w-line-2: rgba(34, 28, 24, 0.26);
+  --w-amber: #a86f2e;
+  --w-amber-2: #7d4f1b;
+  --w-serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+}
+
+body.world {
+  background:
+    radial-gradient(115% 78% at 50% -12%, #fcf8f1 0%, var(--w-paper) 44%, var(--w-paper-2) 100%);
+  color: var(--w-ink);
+  font-family: var(--w-serif);
+  -webkit-font-smoothing: antialiased;
+}
+body.world ::selection { background: rgba(176, 121, 58, 0.24); }
+
+/* ---------- 2. 版心 ---------- */
+.pre {
+  position: relative;
+  z-index: 3;
+  max-width: 43rem;
+  margin: 0 auto;
+  padding: calc(var(--nav-h, 62px) + 3.4rem) 1.6rem 5.5rem;
+}
+
+/* ---------- 3. 页头 ---------- */
+.pre__head { margin-bottom: 2.6rem; }
+
+.pre__kicker {
+  margin: 0 0 1.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.62em;
+  color: var(--w-amber);
+  text-indent: 0.62em;
+}
+
+.pre__title {
+  margin: 0 0 1.35rem;
+  font-size: clamp(2rem, 6.2vw, 3rem);
+  font-weight: 400;
+  line-height: 1.26;
+  letter-spacing: 0.045em;
+  color: var(--w-ink);
+}
+
+.pre__lede {
+  margin: 0;
+  font-size: clamp(1rem, 2.4vw, 1.1rem);
+  line-height: 2;
+  color: var(--w-ink-2);
+}
+.pre__lede em { font-style: normal; color: var(--w-amber-2); letter-spacing: 0.12em; }
+
+.pre__meta {
+  margin: 1.6rem 0 0;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--w-line);
+  font-size: 0.78rem;
+  letter-spacing: 0.24em;
+  color: var(--w-muted);
+}
+
+/* ---------- 4. 节头 ---------- */
+.sc, .gods, .chrono { margin-top: 5.2rem; }
+
+.sc__head {
+  padding-top: 1.5rem;
+  margin-bottom: 2rem;
+  border-top: 1px solid var(--w-line);
+}
+
+
+.sc__title {
+  margin: 0.75rem 0 0.5rem;
+  font-size: clamp(1.3rem, 3.6vw, 1.62rem);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--w-ink);
+}
+
+.sc__tag {
+  margin: 0;
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  color: var(--w-muted);
+}
+
+/* ---------- 5. 正典（经文） ---------- */
+.scripture { counter-reset: none; }
+
+.v {
+  position: relative;
+  margin: 0 0 1.45em;
+  font-size: clamp(1rem, 2.5vw, 1.06rem);
+  line-height: 2.05;
+  color: var(--w-ink);
+}
+.v > br + br { line-height: 0; }
+
+.v--cut { margin-top: -0.4em; }
+.v__cut {
+  display: inline-block;
+  padding: 0.15em 0.5em;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  color: var(--w-muted);
+  border-top: 1px dashed var(--w-line-2);
+  border-bottom: 1px dashed var(--w-line-2);
+}
+
+.amen {
+  margin: 2.9rem 0 0;
+  text-align: center;
+  font-size: 1.02rem;
+  letter-spacing: 0.44em;
+  text-indent: 0.44em;
+  color: var(--w-amber-2);
+}
+.amen::before {
+  content: "";
+  display: block;
+  width: 54px;
+  height: 1px;
+  margin: 0 auto 1.7rem;
+  background: var(--w-line-2);
+}
+
+/* ---------- 6. 残卷 ---------- */
+.sc--ash {
+  padding: 0;
+}
+.sc--ash .sc__head { border-top-color: transparent; }
+.ash {
+  padding: 1.7rem 1.5rem 2.1rem;
+  background:
+    linear-gradient(180deg, rgba(70, 44, 18, 0.10) 0%, rgba(70, 44, 18, 0.01) 11%, transparent 20%),
+    var(--w-ash);
+  box-shadow: inset 0 0 0 1px var(--w-line-2);
+}
+.ash p {
+  margin: 0 0 1.2em;
+  font-size: clamp(0.98rem, 2.4vw, 1.03rem);
+  line-height: 2.05;
+  color: var(--w-ink);
+}
+.ash p:last-child { margin-bottom: 0; }
+
+.ash__gloss {
+  padding-left: 1.1rem;
+  border-left: 2px solid var(--w-line-2);
+  font-size: 0.79rem !important;
+  line-height: 1.9 !important;
+  letter-spacing: 0.04em;
+  color: var(--w-muted) !important;
+}
+.ash__gloss--hand { border-left-color: var(--w-amber); }
+
+.ash__void {
+  font-size: 0.88rem !important;
+  letter-spacing: 0.16em;
+  color: var(--w-muted) !important;
+}
+
+.ash__hand {
+  margin-top: 1.8rem !important;
+  padding-top: 1.4rem;
+  border-top: 1px dashed var(--w-line-2);
+  font-size: 1.04rem !important;
+  letter-spacing: 0.14em;
+  line-height: 2.1 !important;
+  color: var(--w-amber-2) !important;
+}
+
+/* ---------- 7. 一页账 ---------- */
+.ledger {
+  padding: 1.8rem 1.5rem 2.1rem;
+  background: var(--w-card);
+  box-shadow: inset 0 0 0 1px var(--w-line);
+  font-variant-numeric: tabular-nums;
+}
+
+.ledger__h {
+  margin: 0 0 1.5rem;
+  font-size: 1.06rem;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  color: var(--w-ink);
+}
+
+.ledger__side {
+  margin: 1.5rem 0 0.55rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.34em;
+  color: var(--w-amber);
+}
+
+.ledger__rows { list-style: none; margin: 0; padding: 0; }
+.ledger__rows li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  padding: 0.3rem 0;
+  font-size: 0.96rem;
+  line-height: 1.9;
+}
+.lk { color: var(--w-ink-2); }
+.ld {
+  flex: 1;
+  min-width: 1.2rem;
+  border-bottom: 1px dotted var(--w-line-2);
+  transform: translateY(-0.24em);
+}
+.amt { color: var(--w-ink); letter-spacing: 0.12em; }
+
+.ledger__bal {
+  margin: 1.6rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--w-line-2);
+  font-size: 0.98rem;
+  letter-spacing: 0.14em;
+  color: var(--w-ink-2);
+}
+.ledger__bal em {
+  font-style: normal;
+  color: var(--w-amber-2);
+  letter-spacing: 0.3em;
+  padding-left: 0.3em;
+}
+
+.ledger__notes {
+  margin: 0;
+  padding-left: 1.15rem;
+  font-size: 0.87rem;
+  line-height: 1.95;
+  color: var(--w-ink-2);
+}
+.ledger__notes li { margin-bottom: 0.45em; padding-left: 0.15rem; }
+.ledger__notes li::marker { color: var(--w-amber); font-size: 0.8em; }
+
+.ledger__seven {
+  margin: 1.5rem 0 0.4rem;
+  font-size: 0.96rem;
+  letter-spacing: 0.06em;
+  color: var(--w-amber-2);
+}
+
+.ledger__strike {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--w-muted);
+}
+
+.ledger__end {
+  margin: 0.2rem 0 0;
+  font-size: 0.92rem;
+  line-height: 1.95;
+  color: var(--w-ink-2);
+}
+
+.ledger__bal--end { margin-top: 1.1rem; }
+
+/* ---------- 8. 六位神 ---------- */
+.gods__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.god {
+  padding: 1.15rem 1.15rem 1.25rem;
+  background: var(--w-card);
+  box-shadow: inset 0 0 0 1px var(--w-line);
+}
+
+.god__name {
+  margin: 0 0 0.55rem;
+  font-size: 1.16rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--w-ink);
+}
+.god__name span {
+  margin-left: 0.55em;
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  color: var(--w-muted);
+}
+.god__flag {
+  display: inline-block;
+  margin-left: 0.55em;
+  padding: 0.1em 0.45em;
+  font-size: 0.62rem;
+  font-style: normal;
+  letter-spacing: 0.16em;
+  color: var(--w-amber-2);
+  border: 1px solid var(--w-line-2);
+  vertical-align: 0.15em;
+}
+
+.god__dom {
+  margin: 0 0 0.7rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  color: var(--w-amber);
+}
+
+.god__pov {
+  margin: 0 0 0.55rem;
+  font-size: 0.86rem;
+  line-height: 1.9;
+  color: var(--w-ink-2);
+}
+.god__pov b {
+  display: inline-block;
+  margin-right: 0.5em;
+  font-weight: 400;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--w-muted);
+  vertical-align: 0.1em;
+}
+
+.god__where {
+  margin: 0.8rem 0 0;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--w-line);
+  font-size: 0.8rem;
+  line-height: 1.85;
+  color: var(--w-muted);
+}
+
+.god--lost { background: transparent; box-shadow: inset 0 0 0 1px var(--w-line-2); }
+.god--lost .god__name { color: var(--w-ink-2); }
+
+.gods__foot {
+  margin: 1.3rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.95;
+  color: var(--w-muted);
+}
+.gods__foot b { font-weight: 400; color: var(--w-ink-2); }
+
+/* ---------- 9. 年表 ---------- */
+.chrono__list { list-style: none; margin: 0; padding: 0 0 0 1.1rem; border-left: 1px solid var(--w-line-2); }
+.chrono__list li { position: relative; margin-bottom: 1.85rem; }
+.chrono__list li::before {
+  content: "";
+  position: absolute;
+  left: -1.1rem;
+  top: 0.72em;
+  width: 7px; height: 7px;
+  margin-left: -4px;
+  background: var(--w-paper);
+  border: 1px solid var(--w-amber);
+  border-radius: 50%;
+}
+.chrono__era {
+  margin: 0 0 0.3rem;
+  font-size: 0.98rem;
+  letter-spacing: 0.2em;
+  color: var(--w-ink);
+}
+.chrono__text {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.95;
+  color: var(--w-ink-2);
+}
+
+/* ---------- 11. 结尾 ---------- */
+.pre__end {
+  margin-top: 4.6rem;
+  padding-top: 2.2rem;
+  border-top: 1px solid var(--w-line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.2rem 1.8rem;
+}
+
+.pre__cta {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.95rem 1.5rem;
+  font-size: 0.98rem;
+  letter-spacing: 0.14em;
+  color: var(--w-ink);
+  text-decoration: none;
+  background: var(--w-card);
+  box-shadow: inset 0 0 0 1px var(--w-line-2);
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+.pre__cta span {
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  color: var(--w-muted);
+}
+.pre__cta:hover { box-shadow: inset 0 0 0 1px var(--w-amber); transform: translateY(-1px); }
+
+.pre__back {
+  font-size: 0.84rem;
+  letter-spacing: 0.14em;
+  color: var(--w-muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--w-line-2);
+  padding-bottom: 0.15rem;
+}
+.pre__back:hover { color: var(--w-amber-2); border-bottom-color: var(--w-amber); }
+
+/* ---------- 12. 进度条 ---------- */
+.w-bar {
+  position: fixed;
+  left: 0; right: 0; top: 0;
+  height: 2px;
+  z-index: 60;
+  pointer-events: none;
+  background: transparent;
+}
+.w-bar__in {
+  height: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--w-amber), #d9a15f);
+}
+
+/* ---------- 13. 窄屏 ---------- */
+@media (max-width: 620px) {
+  .pre { padding: calc(var(--nav-h, 62px) + 2.2rem) 1.15rem 4rem; }
+  .pre__title { font-size: 1.92rem; letter-spacing: 0.03em; }
+  .pre__kicker { letter-spacing: 0.5em; margin-bottom: 1.1rem; }
+  .v { line-height: 2.0; margin-bottom: 1.35em; }
+  .ash { padding: 1.4rem 1.1rem 1.7rem; }
+  .ledger { padding: 1.4rem 1.1rem 1.7rem; }
+  .gods__grid { grid-template-columns: 1fr; }
+  .sc, .gods, .chrono { margin-top: 4rem; }
+  .pre__cta { width: 100%; }
+}
+
+/* ---------- 14. 深色 ---------- */
+@media (prefers-color-scheme: dark) {
+  .world {
+    --w-paper: #1a1512;
+    --w-paper-2: #241c17;
+    --w-card: rgba(240, 231, 218, 0.045);
+    --w-ash: #241b14;
+    --w-ink: #efe7da;
+    --w-ink-2: #cfc4b5;
+    --w-muted: #9a8e80;
+    --w-line: rgba(240, 231, 218, 0.12);
+    --w-line-2: rgba(240, 231, 218, 0.26);
+    --w-amber: #d9a15f;
+    --w-amber-2: #f0c98c;
+  }
+  body.world {
+    background: radial-gradient(115% 78% at 50% -12%, #221a15 0%, var(--w-paper) 44%, #141010 100%);
+  }
+  .ash {
+    background:
+      linear-gradient(180deg, rgba(255, 240, 220, 0.05) 0%, transparent 16%),
+      var(--w-ash);
+  }
+}
+
+/* ---------- 教堂 ---------- */
+.church__lede {
+  max-width: 34em;
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+  line-height: 2.05;
+  letter-spacing: 0.03em;
+  color: var(--w-soft);
+}
+.ladder {
+  list-style: none;
+  margin: 2.4rem 0 0;
+  padding: 0;
+}
+.rung {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr) 15rem;
+  gap: 1.5rem;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--w-line);
+}
+.rung:first-child { border-top: 1px solid var(--w-line); }
+.rung__n {
+  padding-top: 0.2rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  color: var(--w-amber);
+}
+.rung__body { min-width: 0; }
+.rung__name {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.rung__duty {
+  margin: 0.42rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.9;
+  color: var(--w-soft);
+}
+.rung__note {
+  margin: 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--w-line);
+  font-size: 0.82rem;
+  line-height: 1.85;
+  color: var(--w-faint);
+  align-self: start;
+}
+.church__ban {
+  margin: 2.2rem 0 0;
+  padding-left: 1.05rem;
+  border-left: 2px solid var(--w-amber);
+  font-size: 0.88rem;
+  line-height: 1.95;
+  color: var(--w-soft);
+}
+.church__ban b {
+  margin-right: 0.6em;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  color: var(--w-amber);
+}
+.figs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin: 2.8rem 0 0;
+  background: var(--w-line);
+  border: 1px solid var(--w-line);
+}
+.fig {
+  padding: 1.4rem 1.25rem 1.6rem;
+  background: var(--w-paper);
+}
+.fig__k {
+  margin: 0;
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  color: var(--w-amber);
+}
+.fig__t {
+  margin: 0.6rem 0 0.85rem;
+  font-size: 1.28rem;
+  letter-spacing: 0.05em;
+}
+.fig__d {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.95;
+  color: var(--w-soft);
+}
+.creed {
+  margin: 3.2rem 0 0;
+  text-align: center;
+}
+.creed__row {
+  display: flex;
+  justify-content: center;
+  gap: 2.4rem;
+  margin: 0;
+  font-size: 2.1rem;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+}
+.creed__row span { text-indent: 0.18em; }
+.creed__x {
+  margin: 1.1rem 0 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.52em;
+  text-indent: 0.52em;
+  color: var(--w-amber);
+}
+.church__note {
+  margin: 2.6rem 0 0;
+  padding: 1.15rem 0 0;
+  border-top: 1px dashed var(--w-line-2);
+  font-size: 0.86rem;
+  line-height: 1.95;
+  color: var(--w-faint);
+}
+.church__note b {
+  margin-right: 0.7em;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--w-amber);
+}
+
+@media (max-width: 720px) {
+  .rung {
+    grid-template-columns: 1.9rem minmax(0, 1fr);
+    gap: 0.9rem;
+    padding: 1.05rem 0;
+  }
+  .rung__note {
+    grid-column: 2;
+    padding-left: 0;
+    border-left: 0;
+    margin-top: 0.1rem;
+    padding-top: 0.55rem;
+    border-top: 1px solid var(--w-line);
+  }
+  .figs { grid-template-columns: 1fr; }
+  .creed__row { gap: 1.7rem; font-size: 1.9rem; }
+}
+

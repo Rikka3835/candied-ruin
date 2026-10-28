@@ -1,0 +1,31 @@
+{
+  "name": "糖渍旧蜜 · CANDIED RUIN",
+  "short_name": "糖渍旧蜜",
+  "description": "人类把糖做成泡，把泡当武器。地下城冒险异世界轻小说《糖渍旧蜜》官方网站。",
+  "lang": "zh-CN",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0B0A1A",
+  "theme_color": "#0B0A1A",
+  "icons": [
+    {
+      "src": "/assets/brand/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

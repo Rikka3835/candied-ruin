@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /demo/
+Disallow: /new/index.html
+Disallow: /new/type.html
+Sitemap: https://bubble-vanguard.pages.dev/sitemap.xml

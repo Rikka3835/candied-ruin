@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 · 糖渍旧蜜</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/brand/icon-32.png" sizes="32x32">
+<style>
+  :root{
+    --paper:#F7F3EA;
+    --ink:#221E1B;
+    --ink-soft:#6B6157;
+    --line:#D9CFBE;
+    --gold:#B98A3C;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Serif SC","Songti SC","SimSun",serif;
+    -webkit-font-smoothing:antialiased;
+    display:flex;
+    flex-direction:column;
+    min-height:100svh;
+  }
+  /* 极淡的纸纹，不抢字 */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background:
+      radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,.85), transparent 60%),
+      radial-gradient(90% 60% at 50% 120%, rgba(185,138,60,.07), transparent 70%);
+    pointer-events:none;
+  }
+  main{
+    position:relative;
+    flex:1;
+    display:grid;
+    place-items:center;
+    padding:clamp(24px,6vw,72px);
+  }
+  .box{width:min(100%,34rem); text-align:center}
+  .code{
+    font-size:clamp(56px,16vw,104px);
+    line-height:.95;
+    letter-spacing:.08em;
+    color:var(--gold);
+    font-weight:700;
+    opacity:.85;
+  }
+  h1{
+    margin:1.1rem 0 .6rem;
+    font-size:clamp(20px,4.4vw,28px);
+    font-weight:700;
+    letter-spacing:.06em;
+  }
+  p{
+    margin:0 0 2rem;
+    color:var(--ink-soft);
+    font-size:clamp(14px,3.4vw,16px);
+    line-height:1.9;
+    letter-spacing:.02em;
+  }
+  a.back{
+    display:inline-block;
+    padding:.72rem 2.1rem;
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:var(--ink);
+    text-decoration:none;
+    font-size:15px;
+    letter-spacing:.1em;
+    transition:border-color .18s ease, color .18s ease, background-color .18s ease;
+  }
+  a.back:hover{
+    border-color:var(--gold);
+    color:var(--gold);
+    background:rgba(185,138,60,.06);
+  }
+  a.back:focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+  }
+  footer{
+    position:relative;
+    padding:0 0 2rem;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:12px;
+    letter-spacing:.34em;
+    opacity:.6;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--paper:#17130F;--ink:#F3EADA;--ink-soft:#A79A87;--line:#3A3128;--gold:#D8A75A}
+    body::before{background:radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,.06), transparent 60%)}
+  }
+</style>
+<meta name="robots" content="noindex,follow">
+</head>
+<body>
+<main>
+  <div class="box">
+    <div class="code">404</div>
+    <h1>这条路还没修好</h1>
+    <p>你要找的页面不在这里。<br>回首页吧，故事从那里开始。</p>
+    <a class="back" href="/">回首页</a>
+  </div>
+</main>
+<footer>CANDIED RUIN · 糖渍旧蜜</footer>
+<p style="margin-top:22px"><a href="#" id="back" style="color:var(--ink-soft);font-size:.84rem;letter-spacing:.1em;border-bottom:1px solid var(--line)">← 回到上一页</a></p>
+<script>document.getElementById('back').addEventListener('click',function(e){e.preventDefault();history.back();});</script>
+</body>
+</html>

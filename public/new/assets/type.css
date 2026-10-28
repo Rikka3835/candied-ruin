@@ -1,0 +1,196 @@
+/* ============================================================
+   type.css — 阅读排版基准（试金石页 / 未来正文页共用）
+   用途：定义正文行宽、行高、缩进、段距；夜读 / 纸色两种模式。
+   依赖：site.css（颜色与字体令牌）。必须在 site.css 之后引入。
+   修改方式：正文字号 --reading-size、行宽 --reading-width、
+             留白 --page-gutter 在 :root 调整；模式色在 body 的两个状态里改。
+   ============================================================ */
+
+:root {
+  --reading-size: 1.08rem;
+  --para-gap: 1.15em;
+}
+
+/* 纸色模式：只换令牌，不改任何布局 */
+body.is-paper {
+  --ink-0: #F3EADC;
+  --ink-1: #EFE4D2;
+  --text: #241C14;
+  --text-soft: #3A2E22;
+  --text-dim: #7B6A55;
+  --line: rgba(60, 42, 24, 0.16);
+  --line-strong: rgba(60, 42, 24, 0.34);
+  --gold: #A9631C;
+  --honey: #8A4A12;
+  --caramel: #8A4A12;
+  --ember: #F7E9C4;
+  background: var(--ink-0);
+  color: var(--text);
+  color-scheme: light;
+}
+body.is-paper .bg { background: var(--ink-0); }
+body.is-paper .bg__nebula,
+body.is-paper .bg__vignette,
+body.is-paper .bg__dust { display: none; }
+body.is-paper .bg__grain { opacity: 0.035; mix-blend-mode: multiply; }
+body.is-paper .body__text { text-shadow: none; }
+
+/* ---------- 阅读容器 ---------- */
+.reader {
+  position: relative;
+  z-index: 1;
+  min-height: 100svh;
+  padding: 9vh 0 8rem;
+}
+
+/* 顶部阅读进度条：未来正文页接滚动进度，这一版先固定展示 */
+.progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  z-index: 3;
+  background: rgba(255, 217, 160, 0.1);
+}
+.progress__bar {
+  height: 100%;
+  width: 38%;
+  background: linear-gradient(90deg, var(--caramel), var(--gold) 55%, var(--ember));
+  box-shadow: 0 0 12px rgba(255, 179, 71, 0.6);
+  transition: width 180ms linear;
+}
+
+/* ---------- 工具条 ---------- */
+.reader__bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: min(70%, var(--reading-width));
+  margin: 0 auto 3.4rem;
+  padding: 0 0 1.1rem;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+}
+.reader__bar .spacer { flex: 1; }
+.switch {
+  display: inline-flex;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+.switch button {
+  appearance: none;
+  border: 0;
+  padding: 0.45em 0.9em;
+  font: inherit;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+  background: transparent;
+  cursor: pointer;
+  transition: color 180ms, background 180ms;
+}
+.switch button[aria-pressed="true"] {
+  color: #1A1206;
+  background: linear-gradient(160deg, var(--honey), var(--gold));
+}
+body.is-paper .switch button[aria-pressed="true"] { color: #FBF4E7; }
+
+/* ---------- 正文排版 ---------- */
+.prose {
+  width: min(70%, var(--reading-width));
+  margin: 0 auto;
+}
+.prose__kicker {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.4em;
+  color: var(--caramel);
+}
+.prose h2 {
+  margin: 0.8rem 0 0.4rem;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+.prose__sub {
+  margin-bottom: 2.6rem;
+  font-family: var(--font-ui);
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  color: var(--text-dim);
+}
+.prose p {
+  font-size: var(--reading-size);
+  line-height: var(--reading-leading);
+  letter-spacing: 0.035em;
+  text-indent: 2em;
+  color: var(--text-soft);
+  margin-bottom: var(--para-gap);
+}
+.prose p:last-child { margin-bottom: 0; }
+/* 小字标签不是正文：不缩进、不占正文行高 */
+.prose p.prose__sub,
+.prose p.specimen-label,
+.prose p.prose__kicker {
+  text-indent: 0;
+  font-size: 0.76rem;
+  line-height: 1.8;
+  letter-spacing: 0.16em;
+  color: var(--text-dim);
+}
+.prose p.prose__sub { margin-bottom: 2.6rem; }
+/* 段首用宋体大字时的锋利感：第一段第一个字不提行距 */
+.prose p:first-of-type { color: var(--text); }
+
+.prose hr {
+  border: 0;
+  height: 1px;
+  margin: 3.4rem auto;
+  width: 56px;
+  background: var(--line-strong);
+}
+
+/* 示例声明：必须一眼可辨“这不是正文” */
+.prose p.sample-note {
+  text-indent: 0;
+  margin-bottom: 0;
+  padding: 0.9em 1.1em;
+  font-size: 0.78rem;
+  line-height: 1.85;
+  letter-spacing: 0.05em;
+  color: var(--text-soft);
+  background: rgba(255, 179, 71, 0.06);
+  border-left: 2px solid rgba(255, 179, 71, 0.5);
+}
+.prose p.sample-note strong { color: var(--honey); font-weight: 700; }
+
+/* 试金石分组标题 */
+.specimen-label {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 3.6rem 0 1.6rem;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--text-dim);
+}
+.specimen-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ---------- 响应式：窄屏留白收窄，字不缩太小 ---------- */
+@media (max-width: 900px) {
+  .prose, .reader__bar { width: min(86%, var(--reading-width)); }
+}
+@media (max-width: 560px) {
+  :root { --reading-size: 1.02rem; --para-gap: 1rem; }
+  .prose, .reader__bar { width: 88%; }
+  .reader { padding-top: 7vh; }
+}

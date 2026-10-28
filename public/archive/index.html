@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>人物档案 · 糖渍旧蜜</title>
+<meta name="description" content="《糖渍旧蜜》人物档案：12 位登场人物，每人一份完整设定——种族年龄、身份、愿望、外貌、装束、背景、性格、关系、与糖的关系、剧情功能、口癖。">
+<meta name="theme-color" content="#f6f1e7">
+<link rel="icon" type="image/svg+xml" href="/assets/brand/favicon.svg">
+<link rel="icon" href="/assets/brand/icon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/brand/icon-180.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/new/assets/fonts/sub/noto-serif-sc-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/new/assets/fonts-subset.css?v=20261029b">
+<link rel="stylesheet" href="/new/assets/site.css?v=20261028l">
+<link rel="stylesheet" href="/new/assets/paper.css?v=20261028l">
+<link rel="canonical" href="https://bubble-vanguard.pages.dev/archive/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="人物档案 · 糖渍旧蜜">
+<meta property="og:description" content="12 位登场人物的完整设定：外貌、装束、背景、性格、口癖，以及每个人与糖的关系。">
+<meta property="og:url" content="https://bubble-vanguard.pages.dev/archive/">
+<meta property="og:image" content="https://bubble-vanguard.pages.dev/assets/brand/og-new.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+.arch__wrap {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  margin-top: 3.2rem;
+}
+.arch__rail {
+  position: sticky;
+  top: calc(var(--nav-h, 72px) + 2.4rem);
+  align-self: start;
+  font-size: 0.84rem;
+}
+.rail__g {
+  margin: 1.5rem 0 0.45rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.3em;
+  color: var(--caramel);
+}
+.rail__g:first-child { margin-top: 0; }
+.rail__a {
+  display: block;
+  padding: 0.26rem 0 0.26rem 0.72rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color 0.18s, border-color 0.18s;
+}
+.rail__a:hover,
+.rail__a:focus-visible { color: var(--honey); border-left-color: var(--line-strong); }
+.arch__body { min-width: 0; }
+.grp { margin-top: 3.4rem; }
+.grp:first-child { margin-top: 0; }
+.grp__h {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin: 0 0 0.2rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.grp__n {
+  margin-left: auto;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  color: var(--text-dim);
+}
+.card {
+  padding: 2.1rem 0 2.4rem;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: calc(var(--nav-h, 72px) + 1.5rem);
+}
+.card:first-of-type { border-top: 0; }
+.card__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+.card__no {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: var(--caramel);
+}
+.card__name {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.6vw, 1.7rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.card__tag {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-ui, system-ui);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  color: var(--honey);
+}
+.card__fields {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+}
+.fld {
+  display: grid;
+  grid-template-columns: 4.4rem minmax(0, 1fr);
+  gap: 1rem;
+}
+.fld__k {
+  padding-top: 0.42em;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+}
+.fld__v {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.98;
+  letter-spacing: 0.02em;
+  color: var(--text-soft);
+}
+.fld:first-child .fld__v { color: var(--text); }
+.card__tight {
+  margin: 1.3rem 0 0;
+  font-size: 0.95rem;
+  line-height: 2;
+  color: var(--text-soft);
+}
+@media (max-width: 899px) {
+  .arch__wrap { grid-template-columns: 1fr; gap: 1.4rem; margin-top: 2.2rem; }
+  .arch__rail {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 1rem;
+    padding: 0.9rem 0 1rem;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .rail__g { width: 100%; margin: 0.35rem 0 0.15rem; }
+  .rail__a { padding: 0.1rem 0; border-left: 0; }
+  .grp { margin-top: 2.4rem; }
+  .fld { grid-template-columns: 3.5rem minmax(0, 1fr); gap: 0.75rem; }
+  .fld__k { font-size: 0.66rem; }
+  .fld__v { font-size: 0.92rem; line-height: 1.95; }
+}
+</style>
+</head>
+<body class="page-sheet">
+
+  <a class="skip" href="#main">跳到正文</a>
+<div class="bg" aria-hidden="true">
+    <div class="bg__nebula"></div>
+    <div class="bg__floor"></div>
+    <div class="bg__lantern"></div>
+    <div class="bg__grain"></div>
+    <div class="bg__vignette"></div>
+  </div>
+  <div class="frame" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="主导航">
+    <a class="nav__back" href="/" aria-label="返回上一页"><span aria-hidden="true">←</span><em>返回</em></a>
+    <a class="nav__brand" href="/">CANDIED RUIN<em>糖渍旧蜜</em></a>
+    <span class="nav__spacer"></span><span class="nav__links">
+    <a class="nav__link" href="/novel/">小说</a>
+    <a class="nav__link is-current" href="/archive/" aria-current="page">人物档案</a>
+    <a class="nav__link" href="/game/">游戏<i class="nav__tag">开发中</i></a>
+    <a class="nav__link" href="/map/">世界地图<i class="nav__tag">开发中</i></a></span>
+  </nav>
+
+  <main id="main" class="page">
+    <div class="page__inner">
+      <p class="page__kicker rise" style="--i:0">ARCHIVE</p>
+      <h1 class="page__title rise" style="--i:1">人物档案</h1>
+      <p class="page__lede rise" style="--i:2">12 位登场人物。在这个世界里，一个人怎么对待糖，就等于他是什么人。</p>
+
+      <div class="arch__wrap">
+        <nav class="arch__rail" aria-label="人物索引">
+    <p class="rail__g">主角团</p>
+      <a class="rail__a" href="#c1">琉玥</a>
+      <a class="rail__a" href="#c2">薇尔</a>
+      <a class="rail__a" href="#c3">芙兰</a>
+    <p class="rail__g">旧蜜街区（常驻）</p>
+      <a class="rail__a" href="#c4">玛尔塔</a>
+      <a class="rail__a" href="#c5">哈根</a>
+      <a class="rail__a" href="#c6">皮普</a>
+      <a class="rail__a" href="#c7">莉娜</a>
+      <a class="rail__a" href="#c8">塞德里克（老塞）</a>
+    <p class="rail__g">五大势力（有脸的人）</p>
+      <a class="rail__a" href="#c9">奥托·蓝姆</a>
+      <a class="rail__a" href="#c10">伊莎贝尔</a>
+      <a class="rail__a" href="#c11">卡尔·冯·德雷</a>
+      <a class="rail__a" href="#c12">维奥拉·佩奇</a>
+        </nav>
+
+        <div class="arch__body">
+  <section class="grp" aria-labelledby="g1">
+    <h2 class="grp__h" id="g1">主角团<span class="grp__n">3 人</span></h2>
+
+    <article class="card" id="c1">
+      <header class="card__head">
+        <span class="card__no">01</span>
+        <h3 class="card__name">琉玥</h3>
+      </header>
+      <p class="card__tag">把味道翻译成话的人</p>
+      <div class="card__fields">
+        <div class="fld"><span class="fld__k">种族/年龄</span><p class="fld__v">人类少女，17 岁</p></div>
+        <div class="fld"><span class="fld__k">身份</span><p class="fld__v">帕芙利亚糖蜜鉴评所见习品糖师，受雇商队为糖蜜定级</p></div>
+        <div class="fld"><span class="fld__k">愿望</span><p class="fld__v">弄清一种只在走私商队之间流通、来历不明的粗糖</p></div>
+        <div class="fld"><span class="fld__k">外貌</span><p class="fld__v">浅金色长发及腰，发尾编成三股细辫，辫梢用一小段旧银丝缠住；暗银发簪松松挽住左侧一缕，随时会滑下来一点。刘海齐眉，发丝细软。淡青色眼眸，像未凝住的琉璃糖浆透光，眼尾微微上挑，看人时带着品鉴的从容。肤色白皙，但指尖有一点常年浸糖的淡黄；右手手背一道极浅的烫痕。耳垂无孔——品糖师不戴耳饰。身上是极淡的皂角味：她一天洗三次手。</p></div>
+        <div class="fld"><span class="fld__k">装束</span><p class="fld__v">浅蜜色长袍及小腿，料子轻薄到对着光能看见经纬；袖口收窄到手腕以上，袖里衬白。袍摆和前襟有零星琥珀色糖渍，洗过，印子留着。左胸内侧有个贴身小袋，装三枚试味用的干麦粒。腰系两道细银链：一道挂扁银盒（内装三支细长银匙、一块细麻布），一道什么也不挂。颈上无饰。软底浅口布鞋，鞋面干净、鞋底很薄——她要听自己的脚步。另有一件灰蓝短斗篷，只在路上穿。</p></div>
+        <div class="fld"><span class="fld__k">背景</span><p class="fld__v">出身帕芙利亚中层糖商家庭，六岁起每天尝三十种糖浆，十二岁能盲辨产地；家里把她送进鉴评所，是希望她"评得准"，不是"尝得多"。</p></div>
+        <div class="fld"><span class="fld__k">性格</span><p class="fld__v">安静、专注，说话不紧不慢；品糖时不允许任何人出声；尝到有趣的味道会追问来源；偶尔促狭——故意说"这糖没什么特别"，看芙兰炸毛。</p></div>
+        <div class="fld"><span class="fld__k">重要关系</span><p class="fld__v">芙兰（她的舌头让她意外）、薇尔（起初互相看不顺眼，因为一个不守规矩、一个不表态规矩）。</p></div>
+        <div class="fld"><span class="fld__k">与糖的关系</span><p class="fld__v">她能"读"出一杯糖的结构，能在一杯混合糖浆里说出每一味材料的产地；但她不会做糖，也不会打架。</p></div>
+        <div class="fld"><span class="fld__k">剧情功能</span><p class="fld__v">把读者闻不到的味道翻译成人话；芙兰味觉的备份；卷四献出味觉的人。</p></div>
+        <div class="fld"><span class="fld__k">口癖</span><p class="fld__v">「这糖没什么特别。」（她说这句的时候，通常是在夸）</p></div>
+      </div>
+    </article>
+
+    <article class="card" id="c2">
+      <header class="card__head">
+        <span class="card__no">02</span>
+        <h3 class="card__name">薇尔</h3>
+      </header>
+      <p class="card__tag">只凭规则说话的人</p>
+      <div class="card__fields">
+        <div class="fld"><span class="fld__k">种族/年龄</span><p class="fld__v">人类少女，16 岁</p></div>
+        <div class="fld"><span class="fld__k">身份</span><p class="fld__v">旧蜜街区商队账务学徒，记糖蜜等级与出入账目</p></div>
+        <div class="fld"><span class="fld__k">愿望</span><p class="fld__v">成为"不被眼力和人情左右、只凭规则说话"的人</p></div>
+        <div class="fld"><span class="fld__k">外貌</span><p class="fld__v">深棕色长发及背，高马尾束得一丝不乱，发绳是两道深绿棉线；额前碎发别在耳后。眉直、唇薄。灰蓝色眼眸，眼神认真到近乎固执；鼻梁左侧有一颗小痣。常年伏案，右手中指第一关节有笔茧；指甲剪得极短。身上是墨水和帆布的味道。</p></div>
+        <div class="fld"><span class="fld__k">装束</span><p class="fld__v">深蓝短上衣，领口扣到第二颗，袖口整齐卷起两道（两道一样宽）；同色长裤，裤脚塞进靴里。深绿帆布工具包斜挂腰侧，包盖内侧缝三个小袋：五格成色标样木片、一把折叠秤、一本硬皮手册。黑靴，鞋带系规矩的双结。胸口别一枚磨损的铜徽章，边缘已磨圆。左手腕缠一圈旧布——写字磨的。</p></div>
+        <div class="fld"><span class="fld__k">背景</span><p class="fld__v">没落糖农家庭出身。见过自家最好的糖蜜被压到最低价，也见过"凭眼力定级"毁掉一户人家，所以决心只凭规则说话；拼命识字学记账，才进商队做学徒。</p></div>
+        <div class="fld"><span class="fld__k">性格</span><p class="fld__v">认真、严肃、认死理；习惯先把规矩讲清楚再动手；别人开玩笑会当真，不发火，只皱眉纠正；随身带小册子记下别人的喜好和雷区，怕气氛崩掉。</p></div>
+        <div class="fld"><span class="fld__k">重要关系</span><p class="fld__v">芙兰（不守规矩）、琉玥（不表态规矩）、两人都被她默默划进"必须保护清单"。</p></div>
+        <div class="fld"><span class="fld__k">与糖的关系</span><p class="fld__v">她不尝糖，她<strong>记糖</strong>——每一桶糖的成色、批号、去路。</p></div>
+        <div class="fld"><span class="fld__k">剧情功能</span><p class="fld__v">制度的脸；卷一第 5 章假账的执笔人；卷三挡刀；卷四以触觉与听声代替双眼。</p></div>
+        <div class="fld"><span class="fld__k">口癖</span><p class="fld__v">「规矩是——」（后面一定跟一条具体规矩）</p></div>
+      </div>
+    </article>
+
+    <article class="card" id="c3">
+      <header class="card__head">
+        <span class="card__no">03</span>
+        <h3 class="card__name">芙兰</h3>
+      </header>
+      <p class="card__tag">一条舌头，替整条街对账</p>
+      <p class="card__tight">猫族少女 16 岁，试糖人。黑短发发梢挑染蜜色，琥珀竖瞳，左耳猫牙耳坠，银白猫耳与尾巴、耳尖蜜斑，尾巴蓬松卷曲。米白棉麻短袖衬衫，蜜糖色旧皮质短马甲（旧铜扣、肩线缝补、胸口贴袋装糖晶屑），深棕宽皮带（挂牛皮小袋、铜制小勺、两支蜡封玻璃管、旧折叠小刀），深褐三层短裙（裙摆方形补丁），黑色过膝袜（袜口一道蜜色条纹），棕色系带短靴（鞋头磨损）。颈上细麻绳坠一颗包着干糖壳的琥珀石。要强爱面子、嘴硬心软；被戳穿时耳朵会动、竖尾巴装凶。愿望：攒够 34 枚铜币买橱窗第三格那颗「整块」。</p>
+    </article>
+  </section>
+
+  <section class="grp" aria-labelledby="g2">
+    <h2 class="grp__h" id="g2">旧蜜街区（常驻）<span class="grp__n">5 人</span></h2>
+
+    <article class="card" id="c4">
+      <header class="card__head">
+        <span class="card__no">04</span>
+        <h3 class="card__name">玛尔塔</h3>
+      </header>
+      <p class="card__tag">卖糖的人自己不吃糖</p>
+      <div class="card__fields">
+        <div class="fld"><span class="fld__k">种族/年龄</span><p class="fld__v">人类，60 岁</p></div>
+        <div class="fld"><span class="fld__k">身份</span><p class="fld__v">糖铺老板娘</p></div>
+        <div class="fld"><span class="fld__k">愿望</span><p class="fld__v">把铺子传给孙女（孙女才四岁）</p></div>
+        <div class="fld"><span class="fld__k">外貌</span><p class="fld__v">银灰头发盘成低髻，用两根黑木簪别住；额头三道深纹；眼皮松，眼睛却很亮。手背青筋凸起、指节粗大，左手小指少一节——年轻时熬糖烫掉的。围裙上有一层几十年洗不掉的糖渍，硬得像壳。身上永远是焦糖和烟的味道。</p></div>
+        <div class="fld"><span class="fld__k">装束</span><p class="fld__v">深褐粗布长裙，外罩围裙；围裙口袋插一把木勺、一把铜刮刀；袖套到肘；旧蓝布头巾；男式旧皮鞋，走路没有声音。</p></div>
+        <div class="fld"><span class="fld__k">背景</span><p class="fld__v">三十年前从西边嫁过来，男人死得早，一个人把铺子撑成街口那家。</p></div>
+        <div class="fld"><span class="fld__k">性格</span><p class="fld__v">笑面生意人，嘴上刻薄，心里有秤；会压价，但整条街只有她肯赊账给芙兰；记账从不用本子。</p></div>
+        <div class="fld"><span class="fld__k">重要关系</span><p class="fld__v">芙兰（半个雇主半个长辈）、哈根（压他价，也是唯一肯再收他货的人）。</p></div>
+        <div class="fld"><span class="fld__k">与糖的关系</span><p class="fld__v">卖糖的人自己不吃糖——年轻时吃伤了。</p></div>
+        <div class="fld"><span class="fld__k">剧情功能</span><p class="fld__v">第一章的刀；让读者第一次看见"一句评语会变成刀"。</p></div>
+      </div>
+    </article>
+
+    <article class="card" id="c5">
+      <header class="card__head">
+        <span class="card__no">05</span>
+        <h3 class="card__name">哈根</h3>
+      </header>
+      <p class="card__tag">明年我还来</p>
+      <div class="card__fields">
+        <div class="fld"><span class="fld__k">种族/年龄</span><p class="fld__v">人类，43 岁</p></div>
+        <div class="fld"><span class="fld__k">身份</span><p class="fld__v">西边山坳里的糖农</p></div>
+        <div class="fld"><span class="fld__k">愿望</span><p class="fld__v">明年还能把糖送到这条街</p></div>
+        <div class="fld"><span class="fld__k">外貌</span><p class="fld__v">脸被糖雾熏成黄褐色，颧骨高、眼窝深；胡茬三天一刮；手大、指关节粗，指甲缝里嵌着洗不掉的糖垢；左小臂一道旧疤（熬糖锅倒过）；背有点驼，是常年挑担挑出来的。</p></div>
+        <div class="fld"><span class="fld__k">装束</span><p class="fld__v">灰粗布短褂，袖口磨破又缝过，左袖一块方形补丁（同色布、针脚很密）；深色长裤，裤脚用麻绳扎住；担子两头麻绳打得整整齐齐，一头挂木桶、一头挂秤；腰间别一把小刀。</p></div>
+        <div class="fld"><span class="fld__k">背景</span><p class="fld__v">一家六口，今年雨水少，糖蜜熬得稠、收早了一天。</p></div>
+        <div class="fld"><span class="fld__k">性格</span><p class="fld__v">寡言；不吵不闹；被压价只说"收早了一天"；走时留一句"明年我还来"。</p></div>
+        <div class="fld"><span class="fld__k">重要关系</span><p class="fld__v">玛尔塔（他的买家）、芙兰（给他的糖定级的人）。</p></div>
+        <div class="fld"><span class="fld__k">与糖的关系</span><p class="fld__v">他的糖是他一整年。</p></div>
+        <div class="fld"><span class="fld__k">剧情功能</span><p class="fld__v">全书的道德压力源；卷一第 5 章三人为他做假账，就是他埋的因。</p></div>
+      </div>
+    </article>
+
+    <article class="card" id="c6">
+      <header class="card__head">
+        <span class="card__no">06</span>
+        <h3 class="card__name">皮普</h3>
+      </header>
+      <p class="card__tag">什么糖都能卖出去</p>
+      <div class="card__fields">
+        <div class="fld"><span class="fld__k">种族/年龄</span><p class="fld__v">人类，12 岁</p></div>
+        <div class="fld"><span class="fld__k">身份</span><p class="fld__v">街头小贩</p></div>
+        <div class="fld"><span class="fld__k">愿望</span><p class="fld__v">当冒险者（他还不知道冒险者要下地下城）</p></div>
+        <div class="fld"><span class="fld__k">外貌</span><p class="fld__v">乱蓬蓬的栗色卷发，后脑有一撮永远压不下去；雀斑撒到鼻梁；门牙缺一颗（去年摔的）；眼睛圆、转得快；瘦，胳膊细，膝盖上总有新伤。</p></div>
+        <div class="fld"><span class="fld__k">装束</span><p class="fld__v">大两号的白衬衫（他哥的），下摆系在腰间；短裤；赤脚或一双太大的草鞋；腰上挂个小铜铃招客；口袋里常备三颗糖、一段绳、一个哨子。</p></div>
+        <div class="fld"><span class="fld__k">背景</span><p class="fld__v">码头搬运工的儿子，五岁开始在市场跑腿。</p></div>
+        <div class="fld"><span class="fld__k">性格</span><p class="fld__v">话多、机灵、爱学大人腔调；被瞪就嬉皮笑脸；其实很怕被人赶走。</p></div>
+        <div class="fld"><span class="fld__k">重要关系</span><p class="fld__v">芙兰（他崇拜她"一条舌头值五枚"）、老塞（唯一肯听他吹牛的人）。</p></div>
+        <div class="fld"><span class="fld__k">与糖的关系</span><p class="fld__v">什么糖都能卖出去，包括不该卖的那种。</p></div>
+        <div class="fld"><span class="fld__k">剧情功能</span><p class="fld__v">信息贩子 + 喜剧节拍；卷二第 9 章码头时间是他给的。</p></div>
+      </div>
+    </article>
+
+    <article class="card" id="c7">
+      <header class="card__head">
+        <span class="card__no">07</span>
+        <h3 class="card__name">莉娜</h3>
+      </header>
+      <p class="card__tag">她盖过章的糖，必须合格</p>
+      <div class="card__fields">
+        <div class="fld"><span class="fld__k">种族/年龄</span><p class="fld__v">人类，24 岁</p></div>
+        <div class="fld"><span class="fld__k">身份</span><p class="fld__v">蜜契行会旧蜜分部受付</p></div>
+        <div class="fld"><span class="fld__k">愿望</span><p class="fld__v">调去中枢城帕尔</p></div>
+        <div class="fld"><span class="fld__k">外貌</span><p class="fld__v">棕色头发低马尾，用黑色发网罩住；圆脸，眼角一颗小痣；眼睛不大但很亮；嘴唇薄；右手食指侧面有常年盖章磨出的硬皮。</p></div>
+        <div class="fld"><span class="fld__k">装束</span><p class="fld__v">行会深绿制服，领口别铜牌（编号 0417）；袖口三道金线纹；腰间挂一串钥匙和一枚木章（她自己的章，从不离身）；裙到小腿，黑袜黑鞋。</p></div>
+        <div class="fld"><span class="fld__k">背景</span><p class="fld__v">在行会干了六年，登记、盖章、归档，从没出过错。</p></div>
+        <div class="fld"><span class="fld__k">性格</span><p class="fld__v">程序化，把人话重复一遍再办事；不笑的时候像在生气，其实只是专注；下班后在酒馆里话最多。</p></div>
+        <div class="fld"><span class="fld__k">重要关系</span><p class="fld__v">芙兰（登记过她三次）、薇尔（两人对账对得快）。</p></div>
+        <div class="fld"><span class="fld__k">与糖的关系</span><p class="fld__v">她盖过章的糖必须"合格"。</p></div>
+        <div class="fld"><span class="fld__k">剧情功能</span><p class="fld__v">制度的脸；粗糖的章就是她盖的——她并不知情。</p></div>
+      </div>
+    </article>
+
+    <article class="card" id="c8">
+      <header class="card__head">
+        <span class="card__no">08</span>
+        <h3 class="card__name">塞德里克（老塞）</h3>
+      </header>
+      <p class="card__tag">他尝不出甜，但摸得出</p>
+      <div class="card__fields">
+        <div class="fld"><span class="fld__k">种族/年龄</span><p class="fld__v">人类，68 岁（外观看）</p></div>
+        <div class="fld"><span class="fld__k">身份</span><p class="fld__v">老水手（真身：旧蜜守密人）</p></div>
+        <div class="fld"><span class="fld__k">愿望</span><p class="fld__v">再见一次海滩上那朵白花</p></div>
+        <div class="fld"><span class="fld__k">外貌</span><p class="fld__v">白发剪得很短，像盐撒在头上；脸晒成皮革，皱纹深而直；左眼比右眼小一点（旧伤）；左手少两根手指（无名指与小指），断口圆滑；身上有海盐、旧麻绳和极淡的糖味；坐姿很直——船上坐惯了。</p></div>
+        <div class="fld"><span class="fld__k">装束</span><p class="fld__v">灰蓝旧水手短外套，铜扣只剩三颗；粗布裤，裤脚挽起；宽皮带上挂一个小布袋，里面装着几颗干硬的糖，从不吃；磨平底的旧靴。</p></div>
+        <div class="fld"><span class="fld__k">背景</span><p class="fld__v">跑船四十年，据说去过海的另一边；没人知道他是哪年来的旧蜜。</p></div>
+        <div class="fld"><span class="fld__k">性格</span><p class="fld__v">爱给东西起名字（芙兰的名字就是他起的），说话半真半假；逗小孩比谁都厉害；一个人坐很久也不嫌闷。</p></div>
+        <div class="fld"><span class="fld__k">重要关系</span><p class="fld__v">芙兰（他起的名字）、皮普（唯一肯听他吹牛）、守密人一脉。</p></div>
+        <div class="fld"><span class="fld__k">与糖的关系</span><p class="fld__v">他尝不出甜，但摸得出——他的手比谁都准。</p></div>
+        <div class="fld"><span class="fld__k">剧情功能</span><p class="fld__v">卷三第 30 章揭示真身；"海滩上一朵白花"是旧蜜的记号。</p></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="grp" aria-labelledby="g3">
+    <h2 class="grp__h" id="g3">五大势力（有脸的人）<span class="grp__n">4 人</span></h2>
+
+    <article class="card" id="c9">
+      <header class="card__head">
+        <span class="card__no">09</span>
+        <h3 class="card__name">奥托·蓝姆</h3>
+      </header>
+      <p class="card__tag">你这样的舌头，死一个少一个</p>
+      <div class="card__fields">
+        <div class="fld"><span class="fld__k">种族/年龄</span><p class="fld__v">人类，44 岁</p></div>
+        <div class="fld"><span class="fld__k">身份</span><p class="fld__v">浮泡商盟旧蜜分部管事</p></div>
+        <div class="fld"><span class="fld__k">愿望</span><p class="fld__v">再尝一次甜（他自己不承认）</p></div>
+        <div class="fld"><span class="fld__k">外貌</span><p class="fld__v">黑发向后梳、一丝不乱，鬓角已灰；额头高、颧骨薄；眼睛细长，笑起来眼尾有纹、眼睛却不动；指甲修得极干净；右手无名指戴一枚素银戒，内侧刻着一颗糖的形状——试糖人的戒；右手中指指尖一层极薄的旧疤（烫的）。</p></div>
+        <div class="fld"><span class="fld__k">装束</span><p class="fld__v">深灰长外套，剪裁极好、没有一处装饰；内衬高领白衬衫，扣子扣到最上；黑裤黑靴；口袋里只有一块手帕和一枚铜币（他每天只带一枚）。</p></div>
+        <div class="fld"><span class="fld__k">背景</span><p class="fld__v">二十年前是旧蜜最好的试糖人之一；一场高烧之后味觉只剩三成，此后转做商盟，一路做到分部管事。</p></div>
+        <div class="fld"><span class="fld__k">性格</span><p class="fld__v">礼貌、耐心、记名字不记脸；对能尝出味道的人既羡慕又轻蔑；从不提高音量。</p></div>
+        <div class="fld"><span class="fld__k">重要关系</span><p class="fld__v">芙兰（他想要的那条舌头）、伊莎贝尔（互相看不起）、卡尔（生意伙伴）。</p></div>
+        <div class="fld"><span class="fld__k">与糖的关系</span><p class="fld__v">请人喝糖水，自己一口不喝。</p></div>
+        <div class="fld"><span class="fld__k">剧情功能</span><p class="fld__v">卷二反派；卷三末为把三人送出遗迹而死，遗言「我只是想再尝一次甜」，不洗白。</p></div>
+        <div class="fld"><span class="fld__k">口癖</span><p class="fld__v">「你这样的舌头，死一个少一个。」</p></div>
+      </div>
+    </article>
+
+    <article class="card" id="c10">
+      <header class="card__head">
+        <span class="card__no">10</span>
+        <h3 class="card__name">伊莎贝尔</h3>
+      </header>
+      <p class="card__tag">脏的东西，烧掉就干净了</p>
+      <div class="card__fields">
+        <div class="fld"><span class="fld__k">种族/年龄</span><p class="fld__v">人类，31 岁</p></div>
+        <div class="fld"><span class="fld__k">身份</span><p class="fld__v">圣蜜都"净化队"密使</p></div>
+        <div class="fld"><span class="fld__k">愿望</span><p class="fld__v">让世界没有"脏糖"</p></div>
+        <div class="fld"><span class="fld__k">外貌</span><p class="fld__v">黑发全部包在白色头巾里，一丝不露；灰眼、瞳色很浅，看人时像在看一件物品；皮肤极白，鼻梁高；嘴唇常年干裂；双手极干净，指缝里连一点灰都没有——她一天洗七次手。</p></div>
+        <div class="fld"><span class="fld__k">装束</span><p class="fld__v">白袍及踝，外披灰白旅行斗篷，斗篷内衬暗红（只有掀起来才看得见）；腰间一串白蜡珠，十二颗，对应十二次净化；白布鞋，鞋底沾了土就换。</p></div>
+        <div class="fld"><span class="fld__k">背景</span><p class="fld__v">她原本是那一代的<strong>尝女</strong>——每代一名，替全城先尝，不许说一句话。十四岁那年的净火节，她在火前喊出了一句不该喊的话（内容没人记得，只记得她喊了），当即被退回，改做密使。她说自己第一次觉得干净，是那天烧掉的第一批糖。</p></div>
+        <div class="fld"><span class="fld__k">性格</span><p class="fld__v">温和而绝对；说话很轻，从不生气；真心认为自己在救人。</p></div>
+        <div class="fld"><span class="fld__k">重要关系</span><p class="fld__v">奥托（互相看不起）、芙兰（她要毁的那条舌头）。</p></div>
+        <div class="fld"><span class="fld__k">与糖的关系</span><p class="fld__v">烧糖的时候念祷词。</p></div>
+        <div class="fld"><span class="fld__k">剧情功能</span><p class="fld__v">把"净化"写成恐怖——她烧掉的不是糖，是人。</p></div>
+        <div class="fld"><span class="fld__k">口癖</span><p class="fld__v">「脏的东西，烧掉就干净了。」</p></div>
+      </div>
+    </article>
+
+    <article class="card" id="c11">
+      <header class="card__head">
+        <span class="card__no">11</span>
+        <h3 class="card__name">卡尔·冯·德雷</h3>
+      </header>
+      <p class="card__tag">标本不会说谎</p>
+      <div class="card__fields">
+        <div class="fld"><span class="fld__k">种族/年龄</span><p class="fld__v">人类，38 岁</p></div>
+        <div class="fld"><span class="fld__k">身份</span><p class="fld__v">瓦拉罗帝国勘探队长</p></div>
+        <div class="fld"><span class="fld__k">愿望</span><p class="fld__v">把巨神体内的糖化器官带回帝国</p></div>
+        <div class="fld"><span class="fld__k">外貌</span><p class="fld__v">金发向后梳，发际线已退；短须修得整齐；蓝灰色眼睛，看东西时习惯眯一下（近视，不戴镜）；脸上有一道从眉骨到颧骨的旧疤；手很稳，指腹有画图磨出来的茧。</p></div>
+        <div class="fld"><span class="fld__k">装束</span><p class="fld__v">瓦拉罗军式深蓝短外套，肩章只剩一边；内衬灰毛衣；腰挂皮制标本袋，插三支玻璃管和一把小刀；高筒靴；另背一只木制画箱。</p></div>
+        <div class="fld"><span class="fld__k">背景</span><p class="fld__v">帝国矿业学院出身，三年前转做"生物勘探"；他写过一本没人读的小册子，叫《论活体矿脉》。</p></div>
+        <div class="fld"><span class="fld__k">性格</span><p class="fld__v">工程师式冷静；不残忍，只是不在意；把巨神当矿脉、把人体当样本。</p></div>
+        <div class="fld"><span class="fld__k">重要关系</span><p class="fld__v">奥托（生意伙伴）、伊莎贝尔（互不干涉）。</p></div>
+        <div class="fld"><span class="fld__k">与糖的关系</span><p class="fld__v">他把糖化器官当矿。</p></div>
+        <div class="fld"><span class="fld__k">剧情功能</span><p class="fld__v">技术掠夺的脸；卷三直奔糖化器官。</p></div>
+        <div class="fld"><span class="fld__k">口癖</span><p class="fld__v">「标本不会说谎。」</p></div>
+      </div>
+    </article>
+
+    <article class="card" id="c12">
+      <header class="card__head">
+        <span class="card__no">12</span>
+        <h3 class="card__name">维奥拉·佩奇</h3>
+      </header>
+      <p class="card__tag">消息是免费的，但代价不是</p>
+      <div class="card__fields">
+        <div class="fld"><span class="fld__k">种族/年龄</span><p class="fld__v">人类，26 岁</p></div>
+        <div class="fld"><span class="fld__k">身份</span><p class="fld__v">中枢城帕尔"探险协会"挂名干事（私下：替一个从不露面的人做记录）</p></div>
+        <div class="fld"><span class="fld__k">愿望</span><p class="fld__v">把这份差事做成一份能写进档案的功绩</p></div>
+        <div class="fld"><span class="fld__k">外貌</span><p class="fld__v">栗色卷发，用一根铅笔别住；雀斑比皮普淡；单片眼镜挂细金链，看人时用中指推一下；嘴唇总抿着，笑起来只动一边；右手食指常年有墨渍。</p></div>
+        <div class="fld"><span class="fld__k">装束</span><p class="fld__v">帕尔协会藏青短外套，袖口一枚罗盘徽章；白衬衫，领口松开一颗；格子长裙；手臂夹一只账簿夹，里面夹着所有人都不该看到的名单。</p></div>
+        <div class="fld"><span class="fld__k">背景</span><p class="fld__v">帕尔协会挂名干事，登记队伍、发布悬赏；私下替一个从不露面的人记录"所有关于旧蜜的糖"——她不知道那人叫什么，只知道要记什么。</p></div>
+        <div class="fld"><span class="fld__k">性格</span><p class="fld__v">官方腔、客气、从不承诺；问什么答什么，答的都不是关键；对"味道"有种奇怪的执着。</p></div>
+        <div class="fld"><span class="fld__k">重要关系</span><p class="fld__v">三人组（情报源）、老塞（她的雇主，但她不知道他是谁）。</p></div>
+        <div class="fld"><span class="fld__k">与糖的关系</span><p class="fld__v">她不收钱，只收"你尝到了什么"。</p></div>
+        <div class="fld"><span class="fld__k">剧情功能</span><p class="fld__v">中立情报商；卷二递地图一角；卷三揭第一层身份，卷四揭第二层。</p></div>
+        <div class="fld"><span class="fld__k">口癖</span><p class="fld__v">「消息是免费的，但代价不是。」</p></div>
+      </div>
+    </article>
+  </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <span class="foot__name">CANDIED RUIN</span>
+    <span class="foot__spacer"></span>
+    <a href="/">返回首页</a>
+  </footer>
+
+  <script src="/new/assets/nav-back.js?v=20261028l" defer></script>
+</body>
+</html>

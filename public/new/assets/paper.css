@@ -1,0 +1,181 @@
+/* ============================================================
+   paper.css — 浅色纸感主题（内页覆盖层）
+   用途：在 site.css 之后加载，把「暗紫夜空」换成「米白纸面」，
+        让目录 / 档案 / 游戏 / 地图 与新首页（城市插画 hero）同一套气质。
+   依赖：/new/assets/site.css（必须先加载，这里是纯覆盖）
+   修改：色值集中在最下面的 token 覆盖；组件级覆盖按注释排列。
+   注意：阅读层（.reader-view）保持深色，内部重新声明了 token，
+        所以浅色主题不会把它洗白。
+   ============================================================ */
+
+/* ---------- 1. 令牌：深色 → 纸色 ---------- */
+:root {
+  --ink-0: #f6f1e7;
+  --ink-1: #efe7d8;
+  --ink-2: #e9dfcc;
+
+  --gold: #b0793a;
+  --honey: #8a5a22;
+  --caramel: #96602a;
+  --ember: #6d3f14;
+
+  --text: #241e1a;
+  --text-soft: #4a4038;
+  --text-dim: #6f6455;
+  --line: rgba(36, 30, 26, 0.14);
+  --line-strong: rgba(36, 30, 26, 0.30);
+
+  color-scheme: light;
+}
+
+body {
+  background:
+    radial-gradient(120% 90% at 50% -10%, #fbf7ef 0%, var(--ink-0) 46%, var(--ink-1) 100%);
+  color: var(--text);
+}
+
+/* 底色层：暗紫渐变的真身在这里（.bg 里写死了三个深色径向） */
+.bg {
+  background:
+    radial-gradient(120% 92% at 50% -12%, #fdfaf3 0%, #f7f2e8 52%, #efe7d8 100%);
+}
+
+/* ---------- 2. 背景层：夜空 → 干净纸面（除噪点外全部关掉） ---------- */
+.bg__art,
+.bg__wash,
+.bg__nebula,
+.bg__lantern,
+.bg__floor,
+.bg__vignette { display: none; }
+
+.bg__nebula {
+  background:
+    radial-gradient(30% 24% at 22% 24%, rgba(255, 200, 130, 0.10), transparent 70%),
+    radial-gradient(26% 20% at 66% 16%, rgba(150, 190, 220, 0.10), transparent 72%),
+    radial-gradient(36% 30% at 78% 64%, rgba(200, 175, 130, 0.08), transparent 74%);
+  filter: blur(10px);
+}
+
+.bg__grain { opacity: 0.028; }
+
+.bg__vignette {
+  background: radial-gradient(120% 92% at 50% 42%, transparent 58%, rgba(120, 98, 66, 0.10) 100%);
+}
+
+.bg__lantern {
+  background: radial-gradient(circle,
+    rgba(232, 166, 90, 0.16) 0%,
+    rgba(232, 166, 90, 0.07) 34%,
+    transparent 68%);
+}
+
+.bg__floor {
+  background: linear-gradient(to top, rgba(206, 190, 162, 0.55), rgba(206, 190, 162, 0));
+}
+
+/* 四角框：暗金刻痕 → 浅金刻痕 */
+.frame { border-color: rgba(120, 90, 55, 0.14); }
+.frame::before,
+.frame::after { border-color: rgba(176, 121, 58, 0.45); }
+
+/* ---------- 3. 顶栏：深色渐变 → 纸色渐变 ---------- */
+.nav {
+  background: rgba(250, 246, 238, 0.88);
+  border-bottom: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(10px) saturate(1.05);
+  backdrop-filter: blur(10px) saturate(1.05);
+}
+
+.nav__brand { color: var(--text); opacity: 0.92; }
+.nav__brand:hover { color: var(--honey); opacity: 1; }
+.nav__brand em { color: var(--text-dim); }
+
+.nav__link { color: var(--text-dim); }
+.nav__link:hover,
+.nav__link.is-current { color: var(--honey); }
+.nav__link::after {
+  background: linear-gradient(90deg, var(--honey), rgba(176, 121, 58, 0));
+}
+
+.nav__tag {
+  color: #8a5a22;
+  border-color: rgba(176, 121, 58, 0.42);
+}
+
+/* ---------- 4. 内页组件 ---------- */
+.page__kicker { color: var(--caramel); }
+
+.note {
+  background: rgba(176, 121, 58, 0.06);
+  border-left-color: rgba(176, 121, 58, 0.55);
+  color: var(--text-dim);
+}
+
+/* 按钮（内页偶尔用到）：纸面浮雕 */
+.btn {
+  color: var(--text);
+  background: linear-gradient(180deg, #fffdf8, #f1e8d6);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 1px 0 #fff inset, 0 10px 24px -18px rgba(60, 40, 20, 0.55);
+}
+.btn:hover { border-color: var(--honey); }
+.btn--ghost { background: transparent; }
+
+/* ---------- 5. 阅读层的主题交给 site.css 的 .reader-view[data-theme] ----------
+   这里不再重声明 token，也不再写死背景，否则会盖掉 R2 的纸色/夜读切换。 */
+
+/* 阅读层里的标题点火仍用暖金 */
+.is-igniting { color: var(--honey); }
+
+
+/* ---------- 阅读层：紫夜 → 暖褐夜（与浅色主站同族） ---------- */
+
+/* ---------- 七、系统深色：内页跟随 OS 变暖褐夜（阅读层本来就有夜读，不受影响） ---------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #1a1512;
+    --paper-2: #241c17;
+    --ink: #efe7da;
+    --ink-2: #cfc4b5;
+    --text: #efe7da;
+    --text-soft: #cfc4b5;
+    --text-dim: #9a8e80;
+    --muted: #9a8e80;
+    --line: rgba(240, 231, 218, 0.13);
+    --line-strong: rgba(240, 231, 218, 0.26);
+    --honey: #e0a95a;
+    --amber: #e0a95a;
+  }
+  .bg { background: radial-gradient(120% 92% at 50% -12%, #221a15 0%, #1a1512 52%, #141010 100%); }
+  .nav { background: rgba(26, 21, 18, 0.88); }
+  .note { background: rgba(240, 231, 218, 0.06); }
+}
+
+/* ---------- 八、无障碍与手感细节 ---------- */
+/* 跳转链接：Tab 第一个落点 */
+.skip {
+  position: absolute; left: -9999px; top: 0; z-index: 99;
+  padding: 10px 16px; border-radius: 8px;
+  background: var(--paper); color: var(--ink);
+  border: 1px solid var(--line-strong);
+  font-family: var(--font-ui, system-ui); font-size: 0.84rem;
+}
+.skip:focus { left: 16px; top: 14px; }
+
+/* 全站统一焦点环（鼠标点击不出环，键盘才出） */
+:focus-visible {
+  outline: 2px solid var(--honey, #e0a95a);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* 选中文字：琥珀底深字，比默认蓝更合主题 */
+::selection { background: rgba(224, 169, 90, 0.34); color: var(--ink); }
+
+/* 滚动条（Chromium / Firefox 都收窄） */
+@supports (scrollbar-width: thin) {
+  html { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :focus-visible { outline-offset: 2px; }
+}

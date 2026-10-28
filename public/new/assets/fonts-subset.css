@@ -1,0 +1,31 @@
+/* Noto Serif SC · 子集
+   400 = GB2312 一级 3755 字 + 站点用字（共 3875 字），正文/内页全部用它
+   700 = 只含标题级用字（scripts/_head-chars.txt，485 字，84KB），书名与标题用它
+   旧的 600 字重（765KB）已删：它和 400 覆盖同一批字，却只用于标题，
+   等于"为了加粗几个字多下 765KB"；换 700 标题子集后首屏少下约 680KB。 */
+@font-face {
+  font-family: "Noto Serif SC";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("sub/noto-serif-sc-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Noto Serif SC";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("sub/noto-serif-sc-700-head.woff2") format("woff2");
+}
+
+/* 补字：GB2312 一级之外、站点专名会用到的 21 个字（薇 玥 痣 簪 髻 鬓 …），7KB。
+   与主 400 同 family 同 weight，只靠 unicode-range 分片：浏览器只在这些字上取这个文件。
+   生成：node scripts/fetch-extra-font.mjs（字表在 scripts/_extra-chars.txt） */
+@font-face {
+  font-family: "Noto Serif SC";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("sub/noto-serif-sc-400-extra.woff2") format("woff2");
+  unicode-range: U+54A7, U+55EF, U+5773, U+59CA, U+5B09, U+6123, U+63B0, U+6963, U+6A90, U+73A5, U+75C2, U+75E3, U+7656, U+7699, U+7738, U+7C2A, U+8587, U+8E1D, U+95E9, U+9AFB, U+9B13;
+}
