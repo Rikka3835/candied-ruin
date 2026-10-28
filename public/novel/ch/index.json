@@ -25,10 +25,24 @@
         "玛尔塔",
         "莉娜"
       ],
-      "chars": 2610,
+      "chars": 2711,
       "minutes": 6,
       "updated": "2026-10-28",
       "file": "ch/002.html"
+    },
+    {
+      "n": 3,
+      "vol": "第一卷 · 糖罐里的猫",
+      "title": "秤",
+      "subtitle": "",
+      "cast": [
+        "芙兰",
+        "琉玥"
+      ],
+      "chars": 2560,
+      "minutes": 6,
+      "updated": "2026-10-28",
+      "file": "ch/003.html"
     }
   ]
 }
