@@ -104,7 +104,7 @@ const html = `<!DOCTYPE html>
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/new/assets/fonts/sub/noto-serif-sc-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/new/assets/fonts-subset.css?v=20261029b">
-<link rel="stylesheet" href="/new/assets/site.css?v=20261028l">
+<link rel="stylesheet" href="/new/assets/site.css?v=20261029t">
 <link rel="stylesheet" href="/new/assets/paper.css?v=20261029u">
 <link rel="canonical" href="https://candied-ruin.pages.dev/archive/">
 <meta property="og:type" content="website">

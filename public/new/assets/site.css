@@ -801,7 +801,7 @@ body.is-reading { overflow: hidden; }
   transition: width 260ms var(--ease-out);
   width: calc(min(100% - 2 * clamp(18px, 8vw, 8vw), var(--rm) * var(--rs)) * var(--rmf, 1));
   margin: 0 auto;
-  padding: clamp(2rem, 6vh, 4rem) 0 clamp(6rem, 16vh, 10rem);
+  padding: clamp(2rem, 6vh, 4rem) 0 clamp(2.4rem, 6vh, 4rem);
 }
 .reader-view__kicker {
   font-family: var(--font-ui);
@@ -835,7 +835,7 @@ body.is-reading { overflow: hidden; }
 .reader-view__nav {
   display: flex;
   gap: 0.8rem;
-  margin-top: clamp(3rem, 8vh, 5rem);
+  margin-top: clamp(1.8rem, 4.5vh, 2.8rem);
   padding-top: 1.6rem;
   border-top: 1px solid var(--rv-line);
 }
