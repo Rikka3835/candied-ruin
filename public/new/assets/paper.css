@@ -179,3 +179,52 @@ body {
 @media (prefers-reduced-motion: reduce) {
   :focus-visible { outline-offset: 2px; }
 }
+
+/* ---------- 九、目录页分层（反馈：全是单一颜色和等线，区块不分明） ---------- */
+.vol { border-top: 0; }
+.vol__head {
+  padding: 0.95rem 1.1rem;
+  background: linear-gradient(180deg, rgba(255, 179, 71, 0.085), rgba(255, 179, 71, 0.032));
+  border-left: 2px solid rgba(176, 121, 58, 0.5);
+  border-radius: 2px;
+}
+.vol__note { margin-left: auto; }
+.chap-list { margin-top: 0.8rem; border-top: 0; }
+.chap {
+  padding: 0.95rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  border-radius: 2px;
+  transition: background 200ms var(--ease-out), padding-left 200ms var(--ease-out), color 200ms;
+}
+.chap:hover, .chap:focus-visible { background: rgba(255, 179, 71, 0.085); padding-left: 1.1rem; }
+@media (prefers-color-scheme: dark) {
+  .vol__head { background: linear-gradient(180deg, rgba(240, 231, 218, 0.075), rgba(240, 231, 218, 0.028)); }
+  .chap:hover, .chap:focus-visible { background: rgba(240, 231, 218, 0.07); }
+}
+
+/* ---------- 十、图鉴：读到第 N 章才解锁 ---------- */
+.gal__bar { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; margin: 1.7rem 0 0.2rem;
+  font-family: var(--font-ui); font-size: 0.7rem; letter-spacing: 0.2em; color: var(--text-dim); }
+.gal__count { color: var(--honey); letter-spacing: 0.14em; }
+.gal__spoiler { padding: 0.34rem 0.72rem; border: 1px solid var(--line-strong); border-radius: 3px;
+  background: transparent; color: var(--text-soft); cursor: pointer; font: inherit; letter-spacing: 0.14em; }
+.gal__spoiler[aria-pressed="true"] { background: rgba(255, 179, 71, 0.16); border-color: var(--honey); color: var(--text); }
+.card.is-locked {
+  display: flex; align-items: baseline; gap: 0.9rem 1.1rem; flex-wrap: wrap;
+  padding: 1.15rem 0; border: 0; border-top: 1px dashed var(--line-strong); background: none;
+}
+.card.is-locked .card__no { display: none; }
+.card.is-locked .card__name { color: var(--text-dim); letter-spacing: 0.3em; font-weight: 400; }
+.card.is-locked .card__tag, .card.is-locked .card__fields, .card.is-locked .card__tight { display: none; }
+.lock { display: flex; align-items: baseline; gap: 0.4rem 1.2rem; flex-wrap: wrap; flex: 1 1 auto; }
+.lock__h { font-size: 0.86rem; color: var(--text-dim); letter-spacing: 0.03em; }
+.lock__r { font-family: var(--font-ui); font-size: 0.64rem; letter-spacing: 0.18em; color: var(--honey); margin-left: auto; }
+@media (prefers-color-scheme: dark) {
+  .card.is-locked { background: rgba(240, 231, 218, 0.035); }
+  .gal__spoiler[aria-pressed="true"] { background: rgba(224, 169, 90, 0.2); }
+}
+.rail__a.is-locked { color: var(--line-strong); letter-spacing: 0.2em; pointer-events: none; }
+@media (max-width: 720px) {
+  .rail__a.is-locked { display: none; }
+}
+@media (max-width: 720px) { .arch__rail.is-empty { display: none; } }

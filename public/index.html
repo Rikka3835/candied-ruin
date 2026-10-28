@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>html{background:#f6f1e7}#boot{position:fixed;inset:0;z-index:999;display:grid;place-items:center;background:#f6f1e7;opacity:0;animation:bootIn .14s linear .36s forwards;pointer-events:none}#boot span{font:400 .78rem/1 "Helvetica Neue",Arial,sans-serif;letter-spacing:.5em;color:#a98a5e;transform:translateX(.25em)}@keyframes bootIn{to{opacity:1}}@media (prefers-color-scheme:dark){html{background:#1a1512}#boot{background:#1a1512}#boot span{color:#c9a06a}}@media (scripting:none){#boot{display:none}}</style>
+<script>addEventListener("DOMContentLoaded",function(){var b=document.getElementById("boot");if(!b)return;b.style.animation="none";b.style.opacity="0";setTimeout(function(){b&&b.remove()},180)});setTimeout(function(){var b=document.getElementById("boot");if(b)b.remove()},4000);</script>
 <title>糖渍旧蜜 · CANDIED RUIN</title>
 <meta name="description" content="世界是被熬出来的。整块只剩半颗，剩下的甜都埋在地下城最深处。异世界轻小说《糖渍旧蜜》官方网站。">
 <meta name="theme-color" content="#dceef7">
@@ -54,6 +56,7 @@
 </script>
 </head>
 <body>
+<div id="boot" aria-hidden="true"><span>CANDIED RUIN</span></div>
 <a class="skip" href="#main">跳到主内容</a>
 
 <!-- 一、首屏：整幅城市插画 + 书名 -->
@@ -120,7 +123,7 @@
     <a class="updates__item" href="/novel/#ch1">
       <span class="updates__no">第 1 章</span>
       <span class="updates__t">一口的价钱</span>
-      <span class="updates__d">2,752 字 · 7 分钟</span>
+      <span class="updates__d">2,753 字 · 7 分钟</span>
     </a>
     <!-- updates:end -->
   </section>

@@ -88,12 +88,14 @@ for (const file of files) {
     continue;
   }
   const title = meta['标题'] || `第 ${n} 章`;
+  const cast = (meta['出场'] || '').split(/[、,，]/).map((x) => x.trim()).filter(Boolean);
   const chars = countChars(body);
   chapters.push({
     n,
     vol: meta['卷'] || '未分卷',
     title,
     subtitle: meta['副标题'] || '',
+    cast,
     chars,
     minutes: Math.max(1, Math.round(chars / 420)),
     updated: fs.statSync(path.join(SRC, file)).mtime.toISOString().slice(0, 10),

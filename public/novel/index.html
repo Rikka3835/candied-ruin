@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>html{background:#f6f1e7}#boot{position:fixed;inset:0;z-index:999;display:grid;place-items:center;background:#f6f1e7;opacity:0;animation:bootIn .14s linear .36s forwards;pointer-events:none}#boot span{font:400 .78rem/1 "Helvetica Neue",Arial,sans-serif;letter-spacing:.5em;color:#a98a5e;transform:translateX(.25em)}@keyframes bootIn{to{opacity:1}}@media (prefers-color-scheme:dark){html{background:#1a1512}#boot{background:#1a1512}#boot span{color:#c9a06a}}@media (scripting:none){#boot{display:none}}</style>
+<script>addEventListener("DOMContentLoaded",function(){var b=document.getElementById("boot");if(!b)return;b.style.animation="none";b.style.opacity="0";setTimeout(function(){b&&b.remove()},180)});setTimeout(function(){var b=document.getElementById("boot");if(b)b.remove()},4000);</script>
 <title>小说 · 糖渍旧蜜 CANDIED RUIN</title>
 <meta name="description" content="《糖渍旧蜜》目录：先读前言《世界是怎么被熬出来的》，再从第一卷第一章开始。">
 <meta name="theme-color" content="#f6f1e7">
@@ -20,16 +22,18 @@
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/new/assets/fonts/sub/noto-serif-sc-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/new/assets/fonts-subset.css?v=20261029b">
-<link rel="stylesheet" href="/new/assets/site.css?v=20261028l">
-<link rel="stylesheet" href="/new/assets/paper.css?v=20261028l">
+<link rel="stylesheet" href="/new/assets/site.css?v=20261029s">
+<link rel="stylesheet" href="/new/assets/paper.css?v=20261029q">
 <link rel="canonical" href="https://candied-ruin.pages.dev/novel/">
 
 <style>
 /* 前言入口：目录顶部的独立一行，形态跟卷/章同一套纸面语言 */
-.pfe{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:30px 0 10px;padding:18px 2px 19px;
-  text-decoration:none;color:var(--text);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-  transition:border-color .2s ease,padding-left .2s ease}
-.pfe:hover{border-top-color:var(--line-strong);border-bottom-color:var(--line-strong);padding-left:10px}
+.pfe{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:30px 0 12px;padding:17px 18px 18px;
+  text-decoration:none;color:var(--text);border-left:2px solid rgba(176,121,58,.5);
+  background:rgba(255,179,71,.055);border-radius:2px;
+  transition:background .2s ease,padding-left .2s ease}
+.pfe:hover{background:rgba(255,179,71,.095);padding-left:26px}
+@media (prefers-color-scheme:dark){.pfe{background:rgba(240,231,218,.05)}.pfe:hover{background:rgba(240,231,218,.085)}}
 .pfe:focus-visible{outline:2px solid var(--honey);outline-offset:4px}
 .pfe__k{font-size:.72rem;letter-spacing:.32em;color:var(--honey)}
 .pfe__t{font-size:1.08rem;letter-spacing:.04em}
@@ -43,6 +47,7 @@
 </style>
 </head>
 <body class="page-sheet">
+<div id="boot" aria-hidden="true"><span>CANDIED RUIN</span></div>
 
   <a class="skip" href="#main">跳到正文</a>
 <div class="bg" aria-hidden="true">
@@ -87,11 +92,11 @@
         <div class="vol__head">
           <span class="vol__no">VOL. 01</span>
           <h2 class="vol__name" id="vol1">第一卷 · 糖罐里的猫</h2>
-          <span class="vol__note">1 章 · 共 2,752 字</span>
+          <span class="vol__note">1 章 · 共 2,753 字</span>
         </div>
 
         <div class="chap-list">
-          <button class="chap" type="button" data-ch="1"><span class="chap__no">第 1 章</span><span class="chap__name">一口的价钱</span><span class="chap__state">2,752 字 · 7 分钟</span></button>
+          <button class="chap" type="button" data-ch="1"><span class="chap__no">第 1 章</span><span class="chap__name">一口的价钱</span><span class="chap__state">2,753 字 · 7 分钟</span></button>
         </div>
         <!-- chapters:end -->
         </div>

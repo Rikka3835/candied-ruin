@@ -798,7 +798,8 @@ body.is-reading { overflow: hidden; }
 }
 
 .reader-view__sheet {
-  width: min(calc(100% - 2 * clamp(18px, 8vw, 8vw)), calc(var(--rm) * var(--rs)));
+  transition: width 260ms var(--ease-out);
+  width: calc(min(100% - 2 * clamp(18px, 8vw, 8vw), var(--rm) * var(--rs)) * var(--rmf, 1));
   margin: 0 auto;
   padding: clamp(2rem, 6vh, 4rem) 0 clamp(6rem, 16vh, 10rem);
 }

@@ -44,10 +44,11 @@ const cards = real.map((g, gi) => {
     n += 1;
     const id = 'c' + n;
     const tag = p.fields.find((f) => f[0] === '一句话');
-    const fields = p.fields.filter((f) => f[0] !== '一句话');
+    const hint = (p.fields.find((f) => f[0] === '剪影') || ['', ''])[1];
+    const fields = p.fields.filter((f) => f[0] === '剪影' ? false : f[0] !== '一句话');
     const rows = fields.map(([k, v]) => `        <div class="fld"><span class="fld__k">${esc(k)}</span><p class="fld__v">${inline(v)}</p></div>`).join('\n');
     const body = p.body.length ? `      <p class="card__tight">${inline(p.body.join(' '))}</p>\n` : '';
-    return `    <article class="card" id="${id}">
+    return `    <article class="card" id="${id}" data-name="${esc(p.name)}" data-hint="${esc(hint)}">
       <header class="card__head">
         <span class="card__no">${String(n).padStart(2, '0')}</span>
         <h3 class="card__name">${esc(p.name)}</h3>
@@ -82,7 +83,7 @@ const html = `<!DOCTYPE html>
 <link rel="preload" href="/new/assets/fonts/sub/noto-serif-sc-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/new/assets/fonts-subset.css?v=20261029b">
 <link rel="stylesheet" href="/new/assets/site.css?v=20261028l">
-<link rel="stylesheet" href="/new/assets/paper.css?v=20261028l">
+<link rel="stylesheet" href="/new/assets/paper.css?v=20261029t">
 <link rel="canonical" href="https://bubble-vanguard.pages.dev/archive/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="人物档案 · 糖渍旧蜜">
@@ -246,6 +247,7 @@ const html = `<!DOCTYPE html>
       <p class="page__kicker rise" style="--i:0">ARCHIVE</p>
       <h1 class="page__title rise" style="--i:1">人物档案</h1>
       <p class="page__lede rise" style="--i:2">${total} 位登场人物。在这个世界里，一个人怎么对待糖，就等于他是什么人。</p>
+      <div class="gal__bar rise" style="--i:2"><span>图鉴</span><span class="gal__count" id="galCount">已解锁 0 / 12</span><button type="button" class="gal__spoiler" id="galSpoiler" aria-pressed="false">剧透模式</button></div>
 
       <div class="arch__wrap">
         <nav class="arch__rail" aria-label="人物索引">
@@ -266,6 +268,7 @@ ${cards}
   </footer>
 
   <script src="/new/assets/nav-back.js?v=20261028l" defer></script>
+<script src="/new/assets/gallery.js?v=20261029a" defer></script>
 </body>
 </html>
 `;

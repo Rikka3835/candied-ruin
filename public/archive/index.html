@@ -13,13 +13,13 @@
 <link rel="preload" href="/new/assets/fonts/sub/noto-serif-sc-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/new/assets/fonts-subset.css?v=20261029b">
 <link rel="stylesheet" href="/new/assets/site.css?v=20261028l">
-<link rel="stylesheet" href="/new/assets/paper.css?v=20261028l">
-<link rel="canonical" href="https://candied-ruin.pages.dev/archive/">
+<link rel="stylesheet" href="/new/assets/paper.css?v=20261029t">
+<link rel="canonical" href="https://bubble-vanguard.pages.dev/archive/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="人物档案 · 糖渍旧蜜">
 <meta property="og:description" content="12 位登场人物的完整设定：外貌、装束、背景、性格、口癖，以及每个人与糖的关系。">
-<meta property="og:url" content="https://candied-ruin.pages.dev/archive/">
-<meta property="og:image" content="https://candied-ruin.pages.dev/assets/brand/og-new.jpg">
+<meta property="og:url" content="https://bubble-vanguard.pages.dev/archive/">
+<meta property="og:image" content="https://bubble-vanguard.pages.dev/assets/brand/og-new.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <style>
 .arch__wrap {
@@ -177,6 +177,7 @@
       <p class="page__kicker rise" style="--i:0">ARCHIVE</p>
       <h1 class="page__title rise" style="--i:1">人物档案</h1>
       <p class="page__lede rise" style="--i:2">12 位登场人物。在这个世界里，一个人怎么对待糖，就等于他是什么人。</p>
+      <div class="gal__bar rise" style="--i:2"><span>图鉴</span><span class="gal__count" id="galCount">已解锁 0 / 12</span><button type="button" class="gal__spoiler" id="galSpoiler" aria-pressed="false">剧透模式</button></div>
 
       <div class="arch__wrap">
         <nav class="arch__rail" aria-label="人物索引">
@@ -201,7 +202,7 @@
   <section class="grp" aria-labelledby="g1">
     <h2 class="grp__h" id="g1">主角团<span class="grp__n">3 人</span></h2>
 
-    <article class="card" id="c1">
+    <article class="card" id="c1" data-name="琉玥" data-hint="能把一杯糖浆里的每一味都尝出来。">
       <header class="card__head">
         <span class="card__no">01</span>
         <h3 class="card__name">琉玥</h3>
@@ -222,7 +223,7 @@
       </div>
     </article>
 
-    <article class="card" id="c2">
+    <article class="card" id="c2" data-name="薇尔" data-hint="账本比秤还准。">
       <header class="card__head">
         <span class="card__no">02</span>
         <h3 class="card__name">薇尔</h3>
@@ -243,7 +244,7 @@
       </div>
     </article>
 
-    <article class="card" id="c3">
+    <article class="card" id="c3" data-name="芙兰" data-hint="一条舌头，值五枚铜币。">
       <header class="card__head">
         <span class="card__no">03</span>
         <h3 class="card__name">芙兰</h3>
@@ -256,7 +257,7 @@
   <section class="grp" aria-labelledby="g2">
     <h2 class="grp__h" id="g2">旧蜜街区（常驻）<span class="grp__n">5 人</span></h2>
 
-    <article class="card" id="c4">
+    <article class="card" id="c4" data-name="玛尔塔" data-hint="卖糖的，自己一口不吃。">
       <header class="card__head">
         <span class="card__no">04</span>
         <h3 class="card__name">玛尔塔</h3>
@@ -276,7 +277,7 @@
       </div>
     </article>
 
-    <article class="card" id="c5">
+    <article class="card" id="c5" data-name="哈根" data-hint="担子两头，麻绳打得整整齐齐。">
       <header class="card__head">
         <span class="card__no">05</span>
         <h3 class="card__name">哈根</h3>
@@ -296,7 +297,7 @@
       </div>
     </article>
 
-    <article class="card" id="c6">
+    <article class="card" id="c6" data-name="皮普" data-hint="街上有什么消息，他的铃铛先响。">
       <header class="card__head">
         <span class="card__no">06</span>
         <h3 class="card__name">皮普</h3>
@@ -316,7 +317,7 @@
       </div>
     </article>
 
-    <article class="card" id="c7">
+    <article class="card" id="c7" data-name="莉娜" data-hint="盖章之前，先把你那句话重复一遍。">
       <header class="card__head">
         <span class="card__no">07</span>
         <h3 class="card__name">莉娜</h3>
@@ -336,7 +337,7 @@
       </div>
     </article>
 
-    <article class="card" id="c8">
+    <article class="card" id="c8" data-name="塞德里克（老塞）" data-hint="爱给东西起名字的老水手。">
       <header class="card__head">
         <span class="card__no">08</span>
         <h3 class="card__name">塞德里克（老塞）</h3>
@@ -360,7 +361,7 @@
   <section class="grp" aria-labelledby="g3">
     <h2 class="grp__h" id="g3">五大势力（有脸的人）<span class="grp__n">4 人</span></h2>
 
-    <article class="card" id="c9">
+    <article class="card" id="c9" data-name="奥托·蓝姆" data-hint="会请你喝一碗糖水，自己一口不喝。">
       <header class="card__head">
         <span class="card__no">09</span>
         <h3 class="card__name">奥托·蓝姆</h3>
@@ -381,7 +382,7 @@
       </div>
     </article>
 
-    <article class="card" id="c10">
+    <article class="card" id="c10" data-name="伊莎贝尔" data-hint="烧糖之前，先洗手。">
       <header class="card__head">
         <span class="card__no">10</span>
         <h3 class="card__name">伊莎贝尔</h3>
@@ -402,7 +403,7 @@
       </div>
     </article>
 
-    <article class="card" id="c11">
+    <article class="card" id="c11" data-name="卡尔·冯·德雷" data-hint="把巨神当矿脉，把人体当标本。">
       <header class="card__head">
         <span class="card__no">11</span>
         <h3 class="card__name">卡尔·冯·德雷</h3>
@@ -423,7 +424,7 @@
       </div>
     </article>
 
-    <article class="card" id="c12">
+    <article class="card" id="c12" data-name="维奥拉·佩奇" data-hint="消息是免费的，代价不是。">
       <header class="card__head">
         <span class="card__no">12</span>
         <h3 class="card__name">维奥拉·佩奇</h3>
@@ -456,5 +457,6 @@
   </footer>
 
   <script src="/new/assets/nav-back.js?v=20261028l" defer></script>
+<script src="/new/assets/gallery.js?v=20261029a" defer></script>
 </body>
 </html>

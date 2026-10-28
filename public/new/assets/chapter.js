@@ -99,6 +99,8 @@
 
   /* ---------- R3：阅读进度（每章记一个比例，目录页给「继续读」） ---------- */
   const PROG = "cr.progress";
+  const MAXCH = "cr.maxch";
+  const bumpMax = (n) => { try { localStorage.setItem(MAXCH, String(Math.max(Number(localStorage.getItem(MAXCH) || 0), n))); } catch (e) {} };
   const readProg = () => {
     try {
       return JSON.parse(localStorage.getItem(PROG) || "null");
@@ -116,6 +118,7 @@
     if (!open) return;
     const n = Number(window.__crCh || 0);
     if (!n) return;
+    try { localStorage.setItem(MAXCH, String(Math.max(Number(localStorage.getItem(MAXCH) || 0), n))); } catch (e) {}
     const max = view.scrollHeight - view.clientHeight;
     const ratio = max > 0 ? Math.min(1, view.scrollTop / max) : 0;
     writeProg({ n, ratio, at: Date.now() });
@@ -136,6 +139,8 @@
     if (open) {
       rememberPos();
       window.__crCh = n;
+    bumpMax(n);
+      bumpMax(n);
       await renderChapter(n);
       restorePos(n);
       if (location.hash !== "#ch" + n) history.pushState({ ch: n }, "", "#ch" + n);
@@ -146,6 +151,7 @@
     view.hidden = false;
     document.body.classList.add("is-reading");
     window.__crCh = n;
+    bumpMax(n);
     await renderChapter(n);
     restorePos(n);
     requestAnimationFrame(() => {
@@ -209,6 +215,7 @@
   function applyPref() {
     view.style.setProperty("--rs", SIZE[pref.size] || SIZE.m);
     view.style.setProperty("--rm", String(MEASURE[pref.measure] || MEASURE.wide));
+    view.style.setProperty("--rmf", pref.measure === "narrow" ? "0.72" : "1");
     view.dataset.theme = pref.theme === "night" ? "night" : "paper";
     sizeBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.size === pref.size)));
     measBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.measure === pref.measure)));
