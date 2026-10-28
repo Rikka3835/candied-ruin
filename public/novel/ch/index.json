@@ -51,11 +51,12 @@
       "subtitle": "",
       "cast": [
         "芙兰",
+        "赫伯",
         "琉玥",
         "莉娜",
         "柯林"
       ],
-      "chars": 2839,
+      "chars": 2835,
       "minutes": 7,
       "updated": "2026-10-28",
       "file": "ch/004.html"
@@ -72,7 +73,7 @@
         "柯林",
         "赫伯"
       ],
-      "chars": 2477,
+      "chars": 2531,
       "minutes": 6,
       "updated": "2026-10-28",
       "file": "ch/005.html"
@@ -131,7 +132,7 @@
         "芙兰",
         "哈根"
       ],
-      "chars": 2708,
+      "chars": 2688,
       "minutes": 6,
       "updated": "2026-10-28",
       "file": "ch/009.html"
@@ -148,8 +149,8 @@
         "柯林",
         "塞德里克（老塞）"
       ],
-      "chars": 2656,
-      "minutes": 6,
+      "chars": 2895,
+      "minutes": 7,
       "updated": "2026-10-28",
       "file": "ch/010.html"
     }
