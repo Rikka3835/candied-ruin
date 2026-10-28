@@ -1,0 +1,108 @@
+/* ===== 世界地图页（纸质 + 手绘 SVG） ===== */
+
+.map-page { padding-bottom: 0; }
+
+.map-wrap {
+  margin-top: 2.4rem;
+  padding: clamp(1rem, 2.4vw, 1.6rem);
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(120% 90% at 20% 10%, rgba(255, 179, 71, .05), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, .5), rgba(255, 255, 255, 0) 40%);
+}
+
+.map-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.map-svg { display: block; width: 100%; height: auto; }
+
+.map-svg text {
+  font-family: var(--font-serif);
+  fill: var(--text-soft);
+  letter-spacing: .08em;
+}
+.map-svg .lbl { font-size: 11.5px; fill: var(--muted); letter-spacing: .12em; }
+.map-svg .lbl-big { font-size: 15px; fill: var(--text); letter-spacing: .1em; }
+.map-svg .lbl-water { font-size: 11px; fill: var(--caramel); letter-spacing: .3em; }
+.map-svg .geo { fill: none; stroke: var(--line-strong); stroke-width: 1.1; }
+.map-svg .geo-soft { fill: none; stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 4; }
+.map-svg .road { fill: none; stroke: var(--caramel); stroke-width: 1.2; stroke-dasharray: 5 5; opacity: .75; }
+.map-svg .water { fill: rgba(111, 168, 200, .10); stroke: rgba(111, 168, 200, .38); stroke-width: 1; }
+.map-svg .block { fill: rgba(176, 121, 58, .07); stroke: var(--line-strong); stroke-width: .9; }
+.map-svg .hill { fill: rgba(126, 142, 118, .10); stroke: var(--line-strong); stroke-width: .9; }
+.map-svg .underground { fill: rgba(34, 28, 24, .06); stroke: var(--line-strong); stroke-width: .9; }
+
+.pin { cursor: pointer; }
+.pin circle { fill: #fbf6ec; stroke: var(--caramel); stroke-width: 1.2; transition: fill .18s ease; }
+.pin text { font-size: 10px; fill: var(--caramel); letter-spacing: 0; }
+.pin:hover circle, .pin.is-on circle { fill: var(--caramel); }
+.pin:hover text, .pin.is-on text { fill: #fffaf0; }
+
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem 1.2rem;
+  margin: .9rem 0 0;
+  font-size: .74rem;
+  letter-spacing: .08em;
+  color: var(--muted);
+}
+.map-legend i { display: inline-block; width: 18px; height: 0; border-top: 1px dashed var(--caramel); margin-right: .35rem; vertical-align: .2em; }
+.map-legend b { display: inline-block; width: 9px; height: 9px; border: 1px solid var(--line-strong); margin-right: .35rem; vertical-align: 0; }
+
+.place-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 2rem 0 0;
+  border-bottom: 1px solid var(--line);
+}
+.place {
+  padding: 1.1rem 1.2rem 1.2rem;
+  border-top: 1px solid var(--line);
+  background: transparent;
+  transition: background .18s ease;
+}
+.place:nth-child(even) { border-left: 1px solid var(--line); }
+.place.is-on { background: #fff8ec; }
+.place__no {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: .7rem;
+  letter-spacing: .16em;
+  color: var(--caramel);
+}
+.place__name {
+  margin: .35rem 0 0;
+  font-size: 1.06rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.place__what {
+  margin: .45rem 0 0;
+  font-size: .9rem;
+  line-height: 1.85;
+  color: var(--text-soft);
+}
+.place__quote {
+  margin: .7rem 0 0;
+  padding-left: .7rem;
+  border-left: 2px solid rgba(176, 121, 58, .35);
+  font-size: .84rem;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.place__where {
+  margin: .6rem 0 0;
+  font-size: .72rem;
+  letter-spacing: .1em;
+  color: var(--caramel);
+}
+
+.map-hint { display: none; }
+
+@media (max-width: 720px) {
+  .map-svg { min-width: 660px; }
+  .map-hint { display: inline; color: var(--caramel); }
+  .place-grid { grid-template-columns: 1fr; }
+  .place:nth-child(even) { border-left: 0; }
+  .map-legend { font-size: .7rem; }
+}

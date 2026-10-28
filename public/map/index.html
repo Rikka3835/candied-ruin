@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>世界地图 · 糖渍旧蜜 CANDIED RUIN</title>
-<meta name="description" content="《糖渍旧蜜》的世界地图：帕芙利亚与地下城的已知边界，尚在建设中。">
+<meta name="description" content="《糖渍旧蜜》的世界地图：旧蜜街区、行会广场、鉴评所、秤房、码头、西四巷，以及城外山坳与地下城的已知层数。">
 <meta name="theme-color" content="#f6f1e7">
 <link rel="icon" type="image/svg+xml" href="/assets/brand/favicon.svg">
 <link rel="icon" href="/assets/brand/icon-32.png" sizes="32x32" type="image/png">
@@ -13,9 +13,16 @@
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/new/assets/fonts-subset.css?v=20261029b">
 <link rel="stylesheet" href="/new/assets/site.css?v=20261029t">
-<link rel="stylesheet" href="/new/assets/paper.css?v=20261029q">
+<link rel="stylesheet" href="/new/assets/paper.css?v=20261030a">
+<link rel="stylesheet" href="/new/assets/map.css?v=20261030a">
 <link rel="canonical" href="https://candied-ruin.pages.dev/map/">
-<meta name="robots" content="noindex,follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="糖渍旧蜜 CANDIED RUIN">
+<meta property="og:title" content="世界地图 · 糖渍旧蜜">
+<meta property="og:description" content="旧蜜街区、行会广场、鉴评所、秤房、码头、西四巷，以及城外山坳与地下城。">
+<meta property="og:url" content="https://candied-ruin.pages.dev/map/">
+<meta property="og:image" content="https://candied-ruin.pages.dev/assets/brand/og-new.jpg">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 <body class="page-sheet">
 
@@ -35,25 +42,207 @@
     <span class="nav__spacer"></span><span class="nav__links">
     <a class="nav__link" href="/novel/">小说</a>
     <a class="nav__link" href="/archive/">人物档案</a>
-    <a class="nav__link" href="/game/">游戏<i class="nav__tag">开发中</i></a>
-    <a class="nav__link is-current" href="/map/" aria-current="page">世界地图<i class="nav__tag">开发中</i></a></span>
+    <a class="nav__link" href="/world/">前言</a>
+    <a class="nav__link is-current" href="/map/" aria-current="page">世界地图</a></span>
   </nav>
 
-  <main id="main" class="page">
+  <main id="main" class="page map-page">
     <div class="page__inner">
       <p class="page__kicker rise" style="--i:0">WORLD MAP</p>
       <h1 class="page__title rise" style="--i:1">世界地图</h1>
-      <p class="page__lede rise" style="--i:2">帕芙利亚的地表、旧蜜街区、地下城的已知层数，都画在这张图上。手绘多边形 SVG，区域可点、边界可辨。</p>
-      <p class="note rise" style="--i:3">这一期先占位。地图排在全书最后做——因为地域名、势力边界要等正文写出来才定得下来，先画等于先编世界。</p>
+      <p class="page__lede rise" style="--i:2">这九处，是正文里已经写到的地方。没有画进来的，就是还没写到的。</p>
+
+      <div class="map-wrap rise" style="--i:3">
+        <div class="map-scroll">
+        <svg class="map-svg" viewBox="0 0 800 520" role="img" aria-label="帕芙利亚城与近郊示意图：旧蜜街区、行会广场、鉴评所、秤房、西四巷、码头、城外山坳，以及地下城入口。">
+          <!-- 河与海 -->
+          <path class="water" d="M800 78 C 756 132, 726 206, 714 286 C 702 366, 706 446, 722 520 L 800 520 Z"/>
+          <path class="geo-soft" d="M800 100 C 762 152, 738 214, 728 292 C 718 368, 722 442, 736 512"/>
+          <path class="geo-soft" d="M742 200 C 758 204, 772 204, 788 200 M 734 300 C 752 306, 770 306, 790 300 M 730 402 C 748 410, 768 410, 792 402" opacity=".8"/>
+          <text class="lbl-water" x="742" y="252" transform="rotate(74 742 252)">盐 河</text>
+          <text class="lbl-water" x="742" y="452" transform="rotate(84 742 452)">外 海</text>
+
+          <!-- 城界 -->
+          <path class="geo" d="M112 126 C 200 104, 320 106, 402 122 C 486 138, 566 158, 640 196 C 690 222, 706 268, 686 312 C 664 360, 596 384, 516 392 C 424 402, 330 396, 250 376 C 176 358, 120 322, 100 274 C 82 230, 88 160, 112 126 Z" stroke-dasharray="6 6" opacity=".55"/>
+
+          <!-- 旧蜜街区（密集小方块） -->
+          <g class="blocks">
+            <path class="block" d="M118 176 L 232 168 L 244 268 L 126 280 Z"/>
+          </g>
+          <g stroke="var(--line-strong)" stroke-width=".7" fill="none" opacity=".5">
+            <path d="M132 190 L 236 182 M 134 210 L 238 202 M 128 232 L 240 224 M 130 256 L 242 248"/>
+            <path d="M162 176 L 168 278 M 196 172 L 202 274"/>
+          </g>
+          <text class="lbl-big" x="132" y="166">旧 蜜 街 区</text>
+          <text class="lbl" x="126" y="302">糖铺 · 对街摊 · 石阶</text>
+
+          <!-- 行会广场 -->
+          <circle class="block" cx="404" cy="220" r="58"/>
+          <circle class="geo-soft" cx="404" cy="220" r="38"/>
+          <text class="lbl-big" x="352" y="152">行 会 广 场</text>
+          <text class="lbl" x="352" y="294">告示墙 · 报名处 · 城西旧仓</text>
+
+          <!-- 鉴评所 -->
+          <path class="block" d="M470 132 L 556 126 L 562 186 L 476 192 Z"/>
+          <text class="lbl" x="478" y="118">鉴 评 所</text>
+
+          <!-- 秤房 -->
+          <path class="block" d="M300 288 L 356 284 L 360 320 L 304 324 Z"/>
+          <text class="lbl" x="300" y="342">秤 房</text>
+
+          <!-- 西四巷 -->
+          <path class="geo-soft" d="M126 330 L 232 322"/>
+          <path class="geo-soft" d="M152 306 L 150 372 M 178 304 L 176 370 M 204 302 L 202 368"/>
+          <text class="lbl" x="120" y="390">西 四 巷</text>
+
+          <!-- 码头 -->
+          <path class="block" d="M596 268 L 662 262 L 666 300 L 600 306 Z"/>
+          <path class="geo-soft" d="M600 306 L 616 330 M 632 302 L 648 326"/>
+          <text class="lbl" x="596" y="254">码 头</text>
+
+          <!-- 山坳（城外） -->
+          <path class="hill" d="M62 92 L 118 40 L 176 92 Z"/>
+          <path class="hill" d="M126 96 L 170 56 L 214 96 Z" opacity=".7"/>
+          <path class="road" d="M150 176 C 142 150, 132 122, 140 100"/>
+          <text class="lbl" x="66" y="118">山 坳</text>
+          <text class="lbl" x="66" y="136">（出城 · 三天路程）</text>
+
+          <!-- 禁区 / 长枯藤路 / 地下城 -->
+          <path class="geo" d="M470 300 C 486 316, 512 322, 528 340 C 540 354, 540 372, 532 386" stroke-dasharray="2 5"/>
+          <text class="lbl" x="468" y="374">禁 区 · 长 枯 藤 路</text>
+          <path class="geo-soft" d="M520 372 C 512 392, 508 408, 506 428"/>
+          <g class="underground">
+            <path d="M300 430 L 560 430 L 604 500 L 258 500 Z"/>
+            <path d="M300 430 L 296 500 M 386 430 L 380 500 M 472 430 L 466 500 M 560 430 L 550 500" stroke="var(--line-strong)" stroke-width=".8" fill="none" opacity=".6"/>
+          </g>
+          <text class="lbl" x="304" y="452">地 下 城 · 已 知 七 层</text>
+          <text class="lbl" x="304" y="470">巨神的脚 · 糖脉 · 上七条支脉</text>
+
+          <!-- 点位 -->
+          <g class="pin" data-place="p1"><circle cx="178" cy="226" r="10"/><text x="178" y="229.5" text-anchor="middle">1</text></g>
+          <g class="pin" data-place="p2"><circle cx="214" cy="252" r="10"/><text x="214" y="255.5" text-anchor="middle">2</text></g>
+          <g class="pin" data-place="p3"><circle cx="404" cy="220" r="10"/><text x="404" y="223.5" text-anchor="middle">3</text></g>
+          <g class="pin" data-place="p4"><circle cx="514" cy="160" r="10"/><text x="514" y="163.5" text-anchor="middle">4</text></g>
+          <g class="pin" data-place="p5"><circle cx="330" cy="306" r="10"/><text x="330" y="309.5" text-anchor="middle">5</text></g>
+          <g class="pin" data-place="p6"><circle cx="176" cy="338" r="10"/><text x="176" y="341.5" text-anchor="middle">6</text></g>
+          <g class="pin" data-place="p7"><circle cx="630" cy="284" r="10"/><text x="630" y="287.5" text-anchor="middle">7</text></g>
+          <g class="pin" data-place="p8"><circle cx="146" cy="72" r="10"/><text x="146" y="75.5" text-anchor="middle">8</text></g>
+          <g class="pin" data-place="p9"><circle cx="506" cy="356" r="10"/><text x="506" y="359.5" text-anchor="middle">9</text></g>
+        </svg>
+        </div>
+
+        <p class="map-legend">
+          <span><i></i>道路与山路</span>
+          <span><b></b>街区与建筑（示意，不按比例）</span>
+          <span>点位可点，点一下跳到下面那一条</span>
+          <span class="map-hint">手机上可左右拖动看全图</span>
+        </p>
+      </div>
+
+      <div class="place-grid rise" style="--i:4">
+        <article class="place" id="p1">
+          <span class="place__no">01</span>
+          <h2 class="place__name">旧蜜街区</h2>
+          <p class="place__what">她出摊、数钱、和人讨价还价的地方。一条主街，两侧是糖铺与对街的临时摊。</p>
+          <p class="place__quote">「早市还没开，糖味先到了。」</p>
+          <p class="place__where">第 1 章 · 一口的价钱</p>
+        </article>
+
+        <article class="place" id="p2">
+          <span class="place__no">02</span>
+          <h2 class="place__name">玛尔塔的糖铺</h2>
+          <p class="place__what">橱窗最里头那格，放着「整块」。老板娘玛尔塔在柜台后擦了几十年同一块台面。</p>
+          <p class="place__quote">「先尝。」她说，「尝完再说价。」</p>
+          <p class="place__where">第 1 章 · 第 10 章</p>
+        </article>
+
+        <article class="place" id="p3">
+          <span class="place__no">03</span>
+          <h2 class="place__name">行会广场</h2>
+          <p class="place__what">告示墙贴报名规矩：报名费三枚、要保人、自备样糖三种。入册、领牌、交样都在这栋楼里。</p>
+          <p class="place__quote">「报名费三枚。」前头有人念出声，「还要保人。」</p>
+          <p class="place__where">第 2 章 · 第 10 章</p>
+        </article>
+
+        <article class="place" id="p4">
+          <span class="place__no">04</span>
+          <h2 class="place__name">鉴评所</h2>
+          <p class="place__what">琉玥学徒的地方。有钱人送孩子来学「评得准」，不是「尝得多」。她一年能调一次行会备档。</p>
+          <p class="place__quote">「鉴评所的印。」她说，「我能调一次行会的备档，一年一次。」</p>
+          <p class="place__where">第 3 章 · 第 6 章</p>
+        </article>
+
+        <article class="place" id="p5">
+          <span class="place__no">05</span>
+          <h2 class="place__name">秤房</h2>
+          <p class="place__what">一条街三家收糖渍的，这是第三家。柜台比她高一头，柜台后的人戴铜边眼镜、镜腿用线缠过。</p>
+          <p class="place__quote">「那你把两盒放上去。」我说，「你称给我看。」</p>
+          <p class="place__where">第 3 章 · 秤</p>
+        </article>
+
+        <article class="place" id="p6">
+          <span class="place__no">06</span>
+          <h2 class="place__name">西四巷</h2>
+          <p class="place__what">退了册的老试糖人住的地方。门口一棵枯了的桑树，屋里没点灯。她只走到巷口看了一眼，没敲门。</p>
+          <p class="place__quote">「退了册的人，最怕的就是没人来问。」</p>
+          <p class="place__where">第 2 章 · 第 5 章</p>
+        </article>
+
+        <article class="place" id="p7">
+          <span class="place__no">07</span>
+          <h2 class="place__name">码头</h2>
+          <p class="place__what">搬糖的活计一天两枚。没考上的人在这里把手磨破——试糖人的手不能沾糖，沾了就是不在干了。</p>
+          <p class="place__quote">「手上有糖的人，怕人看见。」</p>
+          <p class="place__where">第 2 章 · 保人</p>
+        </article>
+
+        <article class="place" id="p8">
+          <span class="place__no">08</span>
+          <h2 class="place__name">城外山坳</h2>
+          <p class="place__what">哈根的村子。土墙石棚、三股烟、坡下几个孩子。糖农的糖不卖城里人——「我们的糖，是一年的活。」</p>
+          <p class="place__quote">「你尝出来，然后呢。」</p>
+          <p class="place__where">第 9 章 · 山坳</p>
+        </article>
+
+        <article class="place" id="p9">
+          <span class="place__no">09</span>
+          <h2 class="place__name">禁区 · 长枯藤路</h2>
+          <p class="place__what">街尾那条路，长满枯藤，尽头是地下城的入口。老塞每天坐在石阶上，望着那个方向。</p>
+          <p class="place__quote">「别在人前打开它。」</p>
+          <p class="place__where">第 1 章 · 第 10 章</p>
+        </article>
+      </div>
     </div>
   </main>
 
   <footer class="foot">
     <span class="foot__name">CANDIED RUIN</span>
     <span class="foot__spacer"></span>
+    <a href="/novel/">去读正文</a>
     <a href="/">返回首页</a>
   </footer>
 
   <script src="/new/assets/nav-back.js?v=20261028l" defer></script>
+  <script>
+  (function () {
+    var pins = [].slice.call(document.querySelectorAll('.pin'));
+    var cards = [].slice.call(document.querySelectorAll('.place'));
+    function focus(id) {
+      cards.forEach(function (c) { c.classList.toggle('is-on', c.id === id); });
+      pins.forEach(function (p) { p.classList.toggle('is-on', p.dataset.place === id); });
+    }
+    pins.forEach(function (p) {
+      p.addEventListener('click', function () {
+        var id = p.dataset.place;
+        var el = document.getElementById(id);
+        focus(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    });
+    cards.forEach(function (c) {
+      c.addEventListener('click', function () { focus(c.id); });
+    });
+  })();
+  </script>
 </body>
 </html>
