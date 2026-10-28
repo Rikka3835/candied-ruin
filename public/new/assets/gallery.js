@@ -57,6 +57,12 @@
         g.style.display = ok ? "" : "none";
       });
     }
+
+    document.querySelectorAll(".cast__rb").forEach(function (b) {
+      const c2 = document.querySelector('.card[data-name="' + b.dataset.name + '"]');
+      b.classList.toggle("is-locked", !!c2 && c2.classList.contains("is-locked"));
+    });
+    setTimeout(fitCast, 0);
     const counter = document.getElementById("galCount");
     if (counter) counter.textContent = "已解锁 " + open + " / " + cards.length;
   };
@@ -65,6 +71,51 @@
   if (btn) btn.addEventListener("click", () => { write(SPOILER, spoilerOn() ? "0" : "1"); sync(); apply(); });
   sync(); apply();
   window.__galApply = apply;
+  const castEl = document.getElementById("cast");
+  function selectCast(btn) {
+    if (!castEl || !btn) return;
+    castEl.dataset.idx = btn.dataset.idx;
+    const q = (s2) => castEl.querySelector(s2);
+    q("#castName").textContent = btn.dataset.name || "？？？";
+    q("#castTag").textContent = btn.dataset.tag || "";
+    q("#castNo").textContent = btn.dataset.idx;
+    q("#castMono").textContent = (btn.dataset.name || "？").slice(0, 1);
+    castEl.querySelectorAll(".cast__meta dd").forEach(function (dd) {
+      dd.textContent = (btn.dataset[dd.dataset.k] || "—");
+    });
+    loadArt(btn.dataset.idx, 1);
+    document.querySelectorAll(".cast__rb").forEach(function (b) { b.classList.toggle("is-on", b === btn); });
+    fitCast();
+  }
+  function loadArt(idx, ex) {
+    const img = castEl && castEl.querySelector("#castImg");
+    if (!img) return;
+    img.onload = function () { img.hidden = false; const m = castEl.querySelector("#castMono"); if (m) m.style.visibility = "hidden"; const n = castEl.querySelector(".cast__note"); if (n) n.style.visibility = "hidden"; };
+    img.onerror = function () { img.hidden = true; const m = castEl.querySelector("#castMono"); if (m) m.style.visibility = ""; const n = castEl.querySelector(".cast__note"); if (n) n.style.visibility = ""; };
+    img.src = "/new/assets/cast/c" + idx + "/exp" + String(ex).padStart(2, "0") + ".png";
+  }
+  function fitCast() {
+    if (!castEl) return;
+    const on = castEl.querySelector(".cast__rb.is-on");
+    const locked = !spoilerOn() && on && on.classList.contains("is-locked");
+    castEl.classList.toggle("is-locked", !!locked);
+    if (locked) {
+      castEl.querySelector("#castName").textContent = "？？？";
+      castEl.querySelector("#castTag").textContent = on.dataset.hint || "还没出场";
+      castEl.querySelector("#castMono").textContent = "？";
+      castEl.querySelectorAll(".cast__meta dd").forEach(function (dd) { dd.textContent = "—"; });
+    }
+  }
+  document.querySelectorAll(".cast__rb").forEach(function (b) { b.addEventListener("click", function () { selectCast(b); }); });
+  document.querySelectorAll(".cast__ex").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".cast__ex").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      const on = castEl.querySelector(".cast__rb.is-on");
+      if (on) loadArt(on.dataset.idx, b.dataset.ex);
+    });
+  });
+  selectCast(document.querySelector(".cast__rb"));
+
   const useList = (d) => (d.chapters || []).map((c) => ({ n: c.n, cast: c.cast ? String(c.cast).split(/[、,，]/).filter(Boolean) : (c.cast || []) })).sort((a, b) => a.n - b.n);
   fetch("/api/chapters").then((r) => (r.ok ? r.json() : null)).then((d) => {
     if (d && d.chapters && d.chapters.length) { chapters = useList(d); apply(); return; }

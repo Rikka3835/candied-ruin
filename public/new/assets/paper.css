@@ -228,3 +228,4 @@ body {
   .rail__a.is-locked { display: none; }
 }
 @media (max-width: 720px) { .arch__rail.is-empty { display: none; } }
+.cast.is-locked .cast__exps { opacity: .45; }

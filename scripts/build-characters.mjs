@@ -38,6 +38,20 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, 
 const inline = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 
 const cn = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
+
+const EXP = ['平静', '营业笑', '真笑', '炸毛', '装凶', '耳朵塌', '嫌甜', '认真鉴糖', '紧张', '忍着哭', '得意', '警戒'];
+let ri = 0;
+const rosterItems = real.flatMap((g) => g.people.map((p) => {
+  ri += 1;
+  const f = (k) => (p.fields.find((x) => x[0] === k) || ['', ''])[1];
+  return { i: ri, name: p.name, tag: f('一句话'), hint: f('剪影'), race: f('种族/年龄'), role: f('身份'), want: f('愿望') };
+}));
+const roster = rosterItems.map((p) =>
+  `        <button type="button" class="cast__rb" data-idx="${p.i}" data-name="${esc(p.name)}" data-tag="${esc(p.tag)}" data-hint="${esc(p.hint)}" data-race="${esc(p.race)}" data-role="${esc(p.role)}" data-want="${esc(p.want)}">${esc(p.name)}</button>`
+).join('\n');
+const exps = EXP.map((e, i) =>
+  `          <button type="button" class="cast__ex" data-ex="${i + 1}" aria-pressed="${i === 0 ? 'true' : 'false'}"><span>${String(i + 1).padStart(2, '0')}</span>${e}</button>`
+).join('\n');
 let n = 0;
 const cards = real.map((g, gi) => {
   const people = g.people.map((p) => {
@@ -97,6 +111,38 @@ const html = `<!DOCTYPE html>
   grid-template-columns: 11rem minmax(0, 1fr);
   gap: clamp(2rem, 5vw, 4.5rem);
   margin-top: 3.2rem;
+}
+.cast { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 2.4rem; margin: 2.4rem 0 3.2rem; align-items: start; }
+.cast__art { position: relative; margin: 0; aspect-ratio: 3 / 4; border: 1px solid var(--line-2); background: linear-gradient(180deg, rgba(255,179,71,.05), rgba(255,179,71,.015)); display: grid; place-items: center; }
+.cast__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: bottom center; }
+.cast__mono { font-family: var(--font-serif, Georgia, serif); font-size: 5.4rem; color: var(--amber); opacity: .32; line-height: 1; }
+.cast__note { position: absolute; left: 0; right: 0; bottom: .9rem; text-align: center; font-size: .68rem; letter-spacing: .12em; color: var(--text-dim); }
+.cast.is-locked .cast__mono { opacity: .5; }
+.cast.is-locked .cast__art { background: linear-gradient(180deg, rgba(40,30,20,.06), rgba(40,30,20,.02)); }
+.cast__kicker { font-size: .68rem; letter-spacing: .18em; color: var(--amber); margin: 0 0 .7rem; }
+.cast__name { font-size: clamp(1.8rem, 3.4vw, 2.4rem); margin: 0 0 .5rem; letter-spacing: .06em; }
+.cast__tag { color: var(--caramel); margin: 0 0 1.4rem; font-size: .95rem; }
+.cast__meta { margin: 0 0 1.6rem; padding: 0; }
+.cast__meta > div { display: grid; grid-template-columns: 5.4rem minmax(0, 1fr); gap: 1rem; padding: .5rem 0; border-top: 1px solid var(--line-1, rgba(0,0,0,.08)); }
+.cast__meta > div:last-child { border-bottom: 1px solid var(--line-1, rgba(0,0,0,.08)); }
+.cast__meta dt { font-size: .7rem; letter-spacing: .12em; color: var(--text-dim); }
+.cast__meta dd { margin: 0; font-size: .92rem; line-height: 1.8; color: var(--text); }
+.cast__exps { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.6rem; }
+.cast__ex { font: inherit; font-size: .72rem; letter-spacing: .04em; color: var(--text-soft); background: none; border: 1px solid var(--line-2); padding: .3rem .55rem; cursor: pointer; display: inline-flex; gap: .35rem; align-items: baseline; }
+.cast__ex span { color: var(--text-dim); font-size: .62rem; letter-spacing: .1em; }
+.cast__ex[aria-pressed="true"] { color: var(--text); border-color: var(--amber); background: rgba(255,179,71,.12); }
+.cast__ex:hover { border-color: var(--amber); }
+.cast__roster { display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; padding-top: 1.1rem; border-top: 1px solid var(--line-2); }
+.cast__rb { font: inherit; font-size: .8rem; color: var(--text-soft); background: none; border: 0; padding: .15rem 0; cursor: pointer; letter-spacing: .04em; }
+.cast__rb.is-on { color: var(--text); border-bottom: 1px solid var(--amber); }
+.cast__rb.is-locked { color: var(--line-strong); pointer-events: none; }
+@media (max-width: 820px) {
+  .cast { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; }
+  .cast__panel { min-width: 0; }
+  .cast__exps { max-width: 100%; }
+  .cast__art { max-width: 300px; margin: 0 auto; width: 100%; }
+  .cast__exps { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .4rem; }
+  .cast__ex { flex: 0 0 auto; }
 }
 .arch__wrap.no-rail { grid-template-columns: minmax(0, 1fr); }
 .arch__rail.is-empty { display: none; }
@@ -250,6 +296,28 @@ const html = `<!DOCTYPE html>
       <h1 class="page__title rise" style="--i:1">人物档案</h1>
       <p class="page__lede rise" style="--i:2">${total} 位登场人物。在这个世界里，一个人怎么对待糖，就等于他是什么人。</p>
       <div class="gal__bar rise" style="--i:2"><span>图鉴</span><span class="gal__count" id="galCount">已解锁 0 / 12</span><button type="button" class="gal__spoiler" id="galSpoiler" aria-pressed="false">剧透模式</button></div>
+
+      <section class="cast" id="cast" aria-label="人物立绘">
+        <figure class="cast__art">
+          <img class="cast__img" id="castImg" alt="" hidden>
+          <span class="cast__mono" id="castMono">琉</span>
+          <figcaption class="cast__note">立绘待补 · 3:4 透明底</figcaption>
+        </figure>
+        <div class="cast__panel">
+          <p class="cast__kicker">第 <span id="castNo">01</span> 位 · 共 ${total} 位</p>
+          <h2 class="cast__name" id="castName">琉玥</h2>
+          <p class="cast__tag" id="castTag">把味道翻译成话的人</p>
+          <dl class="cast__meta" id="castMeta">
+            <div><dt>种族/年龄</dt><dd data-k="race">—</dd></div>
+            <div><dt>身份</dt><dd data-k="role">—</dd></div>
+            <div><dt>愿望</dt><dd data-k="want">—</dd></div>
+          </dl>
+          <div class="cast__exps" role="group" aria-label="表情差分">${exps}</div>
+          <nav class="cast__roster" id="castRoster" aria-label="切换人物">
+${roster}
+          </nav>
+        </div>
+      </section>
 
       <div class="arch__wrap">
         <nav class="arch__rail" aria-label="人物索引">
