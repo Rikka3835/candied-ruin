@@ -76,6 +76,21 @@
       "minutes": 6,
       "updated": "2026-10-28",
       "file": "ch/005.html"
+    },
+    {
+      "n": 6,
+      "vol": "第一卷 · 糖罐里的猫",
+      "title": "三味散",
+      "subtitle": "",
+      "cast": [
+        "芙兰",
+        "琉玥",
+        "奥莉薇娅"
+      ],
+      "chars": 2418,
+      "minutes": 6,
+      "updated": "2026-10-28",
+      "file": "ch/006.html"
     }
   ]
 }
