@@ -49,6 +49,11 @@ textarea#body{min-height:520px;resize:vertical;line-height:1.9}
 .msg{font-size:13px;color:var(--dim);min-height:20px}
 .msg.err{color:#a1321f}
 @media(max-width:820px){.grid{grid-template-columns:1fr}.fields{grid-template-columns:1fr 1fr}.fields .wide{grid-column:span 2}.bodyrow{grid-template-columns:1fr}textarea#body{min-height:380px}}
+  .artcard { margin-top: 2.4rem; padding-top: 1.6rem; border-top: 1px dashed rgba(0,0,0,.12); }
+  .artcard h2 { font-size: 1rem; margin: 0 0 .4rem; }
+  .artcard .bar { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin-top: .8rem; }
+  .artprev { margin-top: 1rem; }
+  .artprev img { max-width: 240px; max-height: 320px; border-radius: 8px; display: block; }
 </style>
 </head>
 <body>
@@ -87,6 +92,18 @@ textarea#body{min-height:520px;resize:vertical;line-height:1.9}
           <button id="del" class="ghost" type="button">删除这一章</button>
           <span class="sp"></span><span id="count" class="msg"></span><span id="msg" class="msg"></span>
         </div>
+        <section class="artcard">
+          <h2>设定图</h2>
+          <p class="msg">选人物 → 选图（自动裁成 3:4、压到 1200×1600）→ 上传。上传后档案页立刻显示，不用重新部署；这里传的图会盖住静态图。</p>
+          <div class="bar">
+            <select id="artWho"></select>
+            <input id="artFile" type="file" accept="image/*">
+            <button id="artGo" class="primary" type="button">上传</button>
+            <button id="artDel" class="ghost" type="button">删掉这张</button>
+            <span id="artMsg" class="msg"></span>
+          </div>
+          <div class="artprev"><img id="artPrev" alt=""></div>
+        </section>
       </main>
     </div>
   </div>
@@ -166,6 +183,48 @@ $("del").onclick = async ()=>{
   if(r.ok){ cur=null; $("msg").textContent="已删除"; $("title").value=""; $("body").value=""; paint(); loadList(); }
 };
 boot();
+
+/* —— 设定图上传 —— */
+(function initArt(){
+  const NAMES = ["芙兰","琉玥","薇尔","玛尔塔","哈根","皮普","莉娜","塞德里克","奥托·蓝姆","伊莎贝尔","卡尔·冯·德雷","维奥拉·佩奇"];
+  const sel = $("artWho"), file = $("artFile"), prev = $("artPrev"), msg = $("artMsg");
+  if (!sel) return;
+  sel.innerHTML = NAMES.map(function(n,i){ return '<option value="'+(i+1)+'">'+(i+1)+'. '+n+'</option>'; }).join("");
+  let data = null, c = 1;
+  prev.style.display = "none";
+  sel.addEventListener("change", function(){ c = Number(sel.value); data = null; prev.style.display = "none"; msg.textContent = ""; });
+  file.addEventListener("change", async function(){
+    const f = file.files && file.files[0];
+    if (!f) return;
+    msg.textContent = "处理中…";
+    try {
+      const bmp = await createImageBitmap(f);
+      const W = 1200, H = 1600;
+      const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+      const g = cv.getContext("2d");
+      g.fillStyle = "#fbf7f0"; g.fillRect(0,0,W,H);
+      const s = Math.max(W/bmp.width, H/bmp.height);
+      const dw = bmp.width*s, dh = bmp.height*s;
+      g.drawImage(bmp, (W-dw)/2, (H-dh)/2, dw, dh);
+      data = cv.toDataURL("image/jpeg", 0.86);
+      prev.src = data; prev.style.display = "block";
+      msg.textContent = "已就绪（约 " + Math.round(data.length*0.75/1024) + " KB）";
+    } catch (e) { msg.textContent = "读图失败：" + e.message; }
+  });
+  $("artGo").addEventListener("click", async function(){
+    if (!data) { msg.textContent = "先选一张图"; return; }
+    msg.textContent = "上传中…";
+    const r = await fetch("/api/upload", { method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify({ c: c, data: data }) });
+    const j = await r.json().catch(function(){ return {}; });
+    msg.textContent = j.ok ? ("上传成功，" + Math.round(j.bytes/1024) + " KB；去档案页刷新看看") : ("失败：" + (j.error || r.status));
+  });
+  $("artDel").addEventListener("click", async function(){
+    if (!confirm("删掉第 " + c + " 位的上传图？（静态图不受影响）")) return;
+    const r = await fetch("/api/upload?c=" + c, { method:"DELETE" });
+    const j = await r.json().catch(function(){ return {}; });
+    msg.textContent = j.ok ? "已删掉" : ("失败：" + (j.error || r.status));
+  });
+})();
 </script>
 </body>
 </html>

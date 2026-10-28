@@ -4,6 +4,17 @@
   const SPOILER = "cr.spoiler";
   const cards = [...document.querySelectorAll(".card[data-name]")];
   if (!cards.length) return;
+  const uploadedPlates = new Set();
+  fetch("/api/plates", { cache: "no-store" })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (j) {
+      if (!j || !j.slots) return;
+      j.slots.forEach(function (n) { uploadedPlates.add(n); });
+      const on = document.querySelector(".cast__rb.is-on");
+      if (on && uploadedPlates.has(Number(on.dataset.idx)) && castEl) syncPlate(on);
+    })
+    .catch(function () {});
+
   const castEl = document.getElementById("cast");
   const read = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
   const write = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
@@ -91,13 +102,17 @@
     const im = castEl.querySelector("#castImg");
     const mono = castEl.querySelector("#castMono");
     const note = castEl.querySelector("#castNote");
-    const has = b && b.dataset.plate === "1";
+    const idx = b ? Number(b.dataset.idx) : 0;
+    const uploaded = idx && uploadedPlates.has(idx);
+    const has = b && (b.dataset.plate === "1" || uploaded);
     if (has) {
-      const src = "/new/assets/cast/c" + b.dataset.idx + "/plate-1200.jpg";
+      const src = uploaded
+        ? "/api/plate/" + idx
+        : "/new/assets/cast/c" + idx + "/plate-1200.jpg";
       if (im && im.getAttribute("src") !== src) im.setAttribute("src", src);
       const srcset = castEl.querySelector("#castWebp");
-      if (srcset) srcset.setAttribute("srcset", "/new/assets/cast/c" + b.dataset.idx + "/plate-1200.webp");
-      if (a) { a.setAttribute("href", "/new/assets/cast/c" + b.dataset.idx + "/plate-2000.jpg"); a.hidden = false; }
+      if (srcset) srcset.setAttribute("srcset", uploaded ? "" : "/new/assets/cast/c" + idx + "/plate-1200.webp");
+      if (a) { a.setAttribute("href", uploaded ? src : "/new/assets/cast/c" + idx + "/plate-2000.jpg"); a.hidden = false; }
       if (mono) mono.hidden = true;
       if (note) note.textContent = "设定原稿 · 点开看细节";
     } else {
