@@ -233,3 +233,7 @@ body {
 .cast__img[hidden] { display: none !important; }
 .cast__art { background: linear-gradient(180deg, #f8f3ea, #f1e9dc); }
 .cast.is-locked .cast__art { background: linear-gradient(180deg, rgba(40,30,20,.06), rgba(40,30,20,.02)); }
+.cast.is-locked .cast__exps { opacity: 1; }
+.cast__art { background: #f7f1e6; }
+.cast.is-locked .cast__art { background: #f7f1e6; }
+.cast__img { display: block; width: 100%; height: auto; }

@@ -1,6 +1,7 @@
 // docs/characters.md → public/archive/index.html
 // 用法：node scripts/build-characters.mjs
 // 规矩：人物卡的唯一正源是 docs/characters.md；改设定改 md，再跑这条命令。
+import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -39,6 +40,8 @@ const inline = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 
 const cn = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
 
+const CASTDIR = join(here, "..", "public", "new", "assets", "cast");
+const hasPlate = (i) => existsSync(join(CASTDIR, "c" + i, "plate-1200.jpg"));
 const EXP = ['平静', '营业笑', '真笑', '炸毛', '装凶', '耳朵塌', '嫌甜', '认真鉴糖', '紧张', '忍着哭', '得意', '警戒'];
 let ri = 0;
 const rosterItems = real.flatMap((g) => g.people.map((p) => {
@@ -47,11 +50,14 @@ const rosterItems = real.flatMap((g) => g.people.map((p) => {
   return { i: ri, name: p.name, tag: f('一句话'), hint: f('剪影'), race: f('种族/年龄'), role: f('身份'), want: f('愿望') };
 }));
 const roster = rosterItems.map((p) =>
-  `        <button type="button" class="cast__rb" data-idx="${p.i}" data-name="${esc(p.name)}" data-tag="${esc(p.tag)}" data-hint="${esc(p.hint)}" data-race="${esc(p.race)}" data-role="${esc(p.role)}" data-want="${esc(p.want)}">${esc(p.name)}</button>`
+  `        <button type="button" class="cast__rb" data-idx="${p.i}" data-name="${esc(p.name)}" data-tag="${esc(p.tag)}" data-hint="${esc(p.hint)}" data-race="${esc(p.race)}" data-role="${esc(p.role)}" data-want="${esc(p.want)}" data-plate="${hasPlate(p.i) ? '1' : ''}">${esc(p.name)}</button>`
 ).join('\n');
 const exps = EXP.map((e, i) =>
   `          <button type="button" class="cast__ex" data-ex="${i + 1}" aria-pressed="${i === 0 ? 'true' : 'false'}"><span>${String(i + 1).padStart(2, '0')}</span>${e}</button>`
 ).join('\n');
+const firstPlate = rosterItems.find((p) => hasPlate(p.i));
+const plateSrc = firstPlate ? `/new/assets/cast/c${firstPlate.i}/plate-1200.jpg` : '';
+const plateHref = firstPlate ? `/new/assets/cast/c${firstPlate.i}/plate-2000.jpg` : '';
 let n = 0;
 const cards = real.map((g, gi) => {
   const people = g.people.map((p) => {
@@ -112,11 +118,12 @@ const html = `<!DOCTYPE html>
   gap: clamp(2rem, 5vw, 4.5rem);
   margin-top: 3.2rem;
 }
-.cast { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 2.4rem; margin: 2.4rem 0 3.2rem; align-items: start; }
-.cast__art { position: relative; margin: 0; aspect-ratio: 3 / 4; border: 1px solid var(--line-2); background: linear-gradient(180deg, rgba(255,179,71,.05), rgba(255,179,71,.015)); display: grid; place-items: center; }
-.cast__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: bottom center; }
+.cast { display: grid; grid-template-columns: 460px minmax(0, 1fr); gap: 2.6rem; margin: 2.4rem 0 3.2rem; align-items: start; }
+.cast__art { position: sticky; top: 84px; margin: 0; border: 1px solid var(--line-2); background: #f7f1e6; box-shadow: 0 16px 38px -28px rgba(52,36,18,.55); }
+.cast__plate { display: block; }
+.cast__img { display: block; width: 100%; height: auto; }
 .cast__mono { font-family: var(--font-serif, Georgia, serif); font-size: 5.4rem; color: var(--amber); opacity: .32; line-height: 1; }
-.cast__note { position: absolute; left: 0; right: 0; bottom: .9rem; text-align: center; font-size: .68rem; letter-spacing: .12em; color: var(--text-dim); }
+.cast__note { margin: 0; padding: .6rem .8rem .7rem; text-align: center; font-size: .66rem; letter-spacing: .12em; color: var(--text-dim); border-top: 1px solid var(--line-1, rgba(0,0,0,.06)); }
 .cast.is-locked .cast__mono { opacity: .5; }
 .cast.is-locked .cast__art { background: linear-gradient(180deg, rgba(40,30,20,.06), rgba(40,30,20,.02)); }
 .cast__kicker { font-size: .68rem; letter-spacing: .18em; color: var(--amber); margin: 0 0 .7rem; }
@@ -127,21 +134,14 @@ const html = `<!DOCTYPE html>
 .cast__meta > div:last-child { border-bottom: 1px solid var(--line-1, rgba(0,0,0,.08)); }
 .cast__meta dt { font-size: .7rem; letter-spacing: .12em; color: var(--text-dim); }
 .cast__meta dd { margin: 0; font-size: .92rem; line-height: 1.8; color: var(--text); }
-.cast__exps { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.6rem; }
-.cast__ex { font: inherit; font-size: .72rem; letter-spacing: .04em; color: var(--text-soft); background: none; border: 1px solid var(--line-2); padding: .3rem .55rem; cursor: pointer; display: inline-flex; gap: .35rem; align-items: baseline; }
-.cast__ex span { color: var(--text-dim); font-size: .62rem; letter-spacing: .1em; }
-.cast__ex[aria-pressed="true"] { color: var(--text); border-color: var(--amber); background: rgba(255,179,71,.12); }
-.cast__ex:hover { border-color: var(--amber); }
 .cast__roster { display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; padding-top: 1.1rem; border-top: 1px solid var(--line-2); }
 .cast__rb { font: inherit; font-size: .8rem; color: var(--text-soft); background: none; border: 0; padding: .15rem 0; cursor: pointer; letter-spacing: .04em; }
 .cast__rb.is-on { color: var(--text); border-bottom: 1px solid var(--amber); }
 .cast__rb.is-locked { color: var(--line-strong); pointer-events: none; }
 @media (max-width: 820px) {
-  .cast { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; }
+  .cast { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; }
   .cast__panel { min-width: 0; }
-  .cast__exps { max-width: 100%; }
-  .cast__art { max-width: 300px; margin: 0 auto; width: 100%; }
-  .cast__exps { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .4rem; }
+  .cast__art { position: static; max-width: none; margin: 0; width: 100%; }
   .cast__ex { flex: 0 0 auto; }
 }
 .arch__wrap.no-rail { grid-template-columns: minmax(0, 1fr); }
@@ -299,9 +299,11 @@ const html = `<!DOCTYPE html>
 
       <section class="cast" id="cast" aria-label="人物立绘">
         <figure class="cast__art">
-          <img class="cast__img" id="castImg" alt="" hidden>
-          <span class="cast__mono" id="castMono">琉</span>
-          <figcaption class="cast__note">立绘待补 · 3:4 透明底</figcaption>
+          <a class="cast__plate" id="castPlate" href="${plateHref}" target="_blank" rel="noopener" aria-label="点开查看设定原稿全尺寸"${plateSrc ? '' : ' hidden'}>
+            <img class="cast__img" id="castImg" src="${plateSrc}" width="1200" height="1600" alt="">
+          </a>
+          <span class="cast__mono" id="castMono"${plateSrc ? ' hidden' : ''}>琉</span>
+          <figcaption class="cast__note" id="castNote">${plateSrc ? '设定原稿 · 4608×6144 · 点开看细节' : '原稿待补'}</figcaption>
         </figure>
         <div class="cast__panel">
           <p class="cast__kicker">第 <span id="castNo">01</span> 位 · 共 ${total} 位</p>
@@ -312,7 +314,6 @@ const html = `<!DOCTYPE html>
             <div><dt>身份</dt><dd data-k="role">—</dd></div>
             <div><dt>愿望</dt><dd data-k="want">—</dd></div>
           </dl>
-          <div class="cast__exps" role="group" aria-label="表情差分">${exps}</div>
           <nav class="cast__roster" id="castRoster" aria-label="切换人物">
 ${roster}
           </nav>

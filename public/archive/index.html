@@ -28,11 +28,12 @@
   gap: clamp(2rem, 5vw, 4.5rem);
   margin-top: 3.2rem;
 }
-.cast { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 2.4rem; margin: 2.4rem 0 3.2rem; align-items: start; }
-.cast__art { position: relative; margin: 0; aspect-ratio: 3 / 4; border: 1px solid var(--line-2); background: linear-gradient(180deg, rgba(255,179,71,.05), rgba(255,179,71,.015)); display: grid; place-items: center; }
-.cast__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: bottom center; }
+.cast { display: grid; grid-template-columns: 460px minmax(0, 1fr); gap: 2.6rem; margin: 2.4rem 0 3.2rem; align-items: start; }
+.cast__art { position: sticky; top: 84px; margin: 0; border: 1px solid var(--line-2); background: #f7f1e6; box-shadow: 0 16px 38px -28px rgba(52,36,18,.55); }
+.cast__plate { display: block; }
+.cast__img { display: block; width: 100%; height: auto; }
 .cast__mono { font-family: var(--font-serif, Georgia, serif); font-size: 5.4rem; color: var(--amber); opacity: .32; line-height: 1; }
-.cast__note { position: absolute; left: 0; right: 0; bottom: .9rem; text-align: center; font-size: .68rem; letter-spacing: .12em; color: var(--text-dim); }
+.cast__note { margin: 0; padding: .6rem .8rem .7rem; text-align: center; font-size: .66rem; letter-spacing: .12em; color: var(--text-dim); border-top: 1px solid var(--line-1, rgba(0,0,0,.06)); }
 .cast.is-locked .cast__mono { opacity: .5; }
 .cast.is-locked .cast__art { background: linear-gradient(180deg, rgba(40,30,20,.06), rgba(40,30,20,.02)); }
 .cast__kicker { font-size: .68rem; letter-spacing: .18em; color: var(--amber); margin: 0 0 .7rem; }
@@ -43,21 +44,14 @@
 .cast__meta > div:last-child { border-bottom: 1px solid var(--line-1, rgba(0,0,0,.08)); }
 .cast__meta dt { font-size: .7rem; letter-spacing: .12em; color: var(--text-dim); }
 .cast__meta dd { margin: 0; font-size: .92rem; line-height: 1.8; color: var(--text); }
-.cast__exps { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.6rem; }
-.cast__ex { font: inherit; font-size: .72rem; letter-spacing: .04em; color: var(--text-soft); background: none; border: 1px solid var(--line-2); padding: .3rem .55rem; cursor: pointer; display: inline-flex; gap: .35rem; align-items: baseline; }
-.cast__ex span { color: var(--text-dim); font-size: .62rem; letter-spacing: .1em; }
-.cast__ex[aria-pressed="true"] { color: var(--text); border-color: var(--amber); background: rgba(255,179,71,.12); }
-.cast__ex:hover { border-color: var(--amber); }
 .cast__roster { display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; padding-top: 1.1rem; border-top: 1px solid var(--line-2); }
 .cast__rb { font: inherit; font-size: .8rem; color: var(--text-soft); background: none; border: 0; padding: .15rem 0; cursor: pointer; letter-spacing: .04em; }
 .cast__rb.is-on { color: var(--text); border-bottom: 1px solid var(--amber); }
 .cast__rb.is-locked { color: var(--line-strong); pointer-events: none; }
 @media (max-width: 820px) {
-  .cast { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; }
+  .cast { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; }
   .cast__panel { min-width: 0; }
-  .cast__exps { max-width: 100%; }
-  .cast__art { max-width: 300px; margin: 0 auto; width: 100%; }
-  .cast__exps { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .4rem; }
+  .cast__art { position: static; max-width: none; margin: 0; width: 100%; }
   .cast__ex { flex: 0 0 auto; }
 }
 .arch__wrap.no-rail { grid-template-columns: minmax(0, 1fr); }
@@ -215,9 +209,11 @@
 
       <section class="cast" id="cast" aria-label="人物立绘">
         <figure class="cast__art">
-          <img class="cast__img" id="castImg" alt="" hidden>
-          <span class="cast__mono" id="castMono">琉</span>
-          <figcaption class="cast__note">立绘待补 · 3:4 透明底</figcaption>
+          <a class="cast__plate" id="castPlate" href="/new/assets/cast/c3/plate-2000.jpg" target="_blank" rel="noopener" aria-label="点开查看设定原稿全尺寸">
+            <img class="cast__img" id="castImg" src="/new/assets/cast/c3/plate-1200.jpg" width="1200" height="1600" alt="">
+          </a>
+          <span class="cast__mono" id="castMono" hidden>琉</span>
+          <figcaption class="cast__note" id="castNote">设定原稿 · 4608×6144 · 点开看细节</figcaption>
         </figure>
         <div class="cast__panel">
           <p class="cast__kicker">第 <span id="castNo">01</span> 位 · 共 12 位</p>
@@ -228,31 +224,19 @@
             <div><dt>身份</dt><dd data-k="role">—</dd></div>
             <div><dt>愿望</dt><dd data-k="want">—</dd></div>
           </dl>
-          <div class="cast__exps" role="group" aria-label="表情差分">          <button type="button" class="cast__ex" data-ex="1" aria-pressed="true"><span>01</span>平静</button>
-          <button type="button" class="cast__ex" data-ex="2" aria-pressed="false"><span>02</span>营业笑</button>
-          <button type="button" class="cast__ex" data-ex="3" aria-pressed="false"><span>03</span>真笑</button>
-          <button type="button" class="cast__ex" data-ex="4" aria-pressed="false"><span>04</span>炸毛</button>
-          <button type="button" class="cast__ex" data-ex="5" aria-pressed="false"><span>05</span>装凶</button>
-          <button type="button" class="cast__ex" data-ex="6" aria-pressed="false"><span>06</span>耳朵塌</button>
-          <button type="button" class="cast__ex" data-ex="7" aria-pressed="false"><span>07</span>嫌甜</button>
-          <button type="button" class="cast__ex" data-ex="8" aria-pressed="false"><span>08</span>认真鉴糖</button>
-          <button type="button" class="cast__ex" data-ex="9" aria-pressed="false"><span>09</span>紧张</button>
-          <button type="button" class="cast__ex" data-ex="10" aria-pressed="false"><span>10</span>忍着哭</button>
-          <button type="button" class="cast__ex" data-ex="11" aria-pressed="false"><span>11</span>得意</button>
-          <button type="button" class="cast__ex" data-ex="12" aria-pressed="false"><span>12</span>警戒</button></div>
           <nav class="cast__roster" id="castRoster" aria-label="切换人物">
-        <button type="button" class="cast__rb" data-idx="1" data-name="琉玥" data-tag="把味道翻译成话的人" data-hint="能把一杯糖浆里的每一味都尝出来。" data-race="人类少女，17 岁" data-role="帕芙利亚糖蜜鉴评所见习品糖师，受雇商队为糖蜜定级" data-want="弄清一种只在走私商队之间流通、来历不明的粗糖">琉玥</button>
-        <button type="button" class="cast__rb" data-idx="2" data-name="薇尔" data-tag="只凭规则说话的人" data-hint="账本比秤还准。" data-race="人类少女，16 岁" data-role="旧蜜街区商队账务学徒，记糖蜜等级与出入账目" data-want="成为"不被眼力和人情左右、只凭规则说话"的人">薇尔</button>
-        <button type="button" class="cast__rb" data-idx="3" data-name="芙兰" data-tag="一条舌头，替整条街对账" data-hint="一条舌头，值五枚铜币。" data-race="猫族少女，16 岁" data-role="帕芙利亚旧蜜街区的孤儿，在商队边角长大；靠一条舌头替人鉴糖换钱的「试糖人」" data-want="攒够三十四枚铜币，买下糖铺橱窗最里头那颗「整块」，一个人蹲到河边把它吃完">芙兰</button>
-        <button type="button" class="cast__rb" data-idx="4" data-name="玛尔塔" data-tag="卖糖的人自己不吃糖" data-hint="卖糖的，自己一口不吃。" data-race="人类，60 岁" data-role="糖铺老板娘" data-want="把铺子传给孙女（孙女才四岁）">玛尔塔</button>
-        <button type="button" class="cast__rb" data-idx="5" data-name="哈根" data-tag="明年我还来" data-hint="担子两头，麻绳打得整整齐齐。" data-race="人类，43 岁" data-role="西边山坳里的糖农" data-want="明年还能把糖送到这条街">哈根</button>
-        <button type="button" class="cast__rb" data-idx="6" data-name="皮普" data-tag="什么糖都能卖出去" data-hint="街上有什么消息，他的铃铛先响。" data-race="人类，12 岁" data-role="街头小贩" data-want="当冒险者（他还不知道冒险者要下地下城）">皮普</button>
-        <button type="button" class="cast__rb" data-idx="7" data-name="莉娜" data-tag="她盖过章的糖，必须合格" data-hint="盖章之前，先把你那句话重复一遍。" data-race="人类，24 岁" data-role="蜜契行会旧蜜分部受付" data-want="调去中枢城帕尔">莉娜</button>
-        <button type="button" class="cast__rb" data-idx="8" data-name="塞德里克（老塞）" data-tag="他尝不出甜，但摸得出" data-hint="爱给东西起名字的老水手。" data-race="人类，68 岁（外观看）" data-role="老水手（真身：旧蜜守密人）" data-want="再见一次海滩上那朵白花">塞德里克（老塞）</button>
-        <button type="button" class="cast__rb" data-idx="9" data-name="奥托·蓝姆" data-tag="你这样的舌头，死一个少一个" data-hint="会请你喝一碗糖水，自己一口不喝。" data-race="人类，44 岁" data-role="浮泡商盟旧蜜分部管事" data-want="再尝一次甜（他自己不承认）">奥托·蓝姆</button>
-        <button type="button" class="cast__rb" data-idx="10" data-name="伊莎贝尔" data-tag="脏的东西，烧掉就干净了" data-hint="烧糖之前，先洗手。" data-race="人类，31 岁" data-role="圣蜜都"净化队"密使" data-want="让世界没有"脏糖"">伊莎贝尔</button>
-        <button type="button" class="cast__rb" data-idx="11" data-name="卡尔·冯·德雷" data-tag="标本不会说谎" data-hint="把巨神当矿脉，把人体当标本。" data-race="人类，38 岁" data-role="瓦拉罗帝国勘探队长" data-want="把巨神体内的糖化器官带回帝国">卡尔·冯·德雷</button>
-        <button type="button" class="cast__rb" data-idx="12" data-name="维奥拉·佩奇" data-tag="消息是免费的，但代价不是" data-hint="消息是免费的，代价不是。" data-race="人类，26 岁" data-role="中枢城帕尔"探险协会"挂名干事（私下：替一个从不露面的人做记录）" data-want="把这份差事做成一份能写进档案的功绩">维奥拉·佩奇</button>
+        <button type="button" class="cast__rb" data-idx="1" data-name="琉玥" data-tag="把味道翻译成话的人" data-hint="能把一杯糖浆里的每一味都尝出来。" data-race="人类少女，17 岁" data-role="帕芙利亚糖蜜鉴评所见习品糖师，受雇商队为糖蜜定级" data-want="弄清一种只在走私商队之间流通、来历不明的粗糖" data-plate="">琉玥</button>
+        <button type="button" class="cast__rb" data-idx="2" data-name="薇尔" data-tag="只凭规则说话的人" data-hint="账本比秤还准。" data-race="人类少女，16 岁" data-role="旧蜜街区商队账务学徒，记糖蜜等级与出入账目" data-want="成为"不被眼力和人情左右、只凭规则说话"的人" data-plate="">薇尔</button>
+        <button type="button" class="cast__rb" data-idx="3" data-name="芙兰" data-tag="一条舌头，替整条街对账" data-hint="一条舌头，值五枚铜币。" data-race="猫族少女，16 岁" data-role="帕芙利亚旧蜜街区的孤儿，在商队边角长大；靠一条舌头替人鉴糖换钱的「试糖人」" data-want="攒够三十四枚铜币，买下糖铺橱窗最里头那颗「整块」，一个人蹲到河边把它吃完" data-plate="1">芙兰</button>
+        <button type="button" class="cast__rb" data-idx="4" data-name="玛尔塔" data-tag="卖糖的人自己不吃糖" data-hint="卖糖的，自己一口不吃。" data-race="人类，60 岁" data-role="糖铺老板娘" data-want="把铺子传给孙女（孙女才四岁）" data-plate="">玛尔塔</button>
+        <button type="button" class="cast__rb" data-idx="5" data-name="哈根" data-tag="明年我还来" data-hint="担子两头，麻绳打得整整齐齐。" data-race="人类，43 岁" data-role="西边山坳里的糖农" data-want="明年还能把糖送到这条街" data-plate="">哈根</button>
+        <button type="button" class="cast__rb" data-idx="6" data-name="皮普" data-tag="什么糖都能卖出去" data-hint="街上有什么消息，他的铃铛先响。" data-race="人类，12 岁" data-role="街头小贩" data-want="当冒险者（他还不知道冒险者要下地下城）" data-plate="">皮普</button>
+        <button type="button" class="cast__rb" data-idx="7" data-name="莉娜" data-tag="她盖过章的糖，必须合格" data-hint="盖章之前，先把你那句话重复一遍。" data-race="人类，24 岁" data-role="蜜契行会旧蜜分部受付" data-want="调去中枢城帕尔" data-plate="">莉娜</button>
+        <button type="button" class="cast__rb" data-idx="8" data-name="塞德里克（老塞）" data-tag="他尝不出甜，但摸得出" data-hint="爱给东西起名字的老水手。" data-race="人类，68 岁（外观看）" data-role="老水手（真身：旧蜜守密人）" data-want="再见一次海滩上那朵白花" data-plate="">塞德里克（老塞）</button>
+        <button type="button" class="cast__rb" data-idx="9" data-name="奥托·蓝姆" data-tag="你这样的舌头，死一个少一个" data-hint="会请你喝一碗糖水，自己一口不喝。" data-race="人类，44 岁" data-role="浮泡商盟旧蜜分部管事" data-want="再尝一次甜（他自己不承认）" data-plate="">奥托·蓝姆</button>
+        <button type="button" class="cast__rb" data-idx="10" data-name="伊莎贝尔" data-tag="脏的东西，烧掉就干净了" data-hint="烧糖之前，先洗手。" data-race="人类，31 岁" data-role="圣蜜都"净化队"密使" data-want="让世界没有"脏糖"" data-plate="">伊莎贝尔</button>
+        <button type="button" class="cast__rb" data-idx="11" data-name="卡尔·冯·德雷" data-tag="标本不会说谎" data-hint="把巨神当矿脉，把人体当标本。" data-race="人类，38 岁" data-role="瓦拉罗帝国勘探队长" data-want="把巨神体内的糖化器官带回帝国" data-plate="">卡尔·冯·德雷</button>
+        <button type="button" class="cast__rb" data-idx="12" data-name="维奥拉·佩奇" data-tag="消息是免费的，但代价不是" data-hint="消息是免费的，代价不是。" data-race="人类，26 岁" data-role="中枢城帕尔"探险协会"挂名干事（私下：替一个从不露面的人做记录）" data-want="把这份差事做成一份能写进档案的功绩" data-plate="">维奥拉·佩奇</button>
           </nav>
         </div>
       </section>
