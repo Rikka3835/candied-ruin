@@ -33,6 +33,14 @@ node scripts/build-chapters.mjs   # content/*.md → public/novel/ch/*.html + in
 node scripts/build-pages.mjs      # public/ → pages-dist/
 ```
 
+同步到 GitHub（改完就这样一条）：
+
+```bash
+npm run push
+```
+
+token 只存在本机 `secrets` 文件里，不写进仓库、不写进 shell 历史。
+
 发布到 Cloudflare Pages（项目 `bubble-vanguard`），wrangler 在 Electron 的 node 模式下的启动方式见 `scripts/wr-preload.cjs` 文件头注释。
 
 ## 约定
