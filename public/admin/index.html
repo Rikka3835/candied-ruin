@@ -34,6 +34,7 @@ button.ghost{background:transparent}
 .row .n{color:var(--amber);font-size:12px;width:34px;flex:none}
 .row .t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .row[draggable]{cursor:grab}
+.row .hdl{color:rgba(70,52,34,.28);font-size:11px;letter-spacing:-1px;flex:none}
 .row.dragging{opacity:.35}
 .row.over{box-shadow:inset 0 2px 0 var(--amber)}
 .stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:12px}
@@ -80,7 +81,7 @@ textarea#body{min-height:520px;resize:vertical;line-height:1.9}
   <div id="appView" class="hide">
     <div class="grid">
       <aside class="list">
-        <h2>章节</h2>
+        <h2>章节 <span style="letter-spacing:0;font-size:11px">（拖动可排序）</span></h2>
         <div id="list"></div>
         <div class="bar"><button id="newCh" type="button">+ 新章</button></div>
       </aside>
@@ -184,7 +185,7 @@ async function loadList(){
   const r = await api("/api/chapters");
   rows = r.d.chapters || [];
   $("list").innerHTML = rows.length ? rows.map(c=>
-    '<div class="row" draggable="true" data-n="'+c.n+'"><span class="n">'+String(c.n).padStart(2,"0")+'</span><span class="t">'+esc(c.title)+'</span><span class="chip '+(c.status==="published"?"pub":"")+'">'+(c.status==="published"?"已发布":"草稿")+'</span></div>'
+    '<div class="row" draggable="true" data-n="'+c.n+'"><span class="hdl">⋮⋮</span><span class="n">'+String(c.n).padStart(2,"0")+'</span><span class="t">'+esc(c.title)+'</span><span class="chip '+(c.status==="published"?"pub":"")+'">'+(c.status==="published"?"已发布":"草稿")+'</span></div>'
   ).join("") : '<p style="color:#8b7d70;font-size:13px">还没有章节。</p>';
   [...document.querySelectorAll(".row")].forEach(el=>el.onclick=()=>openRow(Number(el.dataset.n)));
   if(!cur && rows.length) openRow(rows[0].n);
