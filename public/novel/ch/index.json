@@ -43,6 +43,22 @@
       "minutes": 6,
       "updated": "2026-10-28",
       "file": "ch/003.html"
+    },
+    {
+      "n": 4,
+      "vol": "第一卷 · 糖罐里的猫",
+      "title": "初七",
+      "subtitle": "",
+      "cast": [
+        "芙兰",
+        "琉玥",
+        "莉娜",
+        "柯林"
+      ],
+      "chars": 2621,
+      "minutes": 6,
+      "updated": "2026-10-28",
+      "file": "ch/004.html"
     }
   ]
 }
