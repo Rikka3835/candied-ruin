@@ -116,8 +116,10 @@
     nav.hidden = false;
     btnPrev.disabled = !prev;
     btnNext.disabled = !next;
-    btnPrev.textContent = prev ? "← 第 " + prev.n + " 章 · " + prev.title : "← 没有上一章";
-    btnNext.textContent = next ? "第 " + next.n + " 章 · " + next.title + " →" : "没有下一章 →";
+    if (prev) { btnPrev.hidden = false; btnPrev.textContent = "← 第 " + prev.n + " 章 · " + prev.title; }
+    else { btnPrev.hidden = true; }
+    if (next) { btnNext.hidden = false; btnNext.textContent = "第 " + next.n + " 章 · " + next.title + " →"; }
+    else { btnNext.hidden = true; }
     btnPrev.onclick = prev ? () => openChapter(String(prev.n)) : null;
     btnNext.onclick = next ? () => openChapter(String(next.n)) : null;
     btnNext.classList.add("to-next");
