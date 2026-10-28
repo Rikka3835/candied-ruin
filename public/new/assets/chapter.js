@@ -123,6 +123,24 @@
     btnPrev.onclick = prev ? () => openChapter(String(prev.n)) : null;
     btnNext.onclick = next ? () => openChapter(String(next.n)) : null;
     btnNext.classList.add("to-next");
+
+    /* 卷末卡：读完本卷最后一章才出现一次 */
+    const cur = listAll[i] || null;
+    const isVolEnd = !!cur && !next;
+    let volend = sheet.querySelector(".volend");
+    if (!isVolEnd) { if (volend) volend.remove(); return; }
+    const sameVol = listAll.filter((c) => c.vol === cur.vol);
+    const words = sameVol.reduce((sum, c) => sum + (c.chars || 0), 0);
+    if (!volend) {
+      volend = document.createElement("div");
+      volend.className = "volend";
+      nav.parentNode.insertBefore(volend, nav);
+    }
+    volend.innerHTML =
+      '<p class="volend__mark">卷一 · 完</p>' +
+      '<p class="volend__name">' + cur.vol.replace(/^第[一二三四五六七八九十]+卷\s*·\s*/, "") + '</p>' +
+      '<p class="volend__note">' + sameVol.length + " 章 · 约 " + words.toLocaleString("en-US") + " 字</p>" +
+      '<p class="volend__next">第二卷《甜味走私者》——罐子里的东西，得找到一个能说清楚它的人。</p>';
   }
 
   /* ---------- R3：阅读进度（每章记一个比例，目录页给「继续读」） ---------- */
@@ -385,6 +403,39 @@
 
 
 /* catalog-sync: 目录顺序以数据库为准（后台拖拽排序后不用重新部署） */
+function paintCatalogProgress(nodes) {
+  let maxch = 0;
+  try { maxch = Number(localStorage.getItem('cr.maxch') || 0); } catch (e) {}
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem('cr.progress') || 'null'); } catch (e) {}
+  nodes.forEach(function (b) {
+    const n = Number(b.getAttribute('data-ch'));
+    const nameEl = b.querySelector('.chap__name') || b;
+    let tag = nameEl.querySelector('.chap__prog');
+    const hit = saved && Number(saved.n) === n && saved.ratio > 0.02;
+    if (hit) {
+      if (!tag) { tag = document.createElement('i'); tag.className = 'chap__prog'; nameEl.appendChild(tag); }
+      tag.textContent = '读到 ' + Math.round(saved.ratio * 100) + '%';
+    } else if (tag) { tag.remove(); }
+    b.classList.toggle('is-read', !!maxch && n < maxch);
+  });
+  const head = document.querySelector('.vol__head');
+  if (!head) return;
+  let strip = head.querySelector('.vol__prog');
+  if (!strip) { strip = document.createElement('span'); strip.className = 'vol__prog'; head.appendChild(strip); }
+  const read = nodes.filter(function (b) { return Number(b.getAttribute('data-ch')) <= maxch; }).length;
+  if (!maxch) { strip.textContent = ''; strip.hidden = true; return; }
+  strip.hidden = false;
+  strip.innerHTML = '<i>' + nodes.map(function (b) {
+    return '<b class="' + (Number(b.getAttribute('data-ch')) <= maxch ? 'on' : '') + '"></b>';
+  }).join('') + '</i><em>已读 ' + read + ' / ' + nodes.length + '</em>';
+}
+
+(function () {
+  const nodes = [].slice.call(document.querySelectorAll('.chap'));
+  if (nodes.length && nodes[0].getAttribute('data-ch')) paintCatalogProgress(nodes);
+})();
+
 (function () {
   const list = document.querySelector('.chap-list');
   if (!list) return;
@@ -432,6 +483,7 @@
           return a + (m ? Number(m[1].replace(/,/g, '')) : 0);
         }, 0);
         note.textContent = nodes.length + ' 章 · 共 ' + total.toLocaleString('en-US') + ' 字';
+        paintCatalogProgress(nodes);
       }
     })
     .catch(function () {});

@@ -237,3 +237,58 @@ body {
 .cast__art { background: #f7f1e6; }
 .cast.is-locked .cast__art { background: #f7f1e6; }
 .cast__img { display: block; width: 100%; height: auto; }
+
+/* ---------- 卷末卡 ---------- */
+.volend {
+  margin-top: clamp(2rem, 5vh, 3rem);
+  padding: clamp(1.4rem, 3.4vw, 2rem) clamp(1.2rem, 3vw, 1.8rem);
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 179, 71, .05), transparent 70%);
+  text-align: center;
+}
+.volend__mark {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: .68rem;
+  letter-spacing: .34em;
+  color: var(--caramel);
+  text-transform: none;
+}
+.volend__name {
+  margin: .7rem 0 0;
+  font-size: 1.42rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--text);
+}
+.volend__note {
+  margin: .55rem 0 0;
+  font-size: .78rem;
+  letter-spacing: .08em;
+  color: var(--muted);
+}
+.volend__next {
+  margin: 1.1rem auto 0;
+  max-width: 26em;
+  font-size: .92rem;
+  line-height: 1.95;
+  color: var(--text-soft);
+}
+[data-theme="night"] .volend { border-color: rgba(255, 232, 198, .18); }
+
+/* ---------- 目录：阅读进度 ---------- */
+.vol__prog { display: inline-flex; align-items: center; gap: .5rem; margin-left: .9rem; }
+.vol__prog[hidden] { display: none; }
+.vol__prog i { display: inline-flex; gap: 3px; }
+.vol__prog i b {
+  display: block; width: 9px; height: 3px; border-radius: 1px;
+  background: var(--line-strong); opacity: .45;
+}
+.vol__prog i b.on { background: var(--caramel); opacity: 1; }
+.vol__prog em { font-style: normal; font-size: .72rem; letter-spacing: .08em; color: var(--muted); }
+.chap { position: relative; }
+.chap__prog {
+  display: inline-block; margin-left: .55rem; font-style: normal; font-size: .7rem;
+  letter-spacing: .06em; color: var(--caramel); vertical-align: .12em;
+}
+.chap.is-read .chap__name { color: var(--text-soft); }
