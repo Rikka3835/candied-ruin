@@ -1,7 +1,7 @@
 # 糖渍旧蜜 · CANDIED RUIN
 
 轻小说《糖渍旧蜜》的官方网站与正文稿库。  
-线上：<https://bubble-vanguard.pages.dev>
+线上：<https://candied-ruin.pages.dev>（旧域名 bubble-vanguard.pages.dev 已 301）
 
 ## 目录
 

@@ -1,19 +1,22 @@
-import { cp, mkdir, rm, copyFile, stat } from 'node:fs/promises';
+import { cp, mkdir, rm, stat, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const root = process.cwd();
 const out = join(root, 'pages-dist');
 
+// 纯静态站：public/ 原样拷贝到 pages-dist/，不再附带 _worker.js
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
 await cp(join(root, 'public'), out, { recursive: true });
-await copyFile(join(root, 'src', 'worker.js'), join(out, '_worker.js'));
+
+async function countFiles(dir) {
+  let n = 0;
+  for (const e of await readdir(dir, { withFileTypes: true })) {
+    n += e.isDirectory() ? await countFiles(join(dir, e.name)) : 1;
+  }
+  return n;
+}
 
 const index = await stat(join(out, 'index.html'));
-const worker = await stat(join(out, '_worker.js'));
-console.log(JSON.stringify({
-  out,
-  indexBytes: index.size,
-  workerBytes: worker.size,
-  entry: true
-}, null, 2));
+const files = await countFiles(out);
+console.log(JSON.stringify({ out, indexBytes: index.size, files, worker: false }, null, 2));
