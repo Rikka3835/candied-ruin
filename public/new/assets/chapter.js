@@ -380,3 +380,57 @@
   const m = /^#ch(\d+)$/.exec(location.hash);
   if (m) openChapter(m[1]);
 })();
+
+
+/* catalog-sync: 目录顺序以数据库为准（后台拖拽排序后不用重新部署） */
+(function () {
+  const list = document.querySelector('.chap-list');
+  if (!list) return;
+  const nodes = [...list.querySelectorAll('.chap')];
+  if (!nodes.length) return;
+  const byTitle = new Map();
+  nodes.forEach(function (b) {
+    const t = (b.querySelector('.chap__name') || {}).textContent || '';
+    if (t) byTitle.set(t.trim(), b);
+  });
+  fetch('/api/chapters', { headers: { accept: 'application/json' } })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || !Array.isArray(d.chapters)) return;
+      const items = d.chapters.filter(function (c) { return c.status === 'published'; })
+        .sort(function (a, b) { return a.n - b.n; });
+      if (!items.length) return;
+      const matched = items.map(function (c) { return byTitle.get((c.title || '').trim()); });
+      if (matched.some(function (n) { return !n; })) return;   // 有新章还没构建：交给静态版
+      const cur = nodes.map(function (b) { return b.querySelector('.chap__name').textContent.trim(); });
+      const want = items.map(function (c) { return (c.title || '').trim(); });
+      if (cur.join('|') === want.join('|')) {
+        items.forEach(function (c, i2) {
+          const b = matched[i2];
+          b.setAttribute('data-ch', String(c.n));
+          const no = b.querySelector('.chap__no');
+          if (no) no.textContent = '第 ' + c.n + ' 章';
+        });
+        return;
+      }
+      const frag = document.createDocumentFragment();
+      items.forEach(function (c, i2) {
+        const b = matched[i2];
+        b.setAttribute('data-ch', String(c.n));
+        const no = b.querySelector('.chap__no');
+        if (no) no.textContent = '第 ' + c.n + ' 章';
+        frag.appendChild(b);
+      });
+      list.appendChild(frag);
+      const note = document.querySelector('.vol__note');
+      if (note) {
+        const total = nodes.reduce(function (a, b) {
+          const st = (b.querySelector('.chap__state') || {}).textContent || '';
+          const m = /([0-9,]+)\s*字/.exec(st);
+          return a + (m ? Number(m[1].replace(/,/g, '')) : 0);
+        }, 0);
+        note.textContent = nodes.length + ' 章 · 共 ' + total.toLocaleString('en-US') + ' 字';
+      }
+    })
+    .catch(function () {});
+})();
