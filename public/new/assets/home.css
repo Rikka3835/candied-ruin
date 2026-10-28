@@ -161,20 +161,6 @@ body {
 .btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
 /* 前言入口：压在图上的次级链接，不加按钮、不加底板 */
-.hero__pre {
-  display: block;
-  width: fit-content;
-  margin-top: 18px;
-  font-family: var(--ui);
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  color: rgba(255, 255, 255, 0.86);
-  text-decoration: none;
-  text-shadow: 0 1px 12px rgba(var(--night), 0.7);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.34);
-  padding-bottom: 3px;
-  transition: color 200ms ease, border-color 200ms ease;
-}
 .hero__pre:hover { color: #fff; border-bottom-color: #fff; }
 .hero__pre:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 
