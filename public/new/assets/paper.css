@@ -229,3 +229,5 @@ body {
 }
 @media (max-width: 720px) { .arch__rail.is-empty { display: none; } }
 .cast.is-locked .cast__exps { opacity: .45; }
+.cast__artimg:not([src]), .cast__artimg[src=""] { display: none; }
+.cast__img[hidden] { display: none !important; }
