@@ -305,7 +305,7 @@ const html = `<!DOCTYPE html>
           <a class="cast__plate" id="castPlate" href="${plateHref}" target="_blank" rel="noopener" aria-label="点开查看设定原稿全尺寸"${plateSrc ? '' : ' hidden'}>
             <picture>
               <source id="castWebp" type="image/webp" srcset="${plateWebp}">
-              <img class="cast__img" id="castImg" src="${plateSrc}" width="1200" height="1600" alt="芙兰设定原稿">
+              <img class="cast__img" id="castImg" src="${plateSrc}" width="1200" height="1600" alt="人物设定原稿">
             </picture>
           </a>
           <span class="cast__mono" id="castMono"${plateSrc ? ' hidden' : ''}>琉</span>
