@@ -8,3 +8,4 @@ ref/
 *.log
 .DS_Store
 .wrangler/
+d1-sync.sql

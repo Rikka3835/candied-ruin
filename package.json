@@ -12,6 +12,7 @@
     "dev": "node scripts/preview-server.mjs public 8099",
     "push": "bash scripts/push.sh",
     "sync:state": "node scripts/novelops-sync.mjs",
-    "audit": "bash scripts/audit.sh"
+    "audit": "bash scripts/audit.sh",
+    "sync:d1": "node scripts/sync-d1.mjs --apply"
   }
 }
