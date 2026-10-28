@@ -150,9 +150,9 @@
     writeProg({ n, ratio, at: Date.now() });
   }
 
-  function restorePos(n) {
+  function restorePos(n, resume) {
     const saved = readProg();
-    if (saved && Number(saved.n) === Number(n) && saved.ratio > 0.02) {
+    if (resume && saved && Number(saved.n) === Number(n) && saved.ratio > 0.02) {
       view.scrollTop = Math.round(saved.ratio * Math.max(0, view.scrollHeight - view.clientHeight));
     } else {
       view.scrollTop = 0;
@@ -160,15 +160,14 @@
     paint();
   }
 
-  async function openChapter(n) {
+  async function openChapter(n, resume) {
     // 阅读层已经打开时（点章末的上一章/下一章、键盘、滑动）只换内容，不再播入场
     if (open) {
       rememberPos();
       window.__crCh = n;
-    bumpMax(n);
       bumpMax(n);
       await renderChapter(n);
-      restorePos(n);
+      restorePos(n, resume);
       if (location.hash !== "#ch" + n) history.pushState({ ch: n }, "", "#ch" + n);
       return;
     }
@@ -179,7 +178,7 @@
     window.__crCh = n;
     bumpMax(n);
     await renderChapter(n);
-    restorePos(n);
+    restorePos(n, resume);
     requestAnimationFrame(() => {
       view.classList.add("is-in");
       paint();
@@ -341,7 +340,7 @@
 
   window.addEventListener("popstate", () => {
     const m = /^#ch(\d+)$/.exec(location.hash);
-    if (m) openChapter(m[1]);
+    if (m) openChapter(m[1], true);
     else closeChapter(false);
   });
 
@@ -371,7 +370,7 @@
       contBtn.dataset.wired = "1";
       contBtn.addEventListener("click", () => {
         const p = readProg();
-        if (p) openChapter(String(p.n));
+        if (p) openChapter(String(p.n), true);
       });
     }
   }
