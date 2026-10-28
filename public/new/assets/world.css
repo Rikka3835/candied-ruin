@@ -630,3 +630,43 @@ body.world ::selection { background: rgba(176, 121, 58, 0.24); }
   .creed__row { gap: 1.7rem; font-size: 1.9rem; }
 }
 
+
+/* ---------- 页内目录 ---------- */
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.5rem;
+  margin: 1.7rem 0 0.2rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--w-line);
+}
+.toc a {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--w-muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.toc a:hover { color: var(--w-ink); border-bottom-color: var(--w-amber); }
+.sc, .sc__title { scroll-margin-top: calc(var(--nav-h, 62px) + 1.8rem); }
+
+@media (max-width: 720px) {
+  .toc {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 1.15rem;
+    padding-bottom: 0.7rem;
+    scrollbar-width: none;
+  }
+  .toc::-webkit-scrollbar { display: none; }
+  .toc a { white-space: nowrap; }
+  .sc, .sc__title { scroll-margin-top: 138px; }
+}
+
+/* TOC 之后的第一节不再画顶线，避免两条线打架 */
+.pre .sc:first-of-type .sc__head {
+  border-top: 0;
+  padding-top: 0.2rem;
+}
+.pre .sc:first-of-type { margin-top: 2.4rem; }
