@@ -347,7 +347,7 @@ ${cards}
   </footer>
 
   <script src="/new/assets/nav-back.js?v=20261028l" defer></script>
-<script src="/new/assets/gallery.js?v=20261029b" defer></script>
+<script src="/new/assets/gallery.js?v=20261029c" defer></script>
 </body>
 </html>
 `;

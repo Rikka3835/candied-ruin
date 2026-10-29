@@ -75,8 +75,11 @@ if (process.argv.includes("--apply")) {
     ROOT,
     "node_modules/.pnpm/wrangler@4.152.0/node_modules/wrangler/wrangler-dist/cli.js"
   );
+  // 用当前解释器自身的可执行文件：在 DSH 里跑时它就是 Electron（ELECTRON_RUN_AS_NODE=1 当 node 用）。
+  // 以前写死 POSIX 路径 "/d/DSH/DeepSeek Harness.exe"，Windows 上 execFileSync 会 ENOENT。
+  const NODE_EXE = process.env.NODE_EXE || process.execPath;
   execFileSync(
-    "/d/DSH/DeepSeek Harness.exe",
+    NODE_EXE,
     [
       "-r",
       `${ROOT}\\scripts\\wr-preload.cjs`,

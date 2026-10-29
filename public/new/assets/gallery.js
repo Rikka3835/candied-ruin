@@ -21,7 +21,10 @@
   const maxch = () => Number(read(MAXCH) || 0) || 0;
   const spoilerOn = () => read(SPOILER) === "1";
   const parts = (s) => { const out = [s]; const m = s.match(/^(.+?)（(.+?)）$/); if (m) out.push(m[1].trim(), m[2].trim()); return out; };
-  const hit = (cast, name) => { const ns = parts(name); return (cast || []).some((c) => parts(c).some((x) => ns.some((y) => x === y || x.includes(y) || y.includes(x)))); };
+  // cast 可能是数组（静态 index.json）也可能是「芙兰、玛尔塔」这种字符串（D1 /api/chapters），
+  // 统一拆成名单再比对；早期版本直接 .some() 会在字符串上抛错，导致整页锁定逻辑失效。
+  const toList = (cast) => Array.isArray(cast) ? cast : String(cast == null ? "" : cast).split(/[、,，/]/).map((s) => s.trim()).filter(Boolean);
+  const hit = (cast, name) => { const ns = parts(name); return toList(cast).some((c) => parts(c).some((x) => ns.some((y) => x === y || x.includes(y) || y.includes(x)))); };
   let chapters = [];
   const apply = () => {
     const top = maxch(); const all = spoilerOn(); let open = 0;
