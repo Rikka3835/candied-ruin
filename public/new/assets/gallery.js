@@ -26,7 +26,7 @@
   const toList = (cast) => Array.isArray(cast) ? cast : String(cast == null ? "" : cast).split(/[、,，/]/).map((s) => s.trim()).filter(Boolean);
   const hit = (cast, name) => { const ns = parts(name); return toList(cast).some((c) => parts(c).some((x) => ns.some((y) => x === y || x.includes(y) || y.includes(x)))); };
   let chapters = [];
-  const apply = () => {
+  const applyInner = () => {
     const top = maxch(); const all = spoilerOn(); let open = 0;
     cards.forEach((card) => {
       const nameEl = card.querySelector(".card__name");
@@ -80,6 +80,14 @@
     fitCast();
     const counter = document.getElementById("galCount");
     if (counter) counter.textContent = "已解锁 " + open + " / " + cards.length;
+  };
+  // 锁定逻辑一旦抛错，页面默认是「全部展开」＝剧透全泄露，所以失败必须回退到「全部锁上」。
+  const apply = () => {
+    try { applyInner(); }
+    catch (e) {
+      document.documentElement.dataset.galErr = String((e && e.message) || e);
+      document.querySelectorAll(".card").forEach(function (c) { c.classList.add("is-locked"); });
+    }
   };
   const btn = document.getElementById("galSpoiler");
   const sync = () => btn && btn.setAttribute("aria-pressed", String(spoilerOn()));

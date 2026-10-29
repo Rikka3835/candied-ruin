@@ -300,7 +300,7 @@ const html = `<!DOCTYPE html>
       <p class="page__kicker rise" style="--i:0">ARCHIVE</p>
       <h1 class="page__title rise" style="--i:1">人物档案</h1>
       <p class="page__lede rise" style="--i:2">${total} 位角色。在这个世界里，一个人怎么对待糖，就等于他是什么人。</p>
-      <div class="gal__bar rise" style="--i:2"><span>图鉴</span><span class="gal__count" id="galCount">已解锁 0 / 12</span><button type="button" class="gal__spoiler" id="galSpoiler" aria-pressed="false">剧透模式</button></div>
+      <div class="gal__bar rise" style="--i:2"><span>图鉴</span><span class="gal__count" id="galCount">已解锁 0 / ${total}</span><button type="button" class="gal__spoiler" id="galSpoiler" aria-pressed="false">剧透模式</button></div>
 
       <section class="cast" id="cast" aria-label="人物立绘">
         <figure class="cast__art">
@@ -347,7 +347,7 @@ ${cards}
   </footer>
 
   <script src="/new/assets/nav-back.js?v=20261028l" defer></script>
-<script src="/new/assets/gallery.js?v=20261029c" defer></script>
+<script src="/new/assets/gallery.js?v=20261029d" defer></script>
 </body>
 </html>
 `;
