@@ -50,9 +50,15 @@ const rosterItems = real.flatMap((g) => g.people.map((p) => {
   const f = (k) => (p.fields.find((x) => x[0] === k) || ['', ''])[1];
   return { i: ri, name: p.name, tag: f('一句话'), hint: f('剪影'), race: f('种族/年龄'), role: f('身份'), want: f('愿望') };
 }));
-const roster = rosterItems.map((p) =>
-  `        <button type="button" class="cast__rb" data-idx="${p.i}" data-name="${attr(p.name)}" data-tag="${attr(p.tag)}" data-hint="${attr(p.hint)}" data-race="${attr(p.race)}" data-role="${attr(p.role)}" data-want="${attr(p.want)}" data-plate="${hasPlate(p.i) ? '1' : ''}">${esc(p.name)}</button>`
-).join('\n');
+let ix = 0;
+const roster = real.map((g) => {
+  const chips = g.people.map((p) => {
+    ix += 1;
+    const f = (k) => (p.fields.find((x) => x[0] === k) || ['', ''])[1];
+    return `        <button type="button" class="cast__rb" data-idx="${ix}" data-name="${attr(p.name)}" data-tag="${attr(f('一句话'))}" data-hint="${attr(f('剪影'))}" data-plate="${hasPlate(ix) ? '1' : ''}">${esc(p.name)}</button>`;
+  }).join('\n');
+  return `      <div class="idx__row"><span class="idx__g">${esc(g.title.replace(/^[一二三四五六七八九十]+、/, ''))}</span>\n${chips}\n      </div>`;
+}).join('\n');
 const exps = EXP.map((e, i) =>
   `          <button type="button" class="cast__ex" data-ex="${i + 1}" aria-pressed="${i === 0 ? 'true' : 'false'}"><span>${String(i + 1).padStart(2, '0')}</span>${e}</button>`
 ).join('\n');
@@ -144,6 +150,25 @@ const html = `<!DOCTYPE html>
 .cast__rb { font: inherit; font-size: .8rem; color: var(--text-soft); background: none; border: 0; padding: .15rem 0; cursor: pointer; letter-spacing: .04em; }
 .cast__rb.is-on { color: var(--text); border-bottom: 1px solid var(--amber); }
 .cast__rb.is-locked { color: var(--line-strong); pointer-events: none; }
+.idx { display: flex; flex-direction: column; gap: .55rem; margin: 2.2rem 0 2.6rem; }
+.idx__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: .45rem 1rem; }
+.idx__g { font-size: .74rem; letter-spacing: .2em; color: var(--text-dim); margin-right: .3rem; }
+.prof { display: grid; grid-template-columns: minmax(0, 460px) minmax(0, 1fr); gap: clamp(1.8rem, 4vw, 3.6rem); align-items: start; margin: 0 0 4rem; }
+.prof__art { position: sticky; top: 96px; margin: 0; border: 1px solid var(--line-2); background: #f7f1e6; box-shadow: 0 16px 38px -28px rgba(52,36,18,.55); }
+.prof__body { min-width: 0; }
+.prof__art .cast__plate, .prof__art .cast__img { display: block; width: 100%; }
+.prof__art .cast__plate[hidden], .prof__ph[hidden] { display: none !important; }
+.prof__ph { display: grid; place-items: center; align-content: center; gap: .7rem; aspect-ratio: 4 / 5; background: repeating-linear-gradient(180deg, #f6efe2, #f6efe2 14px, #f3ebdc 14px, #f3ebdc 28px); }
+.prof__ph .ph__n { font-family: var(--font-serif, Georgia, serif); font-size: 2rem; letter-spacing: .18em; color: #cdb997; }
+.prof__ph .ph__s { font-size: .72rem; letter-spacing: .32em; color: #bda98a; }
+.prof__locked { margin: .2rem 0 1.2rem; color: var(--text-dim); font-size: .9rem; }
+.arch__data { display: none; }
+@media (max-width: 820px) {
+  .prof { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; }
+  .prof__art { position: static; }
+  .prof__ph { aspect-ratio: 3 / 2; }
+}
+
 @media (max-width: 820px) {
   .cast { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; }
   .cast__panel { min-width: 0; }
@@ -305,40 +330,33 @@ const html = `<!DOCTYPE html>
       <p class="page__lede rise" style="--i:2">${total} 位角色。在这个世界里，一个人怎么对待糖，就等于他是什么人。</p>
       <div class="gal__bar rise" style="--i:2"><span>图鉴</span><span class="gal__count" id="galCount">已解锁 0 / ${total}</span><button type="button" class="gal__spoiler" id="galSpoiler" aria-pressed="false">剧透模式</button></div>
 
-      <section class="cast" id="cast" aria-label="人物立绘">
-        <figure class="cast__art">
-          <a class="cast__plate" id="castPlate" href="${plateHref}" target="_blank" rel="noopener" aria-label="点开查看设定原稿全尺寸"${plateSrc ? '' : ' hidden'}>
+      <nav class="idx" id="castRoster" aria-label="人物索引">
+${roster}
+      </nav>
+
+      <section class="prof" id="cast" aria-label="人物档案">
+        <figure class="prof__art">
+          <a class="cast__plate" id="castPlate" href="" hidden>
             <picture>
-              <source id="castWebp" type="image/webp" srcset="${plateWebp}">
-              <img class="cast__img" id="castImg" src="${plateSrc}" width="1200" height="1600" alt="人物设定原稿">
+              <source id="castWebp" type="image/webp" srcset="">
+              <img class="cast__img" id="castImg" src="" width="1200" height="1600" alt="人物设定原稿">
             </picture>
           </a>
-          <span class="cast__mono" id="castMono">${esc((firstPerson ? firstPerson.name : "？").slice(0, 1))}</span>
+          <span class="cast__mono" id="castMono">？</span>
+          <div class="prof__ph" id="castPh" hidden><span>立绘待补</span></div>
           <figcaption class="cast__note" id="castNote">随阅读进度显示</figcaption>
         </figure>
-        <div class="cast__panel">
+        <div class="prof__body">
           <p class="cast__kicker">第 <span id="castNo">${defaultNo}</span> 位 · 共 ${total} 位</p>
           <h2 class="cast__name" id="castName">？？？</h2>
-          <p class="cast__tag" id="castTag">${esc(firstPerson ? (firstPerson.hint || firstPerson.tag || "") : "")}</p>
-          <dl class="cast__meta" id="castMeta">
-            <div><dt>种族/年龄</dt><dd data-k="race">—</dd></div>
-            <div><dt>身份</dt><dd data-k="role">—</dd></div>
-            <div><dt>愿望</dt><dd data-k="want">—</dd></div>
-          </dl>
-          <nav class="cast__roster" id="castRoster" aria-label="切换人物">
-${roster}
-          </nav>
+          <p class="cast__tag" id="castTag"></p>
+          <p class="prof__locked" id="castLocked"></p>
+          <div class="card__fields" id="castFields"></div>
         </div>
       </section>
 
-      <div class="arch__wrap">
-        <nav class="arch__rail" aria-label="人物索引">
-${rail}
-        </nav>
-
-        <div class="arch__body">
+      <div class="arch__data" aria-hidden="true">
 ${cards}
-        </div>
       </div>
     </div>
   </main>
@@ -350,7 +368,7 @@ ${cards}
   </footer>
 
   <script src="/new/assets/nav-back.js?v=20261028l" defer></script>
-<script src="/new/assets/gallery.js?v=20261030a" defer></script>
+<script src="/new/assets/gallery.js?v=20261030b" defer></script>
 </body>
 </html>
 `;

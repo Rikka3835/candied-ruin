@@ -1,177 +1,143 @@
-/* 图鉴解锁：读到第 N 章，该章出场的人物才亮起来；「剧透模式」一键全开 */
+/* 档案页：一屏一人。索引条点谁显示谁；读到第 N 章该章出场的人物才亮，「剧透模式」一键全开。
+   人物资料只存一份（隐藏的 .card 作为数据源），面板从它取；避免同一批名字在一页里重复三次。 */
 (() => {
   const MAXCH = "cr.maxch";
   const SPOILER = "cr.spoiler";
   const cards = [...document.querySelectorAll(".card[data-name]")];
-  if (!cards.length) return;
-  const uploadedPlates = new Set();
-  fetch("/api/plates", { cache: "no-store" })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (j) {
-      if (!j || !j.slots) return;
-      j.slots.forEach(function (n) { uploadedPlates.add(n); });
-      const on = document.querySelector(".cast__rb.is-on");
-      if (on && uploadedPlates.has(Number(on.dataset.idx)) && castEl) syncPlate(on);
-    })
-    .catch(function () {});
-
   const castEl = document.getElementById("cast");
+  if (!cards.length || !castEl) return;
+
   const read = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
   const write = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
   const maxch = () => Number(read(MAXCH) || 0) || 0;
   const spoilerOn = () => read(SPOILER) === "1";
-  const parts = (s) => { const out = [s]; const m = s.match(/^(.+?)（(.+?)）$/); if (m) out.push(m[1].trim(), m[2].trim()); return out; };
-  // cast 可能是数组（静态 index.json）也可能是「芙兰、玛尔塔」这种字符串（D1 /api/chapters），
-  // 统一拆成名单再比对；早期版本直接 .some() 会在字符串上抛错，导致整页锁定逻辑失效。
+  const parts = (s) => { const out = [String(s)]; const m = String(s).match(/^(.+?)（(.+?)）$/); if (m) out.push(m[1].trim(), m[2].trim()); return out; };
   const toList = (cast) => Array.isArray(cast) ? cast : String(cast == null ? "" : cast).split(/[、,，/]/).map((s) => s.trim()).filter(Boolean);
   const hit = (cast, name) => { const ns = parts(name); return toList(cast).some((c) => parts(c).some((x) => ns.some((y) => x === y || x.includes(y) || y.includes(x)))); };
+
+  const uploadedPlates = new Set();
+  fetch("/api/plates", { cache: "no-store" })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((j) => { if (j && j.slots) { j.slots.forEach((n) => uploadedPlates.add(n)); render(); } })
+    .catch(() => {});
+
   let chapters = [];
+  const cardFor = (btn) => (btn ? document.querySelector('.card[data-name="' + btn.dataset.name + '"]') : null);
+
+  function q(sel) { return castEl.querySelector(sel); }
+  function hideArt(noteText) {
+    const a = q("#castPlate"), im = q("#castImg"), webp = q("#castWebp"), mono = q("#castMono"), ph = q("#castPh"), note = q("#castNote");
+    if (a) { a.hidden = true; a.style.display = "none"; a.setAttribute("href", ""); }
+    if (webp) webp.setAttribute("srcset", "");
+    if (im) im.setAttribute("src", "data:image/gif;base64,R0lGODlhAQABAAAAACw=");
+    if (ph) { ph.hidden = true; ph.style.display = "none"; }
+    if (mono) { mono.hidden = false; mono.textContent = "？"; }
+    if (note) note.textContent = noteText || "读到该章，立绘才亮";
+  }
+  function showPlate(btn, idx, uploaded) {
+    const a = q("#castPlate"), im = q("#castImg"), webp = q("#castWebp"), mono = q("#castMono"), ph = q("#castPh"), note = q("#castNote");
+    const src = uploaded ? "/api/plate/" + idx : "/new/assets/cast/c" + idx + "/plate-1200.jpg";
+    if (im && im.getAttribute("src") !== src) im.setAttribute("src", src);
+    if (webp) webp.setAttribute("srcset", uploaded ? "" : "/new/assets/cast/c" + idx + "/plate-1200.webp");
+    if (a) { a.setAttribute("href", uploaded ? src : "/new/assets/cast/c" + idx + "/plate-2000.jpg"); a.hidden = false; a.style.display = ""; }
+    if (ph) { ph.hidden = true; ph.style.display = "none"; }
+    if (mono) mono.hidden = true;
+    if (note) note.textContent = "点开看原稿全尺寸";
+  }
+  function showPlaceholder(noteText) {
+    const a = q("#castPlate"), im = q("#castImg"), webp = q("#castWebp"), mono = q("#castMono"), ph = q("#castPh"), note = q("#castNote");
+    if (a) { a.hidden = true; a.style.display = "none"; }
+    if (webp) webp.setAttribute("srcset", "");
+    if (im) im.setAttribute("src", "data:image/gif;base64,R0lGODlhAQABAAAAACw=");
+    if (mono) mono.hidden = true;
+    if (ph) {
+      const nm = document.querySelector(".cast__rb.is-on");
+      ph.innerHTML = '<span class="ph__n">' + ((nm && nm.dataset.name) || "？") + '</span><span class="ph__s">' + (noteText || "立绘待补") + "</span>";
+      ph.hidden = false; ph.style.display = "grid";
+    }
+    if (note) note.textContent = "原稿尚在绘制";
+  }
+
+  function render() {
+    // 索引条在 #cast 之外，必须从整个文档找选中项；只在 #cast 里找会永远回落到第一位。
+    const on = document.querySelector(".cast__rb.is-on") || document.querySelector(".cast__rb");
+    if (!on) return;
+    const card = cardFor(on);
+    const locked = !spoilerOn() && (!card || card.classList.contains("is-locked"));
+    const idx = Number(on.dataset.idx) || 0;
+    const uploaded = uploadedPlates.has(idx);
+    const hasPlate = on.dataset.plate === "1" || uploaded;
+    const nameEl = q("#castName"), tagEl = q("#castTag"), noEl = q("#castNo"), lockEl = q("#castLocked"), fieldsEl = q("#castFields");
+    castEl.classList.toggle("is-locked", !!locked);
+    if (noEl) noEl.textContent = String(idx).padStart(2, "0");
+    if (locked) {
+      if (nameEl) nameEl.textContent = "？？？";
+      if (tagEl) tagEl.textContent = on.dataset.hint || "";
+      if (lockEl) lockEl.textContent = card && card.dataset.at ? "读到第 " + card.dataset.at + " 章解锁" : "还没出场";
+      if (fieldsEl) fieldsEl.innerHTML = "";
+      hideArt("读到该章，立绘才亮");
+      return;
+    }
+    if (nameEl) nameEl.textContent = on.dataset.name || "？？？";
+    if (tagEl) tagEl.textContent = on.dataset.tag || "";
+    if (lockEl) lockEl.textContent = "";
+    if (fieldsEl) {
+      const src = card ? card.querySelector(".card__fields") : null;
+      fieldsEl.innerHTML = src ? src.innerHTML : "";
+    }
+    if (hasPlate) showPlate(on, idx, uploaded);
+    else showPlaceholder("立绘待补");
+  }
+
+  // 解锁状态：每张卡记下「首次出场的章」，供面板显示「读到第 N 章解锁」。
   const applyInner = () => {
     const top = maxch(); const all = spoilerOn(); let open = 0;
     cards.forEach((card) => {
       const nameEl = card.querySelector(".card__name");
-      if (!card.dataset.orig) card.dataset.orig = nameEl ? nameEl.textContent : card.dataset.name;
+      if (!card.dataset.orig && nameEl) card.dataset.orig = nameEl.textContent;
       const name = card.dataset.name;
       let at = null;
       for (const ch of chapters) if (hit(ch.cast, name)) { at = ch.n; break; }
+      card.dataset.at = at === null ? "" : String(at);
       const unlocked = all || (at !== null && top >= at);
       card.classList.toggle("is-locked", !unlocked);
       if (unlocked) open++;
       if (nameEl) nameEl.textContent = unlocked ? card.dataset.orig : "？？？";
-      const rail = document.querySelector('.rail__a[href="#' + card.id + '"]');
-      if (rail) {
-        if (!rail.dataset.orig) rail.dataset.orig = rail.textContent;
-        rail.textContent = unlocked ? rail.dataset.orig : "···";
-        rail.classList.toggle("is-locked", !unlocked);
-        if (unlocked) rail.removeAttribute("aria-disabled"); else rail.setAttribute("aria-disabled", "true");
-      }
-      let lock = card.querySelector(".lock");
-      if (unlocked) { if (lock) lock.remove(); return; }
-      if (!lock) {
-        lock = document.createElement("div");
-        lock.className = "lock";
-        lock.innerHTML = '<p class="lock__h"></p><p class="lock__r"></p>';
-        const head = card.querySelector(".card__head");
-        (head || card).insertAdjacentElement("afterend", lock);
-      }
-      lock.querySelector(".lock__h").textContent = card.dataset.hint || "";
-      lock.querySelector(".lock__r").textContent = at === null ? "还没出场" : "读到第 " + at + " 章解锁";
     });
-    const railBox = document.querySelector(".arch__rail");
-    const wrap = document.querySelector(".arch__wrap");
-    if (railBox) {
-      const anyOpen = !!railBox.querySelector(".rail__a:not(.is-locked)");
-      railBox.classList.toggle("is-empty", !anyOpen);
-      if (wrap) wrap.classList.toggle("no-rail", !anyOpen);
-      railBox.querySelectorAll(".rail__g").forEach(function (g) {
-        let ok = false, n = g.nextElementSibling;
-        while (n && !n.classList.contains("rail__g")) {
-          if (n.classList.contains("rail__a") && !n.classList.contains("is-locked")) { ok = true; break; }
-          n = n.nextElementSibling;
-        }
-        g.style.display = ok ? "" : "none";
-      });
-    }
-
-    document.querySelectorAll(".cast__rb").forEach(function (b) {
-      const c2 = document.querySelector('.card[data-name="' + b.dataset.name + '"]');
-      b.classList.toggle("is-locked", !!c2 && c2.classList.contains("is-locked"));
+    document.querySelectorAll(".cast__rb").forEach((b) => {
+      const c = cardFor(b);
+      b.classList.toggle("is-locked", !!c && c.classList.contains("is-locked"));
     });
-    fitCast();
+    render();
     const counter = document.getElementById("galCount");
     if (counter) counter.textContent = "已解锁 " + open + " / " + cards.length;
   };
-  // 锁定逻辑一旦抛错，页面默认是「全部展开」＝剧透全泄露，所以失败必须回退到「全部锁上」。
   const apply = () => {
     try { applyInner(); }
     catch (e) {
       document.documentElement.dataset.galErr = String((e && e.message) || e);
-      document.querySelectorAll(".card").forEach(function (c) { c.classList.add("is-locked"); });
+      document.querySelectorAll(".card").forEach((c) => c.classList.add("is-locked"));
     }
   };
-  const btn = document.getElementById("galSpoiler");
-  const sync = () => btn && btn.setAttribute("aria-pressed", String(spoilerOn()));
-  if (btn) btn.addEventListener("click", () => { write(SPOILER, spoilerOn() ? "0" : "1"); sync(); apply(); });
-  sync(); apply();
-  window.__galApply = apply;
-  function selectCast(btn) {
-    if (!castEl || !btn) return;
-    castEl.dataset.idx = btn.dataset.idx;
-    const q = (s2) => castEl.querySelector(s2);
-    q("#castName").textContent = btn.dataset.name || "？？？";
-    q("#castTag").textContent = btn.dataset.tag || "";
-    q("#castNo").textContent = btn.dataset.idx;
-    q("#castMono").textContent = (btn.dataset.name || "？").slice(0, 1);
-    castEl.querySelectorAll(".cast__meta dd").forEach(function (dd) {
-      dd.textContent = (btn.dataset[dd.dataset.k] || "—");
-    });
-    document.querySelectorAll(".cast__rb").forEach(function (b) { b.classList.toggle("is-on", b === btn); });
-    fitCast();
-  }
-  function syncPlate(b) {
-    const a = castEl.querySelector("#castPlate");
-    const im = castEl.querySelector("#castImg");
-    const mono = castEl.querySelector("#castMono");
-    const note = castEl.querySelector("#castNote");
-    const idx = b ? Number(b.dataset.idx) : 0;
-    const uploaded = idx && uploadedPlates.has(idx);
-    const has = b && (b.dataset.plate === "1" || uploaded);
-    if (has) {
-      const src = uploaded
-        ? "/api/plate/" + idx
-        : "/new/assets/cast/c" + idx + "/plate-1200.jpg";
-      if (im && im.getAttribute("src") !== src) im.setAttribute("src", src);
-      const srcset = castEl.querySelector("#castWebp");
-      if (srcset) srcset.setAttribute("srcset", uploaded ? "" : "/new/assets/cast/c" + idx + "/plate-1200.webp");
-      if (a) { a.setAttribute("href", uploaded ? src : "/new/assets/cast/c" + idx + "/plate-2000.jpg"); a.hidden = false; a.style.display = ""; }
-      if (mono) mono.hidden = true;
-      if (note) note.textContent = "设定原稿 · 点开看细节";
-    } else {
-      if (a) { a.hidden = true; a.style.display = "none"; }
-      if (mono) mono.hidden = false;
-      if (note) note.textContent = "原稿待补";
-    }
-  }
-  function hidePlate() {
-    const a = castEl.querySelector("#castPlate");
-    const im = castEl.querySelector("#castImg");
-    const webp = castEl.querySelector("#castWebp");
-    const mono = castEl.querySelector("#castMono");
-    const note = castEl.querySelector("#castNote");
-    if (a) { a.hidden = true; a.style.display = "none"; a.setAttribute("href", ""); }
-    if (webp) webp.setAttribute("srcset", "");
-    if (im) im.setAttribute("src", "data:image/gif;base64,R0lGODlhAQABAAAAACw=");
-    if (mono) { mono.hidden = false; mono.textContent = "？"; }
-    if (note) note.textContent = "读到该章，立绘才亮";
-  }
-  function fitCast() {
-    if (!castEl) return;
-    const on = castEl.querySelector(".cast__rb.is-on");
-    const cardFor = on ? document.querySelector('.card[data-name="' + on.dataset.name + '"]') : null;
-    // 没解锁的人不给图、不给真名、不给属性——原稿本身也是剧透（旧版对「有原稿」的人跳过锁定，导致 0/15 也整张显示）。
-    const locked = !spoilerOn() && (!cardFor || cardFor.classList.contains("is-locked"));
-    castEl.classList.toggle("is-locked", !!locked);
-    if (locked) {
-      castEl.querySelector("#castName").textContent = "？？？";
-      castEl.querySelector("#castTag").textContent = on ? (on.dataset.hint || "还没出场") : "";
-      castEl.querySelectorAll(".cast__meta dd").forEach(function (dd) { dd.textContent = "—"; });
-      hidePlate();
-    } else {
-      castEl.querySelector("#castName").textContent = (on && on.dataset.name) || "？？？";
-      castEl.querySelector("#castTag").textContent = (on && on.dataset.tag) || "";
-      castEl.querySelectorAll(".cast__meta dd").forEach(function (dd) { dd.textContent = (on && on.dataset[dd.dataset.k]) || "—"; });
-      const mono0 = castEl.querySelector("#castMono");
-      if (mono0) mono0.textContent = ((on && on.dataset.name) || "？").slice(0, 1);
-      syncPlate(on);
-    }
-  }
-  document.querySelectorAll(".cast__rb").forEach(function (b) { b.addEventListener("click", function () { selectCast(b); }); });
-  selectCast(document.querySelector(".cast__rb"));
-  setTimeout(fitCast, 0);
 
-  const useList = (d) => (d.chapters || []).map((c) => ({ n: c.n, cast: c.cast ? String(c.cast).split(/[、,，]/).filter(Boolean) : (c.cast || []) })).sort((a, b) => a.n - b.n);
+  function select(btn) {
+    if (!btn) return;
+    document.querySelectorAll(".cast__rb").forEach((b) => b.classList.toggle("is-on", b === btn));
+    render();
+  }
+  document.querySelectorAll(".cast__rb").forEach((b) => b.addEventListener("click", () => select(b)));
+
+  const spBtn = document.getElementById("galSpoiler");
+  const syncSp = () => spBtn && spBtn.setAttribute("aria-pressed", String(spoilerOn()));
+  if (spBtn) spBtn.addEventListener("click", () => { write(SPOILER, spoilerOn() ? "0" : "1"); syncSp(); apply(); });
+  syncSp();
+
+  const useList = (d) => (d.chapters || []).map((c) => ({ n: c.n, cast: c.cast })).sort((a, b) => a.n - b.n);
+  select(document.querySelector(".cast__rb"));
+  apply();
   fetch("/api/chapters").then((r) => (r.ok ? r.json() : null)).then((d) => {
     if (d && d.chapters && d.chapters.length) { chapters = useList(d); apply(); return; }
     return fetch("/novel/ch/index.json").then((r) => r.json()).then((x) => { chapters = useList(x); apply(); });
   }).catch(() => {});
+  window.__galApply = apply;
 })();
