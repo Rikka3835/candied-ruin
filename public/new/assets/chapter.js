@@ -247,10 +247,11 @@
   });
 
   /* ---------- R2：字号 / 行宽 / 主题（存 localStorage，下次进来还是这套） ---------- */
-  const SIZE = { s: "16px", m: "18px", l: "20px" };
+  const SIZE = { s: "16px", m: "18px", l: "20px", xl: "22px" };
+  const LEADING = { tight: "1.75", normal: "1.95", loose: "2.2" };
   const MEASURE = { narrow: 33, wide: 38 };
   const KEY = "cr.reader";
-  const pref = { size: "m", measure: "wide", theme: "paper" };
+  const pref = { size: "m", measure: "wide", theme: "paper", leading: "normal" };
   try {
     Object.assign(pref, JSON.parse(localStorage.getItem(KEY) || "{}"));
   } catch (err) {}
@@ -260,15 +261,18 @@
   const sizeBtns = panel ? [...panel.querySelectorAll("[data-size]")] : [];
   const measBtns = panel ? [...panel.querySelectorAll("[data-measure]")] : [];
   const themeBtns = panel ? [...panel.querySelectorAll("[data-theme]")] : [];
+  const lhBtns = panel ? [...panel.querySelectorAll("[data-lh]")] : [];
 
   function applyPref() {
     view.style.setProperty("--rs", SIZE[pref.size] || SIZE.m);
     view.style.setProperty("--rm", String(MEASURE[pref.measure] || MEASURE.wide));
     view.style.setProperty("--rmf", pref.measure === "narrow" ? "0.72" : "1");
+    view.style.setProperty("--rlh", LEADING[pref.leading] || LEADING.normal);
     view.dataset.theme = pref.theme === "night" ? "night" : "paper";
     sizeBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.size === pref.size)));
     measBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.measure === pref.measure)));
     themeBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.theme === pref.theme)));
+    lhBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lh === (pref.leading || "normal"))));
   }
   function savePref() {
     try {
@@ -294,6 +298,13 @@
     themeBtns.forEach((b) =>
       b.addEventListener("click", () => {
         pref.theme = b.dataset.theme;
+        applyPref();
+        savePref();
+      })
+    );
+    lhBtns.forEach((b) =>
+      b.addEventListener("click", () => {
+        pref.leading = b.dataset.lh;
         applyPref();
         savePref();
       })

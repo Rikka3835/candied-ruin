@@ -37,7 +37,10 @@
   function showPlate(btn, idx, uploaded) {
     const a = q("#castPlate"), im = q("#castImg"), webp = q("#castWebp"), mono = q("#castMono"), ph = q("#castPh"), note = q("#castNote");
     const src = uploaded ? "/api/plate/" + idx : "/new/assets/cast/c" + idx + "/plate-1200.jpg";
-    if (im && im.getAttribute("src") !== src) im.setAttribute("src", src);
+    if (im) {
+      im.onerror = function () { showPlaceholder("原稿加载失败 · 点下面重试可刷新"); };
+      if (im.getAttribute("src") !== src) im.setAttribute("src", src);
+    }
     if (webp) webp.setAttribute("srcset", uploaded ? "" : "/new/assets/cast/c" + idx + "/plate-1200.webp");
     if (a) { a.setAttribute("href", uploaded ? src : "/new/assets/cast/c" + idx + "/plate-2000.jpg"); a.hidden = false; a.style.display = ""; }
     if (ph) { ph.hidden = true; ph.style.display = "none"; }

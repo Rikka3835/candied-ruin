@@ -9,3 +9,6 @@ ref/
 .DS_Store
 .wrangler/
 d1-sync.sql
+
+# 备份产物不入库
+backups/

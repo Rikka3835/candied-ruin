@@ -826,7 +826,7 @@ body.is-reading { overflow: hidden; }
 .reader-view__body {
   margin-top: 2.4rem;
   font-size: var(--rs);
-  line-height: 1.95;
+  line-height: var(--rlh, 1.95);
   letter-spacing: 0.03em;
   color: var(--text-soft);
 }
