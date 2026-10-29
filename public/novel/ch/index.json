@@ -152,6 +152,20 @@
       "minutes": 7,
       "updated": "2026-10-28",
       "file": "ch/010.html"
+    },
+    {
+      "n": 11,
+      "vol": "第二卷 · 甜味走私者",
+      "title": "罐子",
+      "subtitle": "",
+      "cast": [
+        "芙兰",
+        "塞德里克（老塞）"
+      ],
+      "chars": 2592,
+      "minutes": 6,
+      "updated": "2026-10-29",
+      "file": "ch/011.html"
     }
   ]
 }
