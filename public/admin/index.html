@@ -64,6 +64,7 @@ textarea#body{min-height:520px;resize:vertical;line-height:1.9}
   .artcard .bar input[type=file] { max-width: 22rem; font-size: .82rem; }
   .artprev { margin-top: 1rem; }
   .artprev img { max-width: 240px; max-height: 320px; border-radius: 8px; display: block; }
+.row .hits{font-size:11px;color:#9a8b7a;margin-left:6px;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -185,8 +186,10 @@ $("logout").onclick = async ()=>{ await api("/api/auth",{method:"DELETE"}); show
 async function loadList(){
   const r = await api("/api/chapters");
   rows = r.d.chapters || [];
+  let hits = {};
+  try { const h = await api("/api/hits"); if (h.ok && h.d && h.d.counts) hits = h.d.counts; } catch(e){}
   $("list").innerHTML = rows.length ? rows.map(c=>
-    '<div class="row" draggable="true" data-n="'+c.n+'"><span class="hdl">⋮⋮</span><span class="n">'+String(c.n).padStart(2,"0")+'</span><span class="t">'+esc(c.title)+'</span><span class="chip '+(c.status==="published"?"pub":"")+'">'+(c.status==="published"?"已发布":"草稿")+'</span></div>'
+    '<div class="row" draggable="true" data-n="'+c.n+'"><span class="hdl">⋮⋮</span><span class="n">'+String(c.n).padStart(2,"0")+'</span><span class="t">'+esc(c.title)+'</span><span class="chip '+(c.status==="published"?"pub":"")+'">'+(c.status==="published"?"已发布":"草稿")+'</span><span class="hits" title="读者打开次数">'+(hits[c.n]||0)+'次</span></div>'
   ).join("") : '<p style="color:#8b7d70;font-size:13px">还没有章节。</p>';
   [...document.querySelectorAll(".row")].forEach(el=>el.onclick=()=>openRow(Number(el.dataset.n)));
   if(!cur && rows.length) openRow(rows[0].n);

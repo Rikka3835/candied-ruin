@@ -1098,3 +1098,10 @@ body.page-sheet { display: flex; flex-direction: column; min-height: 100svh; }
   .reader-view__nav button:disabled { display: none; }
   .reader-nav__hint { display: block; flex: 1 0 100%; margin-top: 0.9rem; }
 }
+/* 章内分场点（只在正文真的用 --- 分场时出现） */
+.rv-scenes { display: flex; align-items: center; justify-content: center; gap: 6px; padding: .55rem 1rem .15rem; flex-wrap: wrap; }
+.rv-scenes__dot { width: 16px; height: 4px; padding: 0; border: 0; border-radius: 2px; background: rgba(120,100,70,.22); cursor: pointer; transition: background .15s, transform .15s; }
+.rv-scenes__dot:hover { background: rgba(120,100,70,.4); }
+.rv-scenes__dot.is-on { background: #b9791f; }
+@media (max-width: 640px) { .rv-scenes__dot { width: 12px; } .rv-scenes { gap: 5px; padding: .45rem .8rem .1rem; } }
+#readerBack, .reader-view__ch { white-space: nowrap; }

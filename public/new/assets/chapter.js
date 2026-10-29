@@ -90,10 +90,70 @@
         const res = await fetch("/novel/" + meta.file, { cache: "no-cache" });
         html = res.ok ? await res.text() : "";
       }
-      if (chBody) chBody.innerHTML = html || "<p>正文读取失败，刷新再试。</p>";
+      if (chBody) {
+        if (!html) {
+          chBody.innerHTML = "<p>正文读取失败，刷新再试。</p>";
+        } else {
+          paintScenes(html);
+        }
+      }
+      countHit(meta.n);
     } catch (err) {
       if (chBody) chBody.innerHTML = "<p>正文读取失败，刷新再试。</p>";
+      hideScenes();
     }
+  }
+
+  /* ---------- 章内分场：正文里 author 用 --- 分段时，给它一排场次点 ---------- */
+  const scenesEl = document.getElementById("rvScenes");
+
+  function hideScenes() {
+    if (scenesEl) { scenesEl.hidden = true; scenesEl.innerHTML = ""; }
+  }
+
+  function paintScenes(html) {
+    const parts = String(html).split(/<hr\s*\/?>/i).map((t) => t.trim()).filter(Boolean);
+    if (!chBody) return;
+    if (parts.length < 2) {
+      chBody.innerHTML = html;
+      hideScenes();
+      return;
+    }
+    chBody.innerHTML = parts
+      .map((p, i) => '<section class="rv-scene" data-scene="' + (i + 1) + '">' + p + "</section>")
+      .join("");
+    if (!scenesEl) return;
+    scenesEl.innerHTML = "";
+    parts.forEach((_, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "rv-scenes__dot" + (i === 0 ? " is-on" : "");
+      b.dataset.i = String(i);
+      b.setAttribute("aria-label", "跳到第 " + (i + 1) + " 场，共 " + parts.length + " 场");
+      b.addEventListener("click", () => {
+        const t = chBody.querySelectorAll(".rv-scene")[i];
+        if (t) t.scrollIntoView({ block: "start", behavior: "smooth" });
+        scenesEl.querySelectorAll(".rv-scenes__dot").forEach((x) => x.classList.remove("is-on"));
+        b.classList.add("is-on");
+      });
+      scenesEl.appendChild(b);
+    });
+    scenesEl.hidden = false;
+  }
+
+  /* 阅读计数：只报「第几章被打开」，不带任何身份信息 */
+  const counted = new Set();
+  function countHit(n) {
+    if (!n || counted.has(n)) return;
+    counted.add(n);
+    try {
+      fetch("/api/hit", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ ch: n }),
+        keepalive: true
+      }).catch(() => {});
+    } catch (e) { /* 计数失败不影响阅读 */ }
   }
 
   /* ---------- R3：章末翻章 ---------- */
