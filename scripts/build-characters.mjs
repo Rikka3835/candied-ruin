@@ -56,10 +56,13 @@ const roster = rosterItems.map((p) =>
 const exps = EXP.map((e, i) =>
   `          <button type="button" class="cast__ex" data-ex="${i + 1}" aria-pressed="${i === 0 ? 'true' : 'false'}"><span>${String(i + 1).padStart(2, '0')}</span>${e}</button>`
 ).join('\n');
-const firstPlate = rosterItems.find((p) => hasPlate(p.i));
-const plateSrc = firstPlate ? `/new/assets/cast/c${firstPlate.i}/plate-1200.jpg` : '';
-const plateHref = firstPlate ? `/new/assets/cast/c${firstPlate.i}/plate-2000.jpg` : '';
-const plateWebp = firstPlate ? `/new/assets/cast/c${firstPlate.i}/plate-1200.webp` : '';
+// 默认面板 = 名单第一位（芙兰）。原稿不在静态页预载：由 gallery.js 按阅读进度决定是否显示，
+// 否则未读读者一进档案页就看到整张设定稿（剧透）。旧版这里写死了「琉玥 / 01 / c1 的图」，号和图对不上。
+const firstPerson = rosterItems[0];
+const defaultNo = String(firstPerson ? firstPerson.i : 1).padStart(2, '0');
+const plateSrc = '';
+const plateHref = '';
+const plateWebp = '';
 let n = 0;
 const cards = real.map((g, gi) => {
   const people = g.people.map((p) => {
@@ -310,13 +313,13 @@ const html = `<!DOCTYPE html>
               <img class="cast__img" id="castImg" src="${plateSrc}" width="1200" height="1600" alt="人物设定原稿">
             </picture>
           </a>
-          <span class="cast__mono" id="castMono"${plateSrc ? ' hidden' : ''}>琉</span>
-          <figcaption class="cast__note" id="castNote">${plateSrc ? '设定原稿 · 4608×6144 · 点开看细节' : '原稿待补'}</figcaption>
+          <span class="cast__mono" id="castMono">${esc((firstPerson ? firstPerson.name : "？").slice(0, 1))}</span>
+          <figcaption class="cast__note" id="castNote">随阅读进度显示</figcaption>
         </figure>
         <div class="cast__panel">
-          <p class="cast__kicker">第 <span id="castNo">01</span> 位 · 共 ${total} 位</p>
-          <h2 class="cast__name" id="castName">琉玥</h2>
-          <p class="cast__tag" id="castTag">把味道翻译成话的人</p>
+          <p class="cast__kicker">第 <span id="castNo">${defaultNo}</span> 位 · 共 ${total} 位</p>
+          <h2 class="cast__name" id="castName">？？？</h2>
+          <p class="cast__tag" id="castTag">${esc(firstPerson ? (firstPerson.hint || firstPerson.tag || "") : "")}</p>
           <dl class="cast__meta" id="castMeta">
             <div><dt>种族/年龄</dt><dd data-k="race">—</dd></div>
             <div><dt>身份</dt><dd data-k="role">—</dd></div>
@@ -347,7 +350,7 @@ ${cards}
   </footer>
 
   <script src="/new/assets/nav-back.js?v=20261028l" defer></script>
-<script src="/new/assets/gallery.js?v=20261029d" defer></script>
+<script src="/new/assets/gallery.js?v=20261029e" defer></script>
 </body>
 </html>
 `;

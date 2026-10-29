@@ -123,30 +123,50 @@
       if (im && im.getAttribute("src") !== src) im.setAttribute("src", src);
       const srcset = castEl.querySelector("#castWebp");
       if (srcset) srcset.setAttribute("srcset", uploaded ? "" : "/new/assets/cast/c" + idx + "/plate-1200.webp");
-      if (a) { a.setAttribute("href", uploaded ? src : "/new/assets/cast/c" + idx + "/plate-2000.jpg"); a.hidden = false; }
+      if (a) { a.setAttribute("href", uploaded ? src : "/new/assets/cast/c" + idx + "/plate-2000.jpg"); a.hidden = false; a.style.display = ""; }
       if (mono) mono.hidden = true;
       if (note) note.textContent = "设定原稿 · 点开看细节";
     } else {
-      if (a) a.hidden = true;
+      if (a) { a.hidden = true; a.style.display = "none"; }
       if (mono) mono.hidden = false;
       if (note) note.textContent = "原稿待补";
     }
+  }
+  function hidePlate() {
+    const a = castEl.querySelector("#castPlate");
+    const im = castEl.querySelector("#castImg");
+    const webp = castEl.querySelector("#castWebp");
+    const mono = castEl.querySelector("#castMono");
+    const note = castEl.querySelector("#castNote");
+    if (a) { a.hidden = true; a.style.display = "none"; a.setAttribute("href", ""); }
+    if (webp) webp.setAttribute("srcset", "");
+    if (im) im.setAttribute("src", "data:image/gif;base64,R0lGODlhAQABAAAAACw=");
+    if (mono) { mono.hidden = false; mono.textContent = "？"; }
+    if (note) note.textContent = "读到该章，立绘才亮";
   }
   function fitCast() {
     if (!castEl) return;
     const on = castEl.querySelector(".cast__rb.is-on");
     const cardFor = on ? document.querySelector('.card[data-name="' + on.dataset.name + '"]') : null;
-    const locked = !spoilerOn() && !!cardFor && cardFor.classList.contains("is-locked") && on.dataset.plate !== "1";
+    // 没解锁的人不给图、不给真名、不给属性——原稿本身也是剧透（旧版对「有原稿」的人跳过锁定，导致 0/15 也整张显示）。
+    const locked = !spoilerOn() && (!cardFor || cardFor.classList.contains("is-locked"));
     castEl.classList.toggle("is-locked", !!locked);
     if (locked) {
       castEl.querySelector("#castName").textContent = "？？？";
-      castEl.querySelector("#castTag").textContent = on.dataset.hint || "还没出场";
+      castEl.querySelector("#castTag").textContent = on ? (on.dataset.hint || "还没出场") : "";
       castEl.querySelectorAll(".cast__meta dd").forEach(function (dd) { dd.textContent = "—"; });
+      hidePlate();
+    } else {
+      castEl.querySelector("#castName").textContent = (on && on.dataset.name) || "？？？";
+      castEl.querySelector("#castTag").textContent = (on && on.dataset.tag) || "";
+      castEl.querySelectorAll(".cast__meta dd").forEach(function (dd) { dd.textContent = (on && on.dataset[dd.dataset.k]) || "—"; });
+      const mono0 = castEl.querySelector("#castMono");
+      if (mono0) mono0.textContent = ((on && on.dataset.name) || "？").slice(0, 1);
+      syncPlate(on);
     }
-    syncPlate(on);
   }
   document.querySelectorAll(".cast__rb").forEach(function (b) { b.addEventListener("click", function () { selectCast(b); }); });
-  selectCast(document.querySelector('.cast__rb[data-plate="1"]') || document.querySelector(".cast__rb"));
+  selectCast(document.querySelector(".cast__rb"));
   setTimeout(fitCast, 0);
 
   const useList = (d) => (d.chapters || []).map((c) => ({ n: c.n, cast: c.cast ? String(c.cast).split(/[、,，]/).filter(Boolean) : (c.cast || []) })).sort((a, b) => a.n - b.n);
