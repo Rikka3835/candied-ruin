@@ -1,0 +1,157 @@
+/* ============================================================
+   游戏页 · /game/
+   只服务这一页的三个块：原则卡、进度条、尾注。
+   全部沿用 site.css / paper.css 的设计令牌，不新增颜色。
+   ============================================================ */
+
+/* ---------- 分节 ---------- */
+.game-sec {
+  margin-top: 3rem;
+}
+.game-sec + .game-sec {
+  margin-top: 3.4rem;
+}
+.game-sec__h {
+  margin: 0 0 1.1rem;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+.game-sec__h::before {
+  content: "";
+  display: inline-block;
+  width: 1.4rem;
+  height: 1px;
+  margin-right: 0.7rem;
+  vertical-align: 0.32em;
+  background: var(--line-strong);
+}
+
+/* ---------- 三张原则卡 ---------- */
+.game-cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+.game-card {
+  padding: 1.15rem 1.2rem 1.25rem;
+  border: 1px solid var(--line);
+  border-top: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.38);
+  backdrop-filter: blur(2px);
+}
+.game-card__n {
+  display: block;
+  margin-bottom: 0.55rem;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: var(--gold);
+}
+.game-card__t {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text);
+}
+.game-card__d {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.9;
+  color: var(--text-soft);
+}
+
+/* ---------- 进度：一条竖线 + 五个点 ---------- */
+.game-steps {
+  margin: 0;
+  padding: 0 0 0 1.45rem;
+  list-style: none;
+  border-left: 1px solid var(--line);
+}
+.game-step {
+  position: relative;
+  padding: 0 0 1.5rem 0;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--text-dim);
+}
+.game-step:last-child {
+  padding-bottom: 0;
+}
+.game-step::before {
+  content: "";
+  position: absolute;
+  left: calc(-1.45rem - 3.5px);
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--ink-0);
+}
+.game-step__t {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+.game-step__s {
+  margin-left: 0.6em;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+}
+.game-step__d {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.84rem;
+  color: var(--text-dim);
+}
+
+/* 正在做的那一步：实心点 + 焦糖字 */
+.game-step.is-now {
+  color: var(--text-soft);
+}
+.game-step.is-now::before {
+  border-color: var(--caramel);
+  background: var(--caramel);
+  box-shadow: 0 0 0 4px rgba(150, 96, 42, 0.14);
+}
+.game-step.is-now .game-step__t {
+  color: var(--text);
+}
+.game-step.is-now .game-step__s {
+  color: var(--caramel);
+}
+
+/* ---------- 尾注：去哪 ---------- */
+.game-tail {
+  margin-top: 3rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.88rem;
+  line-height: 1.95;
+  color: var(--text-dim);
+}
+.game-tail a {
+  color: var(--caramel);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-strong);
+}
+.game-tail a:hover,
+.game-tail a:focus-visible {
+  border-bottom-color: var(--caramel);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-card,
+  .game-step::before {
+    transition: none;
+  }
+}

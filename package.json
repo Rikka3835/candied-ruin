@@ -12,6 +12,7 @@
     "check:sync": "node scripts/check-sync.mjs",
     "check:budget": "node scripts/check-budget.mjs",
     "check:a11y": "node scripts/check-a11y.mjs",
+    "check:links": "node scripts/check-links.mjs",
     "build:chapters": "node scripts/build-chapters.mjs",
     "build:pages": "node scripts/build-pages.mjs",
     "build:chars": "node scripts/build-characters.mjs",

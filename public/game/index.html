@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>游戏 · 糖渍旧蜜 CANDIED RUIN</title>
-<meta name="description" content="《糖渍旧蜜》的网页游戏，尚在建设中。">
+<meta name="description" content="《糖渍旧蜜》的游戏企划：规则先照书，不做数值膨胀，不加书里没有的东西。进度——正在把书里的糖整理成能算的规则。">
 <meta name="theme-color" content="#f6f1e7">
-<meta name="robots" content="noindex">
+<meta name="robots" content="noindex,follow">
 <link rel="icon" type="image/svg+xml" href="/assets/brand/favicon.svg">
 <link rel="icon" href="/assets/brand/icon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/assets/brand/icon-180.png">
@@ -14,8 +14,15 @@
 <link rel="stylesheet" href="/new/assets/fonts-subset.css?v=20261029b">
 <link rel="stylesheet" href="/new/assets/site.css?v=20261030b">
 <link rel="stylesheet" href="/new/assets/paper.css?v=20261029q">
+<link rel="stylesheet" href="/new/assets/game.css?v=20261030a">
 <link rel="canonical" href="https://candied-ruin.pages.dev/game/">
-<meta name="robots" content="noindex,follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="糖渍旧蜜 CANDIED RUIN">
+<meta property="og:title" content="游戏 · 糖渍旧蜜">
+<meta property="og:description" content="规则先照书，不做数值膨胀，不加书里没有的东西。正在把书里的糖整理成能算的规则。">
+<meta property="og:url" content="https://candied-ruin.pages.dev/game/">
+<meta property="og:image" content="https://candied-ruin.pages.dev/assets/brand/og-new.jpg">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 <body class="page-sheet">
 
@@ -44,8 +51,58 @@
     <div class="page__inner">
       <p class="page__kicker rise" style="--i:0">GAME</p>
       <h1 class="page__title rise" style="--i:1">游戏</h1>
-      <p class="page__lede rise" style="--i:2">玩法还没定，所以这里先只放一句实话：饼画好了但还没进炉。等小说的战斗规则写清楚，游戏会做成能和书里对得上的那一版——同一个世界，同一套糖。</p>
-      <p class="note rise" style="--i:3">技术方向已记下：Canvas 2D，键盘可操作，鼠标/触屏都行；不引入框架，只为了开起来快。</p>
+      <p class="page__lede rise" style="--i:2">饼画好了，还没进炉。这里不写发售日，只写三件已经定死的事，和现在做到哪一步——同一个世界，同一套糖。</p>
+
+      <section class="game-sec rise" style="--i:3">
+        <h2 class="game-sec__h">已经定死的三件事</h2>
+        <div class="game-cards">
+          <div class="game-card">
+            <span class="game-card__n">一</span>
+            <span class="game-card__t">规则先照书</span>
+            <p class="game-card__d">书里写清楚的照抄，写不清楚的先空着。空的地方留白，不自己编——编出来的规则会和下一卷打架。</p>
+          </div>
+          <div class="game-card">
+            <span class="game-card__n">二</span>
+            <span class="game-card__t">不做数值膨胀</span>
+            <p class="game-card__d">赢要赢在什么时候收手、把人引到哪儿，不在攻击力那一行数字。所以界面上不会有攻击力。</p>
+          </div>
+          <div class="game-card">
+            <span class="game-card__n">三</span>
+            <span class="game-card__t">不加书里没有的东西</span>
+            <p class="game-card__d">没有抽卡，没有稀有度，没有技能树。游戏是这本书的另一种读法，不是另一个世界观。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="game-sec rise" style="--i:4">
+        <h2 class="game-sec__h">做到哪一步了</h2>
+        <ol class="game-steps">
+          <li class="game-step is-now">
+            <span class="game-step__t">定规则</span><span class="game-step__s">进行中</span>
+            <span class="game-step__d">把书里已经写到的糖整理成可以计算的规则：谁先手、代价怎么付、什么时候算输。</span>
+          </li>
+          <li class="game-step">
+            <span class="game-step__t">立原型</span><span class="game-step__s">未开始</span>
+            <span class="game-step__d">规则能跑之后再做第一版能操作的东西，先只求能玩完一局。</span>
+          </li>
+          <li class="game-step">
+            <span class="game-step__t">试玩</span><span class="game-step__s">未开始</span>
+            <span class="game-step__d">给没读过书的人试，看他们能不能在没人讲解的情况下玩明白。</span>
+          </li>
+          <li class="game-step">
+            <span class="game-step__t">打磨</span><span class="game-step__s">未开始</span>
+            <span class="game-step__d">改手感、改界面、补音效，这一阶段才会花美术的钱。</span>
+          </li>
+          <li class="game-step">
+            <span class="game-step__t">放上来</span><span class="game-step__s">未开始</span>
+            <span class="game-step__d">直接挂在本站的 /game/ 下面，不用下载，点开就能玩。</span>
+          </li>
+        </ol>
+      </section>
+
+      <p class="note rise" style="--i:5">技术方向已记下：Canvas 2D，键盘可操作，鼠标/触屏都行；不引入框架，只为了开起来快。</p>
+
+      <p class="game-tail rise" style="--i:6">不催它。先做一个不好玩的，比晚一点做一个好玩的，代价大得多。想先看这个世界的规矩，去 <a href="/world/">前言</a>；想先看故事，去 <a href="/novel/">小说</a>。</p>
     </div>
   </main>
 
