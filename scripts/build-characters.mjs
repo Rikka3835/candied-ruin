@@ -36,6 +36,7 @@ const real = groups.filter((g) => g.people.length > 0);
 const total = real.reduce((n, g) => n + g.people.length, 0);
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const attr = (s) => esc(s).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 const inline = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/`([^`]+)`/g, '<code>$1</code>');
 
 const cn = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
@@ -50,7 +51,7 @@ const rosterItems = real.flatMap((g) => g.people.map((p) => {
   return { i: ri, name: p.name, tag: f('一句话'), hint: f('剪影'), race: f('种族/年龄'), role: f('身份'), want: f('愿望') };
 }));
 const roster = rosterItems.map((p) =>
-  `        <button type="button" class="cast__rb" data-idx="${p.i}" data-name="${esc(p.name)}" data-tag="${esc(p.tag)}" data-hint="${esc(p.hint)}" data-race="${esc(p.race)}" data-role="${esc(p.role)}" data-want="${esc(p.want)}" data-plate="${hasPlate(p.i) ? '1' : ''}">${esc(p.name)}</button>`
+  `        <button type="button" class="cast__rb" data-idx="${p.i}" data-name="${attr(p.name)}" data-tag="${attr(p.tag)}" data-hint="${attr(p.hint)}" data-race="${attr(p.race)}" data-role="${attr(p.role)}" data-want="${attr(p.want)}" data-plate="${hasPlate(p.i) ? '1' : ''}">${esc(p.name)}</button>`
 ).join('\n');
 const exps = EXP.map((e, i) =>
   `          <button type="button" class="cast__ex" data-ex="${i + 1}" aria-pressed="${i === 0 ? 'true' : 'false'}"><span>${String(i + 1).padStart(2, '0')}</span>${e}</button>`
@@ -70,7 +71,7 @@ const cards = real.map((g, gi) => {
     const fields = p.fields.filter((f) => !HIDDEN.includes(f[0]));
     const rows = fields.map(([k, v]) => `        <div class="fld"><span class="fld__k">${esc(k)}</span><p class="fld__v">${inline(v)}</p></div>`).join('\n');
     const body = p.body.length ? `      <p class="card__tight">${inline(p.body.join(' '))}</p>\n` : '';
-    return `    <article class="card" id="${id}" data-name="${esc(p.name)}" data-hint="${esc(hint)}">
+    return `    <article class="card" id="${id}" data-name="${attr(p.name)}" data-hint="${attr(hint)}">
       <header class="card__head">
         <span class="card__no">${String(n).padStart(2, '0')}</span>
         <h3 class="card__name">${esc(p.name)}</h3>
