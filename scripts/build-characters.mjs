@@ -97,7 +97,7 @@ const html = `<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>人物档案 · 糖渍旧蜜</title>
-<meta name="description" content="《糖渍旧蜜》人物档案：${total} 位登场人物，每人一份完整设定——种族年龄、身份、愿望、外貌、装束、背景、性格、关系、与糖的关系、口癖。">
+<meta name="description" content="《糖渍旧蜜》人物档案：${total} 位角色，每人一份完整设定——种族年龄、身份、愿望、外貌、装束、背景、性格、关系、与糖的关系、口癖。">
 <meta name="theme-color" content="#f6f1e7">
 <link rel="icon" type="image/svg+xml" href="/assets/brand/favicon.svg">
 <link rel="icon" href="/assets/brand/icon-32.png" sizes="32x32" type="image/png">
@@ -110,7 +110,7 @@ const html = `<!DOCTYPE html>
 <link rel="canonical" href="https://candied-ruin.pages.dev/archive/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="人物档案 · 糖渍旧蜜">
-<meta property="og:description" content="${total} 位登场人物的完整设定：外貌、装束、背景、性格、口癖，以及每个人与糖的关系。">
+<meta property="og:description" content="${total} 位角色的完整设定：外貌、装束、背景、性格、口癖，以及每个人与糖的关系。">
 <meta property="og:url" content="https://candied-ruin.pages.dev/archive/">
 <meta property="og:image" content="https://candied-ruin.pages.dev/assets/brand/og-new.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -299,7 +299,7 @@ const html = `<!DOCTYPE html>
     <div class="page__inner">
       <p class="page__kicker rise" style="--i:0">ARCHIVE</p>
       <h1 class="page__title rise" style="--i:1">人物档案</h1>
-      <p class="page__lede rise" style="--i:2">${total} 位登场人物。在这个世界里，一个人怎么对待糖，就等于他是什么人。</p>
+      <p class="page__lede rise" style="--i:2">${total} 位角色。在这个世界里，一个人怎么对待糖，就等于他是什么人。</p>
       <div class="gal__bar rise" style="--i:2"><span>图鉴</span><span class="gal__count" id="galCount">已解锁 0 / 12</span><button type="button" class="gal__spoiler" id="galSpoiler" aria-pressed="false">剧透模式</button></div>
 
       <section class="cast" id="cast" aria-label="人物立绘">
