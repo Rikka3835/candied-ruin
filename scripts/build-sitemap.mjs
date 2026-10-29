@@ -1,9 +1,14 @@
-/* 生成 sitemap.xml（章节多了自动带 lastmod）。运行：npm run build:sitemap */
-import { readFile, writeFile, readdir } from "node:fs/promises";
+/* 生成 sitemap.xml（章节多了自动带 lastmod）。运行：npm run build:sitemap
+ *
+ * 2026-10-30：把 22 个「单章静态页」/novel/N/ 一并收进来（以前只有 4 条 URL）。
+ * /game/ 与 /map/ 是 noindex，仍然不写。
+ */
+import { readFile, writeFile } from "node:fs/promises";
 
 const SITE = "https://candied-ruin.pages.dev";
 const idx = JSON.parse(await readFile("public/novel/ch/index.json", "utf8"));
-const dates = idx.chapters.map((c) => c.updated || "").filter(Boolean).sort();
+const chapters = idx.chapters.slice().sort((a, b) => a.n - b.n);
+const dates = chapters.map((c) => c.updated || "").filter(Boolean).sort();
 const newest = dates[dates.length - 1] || new Date().toISOString().slice(0, 10);
 
 const pages = [
@@ -13,9 +18,15 @@ const pages = [
   ["/archive/", "0.5", newest],
 ];
 
-// 只收被索引的页面：/game/ 与 /map/ 是 noindex，不写进 sitemap
-const urls = pages.map(([p, pr, lm]) => `  <url><loc>${SITE}${p}</loc><lastmod>${lm}</lastmod><priority>${pr}</priority></url>`).join("\n");
-await writeFile("public/sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
+const urls = [];
+for (const [p, pr, lm] of pages) urls.push(`  <url><loc>${SITE}${p}</loc><lastmod>${lm}</lastmod><priority>${pr}</priority></url>`);
+for (const c of chapters) {
+  urls.push(`  <url><loc>${SITE}/novel/${c.n}/</loc><lastmod>${c.updated || newest}</lastmod><priority>0.7</priority></url>`);
+}
+await writeFile(
+  "public/sitemap.xml",
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`
+);
 
 // robots 里必须能看见 sitemap（缺就补一句）
 let robots = "";
@@ -25,4 +36,4 @@ if (robots && !/sitemap:/i.test(robots)) {
   await writeFile("public/robots.txt", robots);
   console.log("robots.txt 补上 Sitemap 行");
 }
-console.log("sitemap.xml 写好：" + pages.length + " 条，lastmod " + newest);
+console.log(`sitemap.xml 写好：${pages.length + chapters.length} 条（其中章节页 ${chapters.length} 条），lastmod ${newest}`);

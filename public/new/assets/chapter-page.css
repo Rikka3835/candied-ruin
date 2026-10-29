@@ -1,0 +1,290 @@
+/* ============================================================
+   chapter-page.css — 单章静态页（/novel/12/ 这类地址）
+   用途：给每章一个「真网页」——全文在 HTML 里、有标题与分享卡，
+        搜索引擎和聊天软件都能直接拿到内容；版式与阅读层同一套字。
+   依赖：site.css（令牌）、paper.css（纸色）、fonts-subset.css（字体）
+   修改：尺寸/留白集中在最上面几行变量；组件按出现顺序排。
+   注意：正文容器同时带 .reader-view__body，字距行高从阅读层继承，
+        这里只补「纸面上的单章页」需要的东西，不重复定义正文排版。
+   ============================================================ */
+
+:root {
+  /* 与阅读器保持同一组默认值（内有内联脚本，会按读者的字号偏好覆盖） */
+  --rs: 18px;
+  --rlh: 1.95;
+  --chp-measure: 44rem;   /* 正文行宽，约 39 汉字/行（40 字是阅读舒适上限，46rem 会超） */
+}
+
+/* ---------- 1. 版面 ---------- */
+.chp {
+  position: relative;
+  z-index: 1;
+  padding:
+    calc(var(--nav-h) + clamp(2.4rem, 7vh, 4.2rem))
+    clamp(18px, 6vw, 6vw)
+    clamp(3.4rem, 9vh, 5.5rem);
+}
+.chp__sheet {
+  width: min(100%, var(--chp-measure));
+  margin: 0 auto;
+}
+
+/* ---------- 2. 章首 ---------- */
+.chp__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.45rem 0;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  color: var(--text-dim);
+  transition: color 200ms, gap 200ms var(--ease-out);
+}
+.chp__back:hover { color: var(--caramel); gap: 0.85em; }
+
+.chp__kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.62em;
+  margin-top: clamp(1.5rem, 4.5vh, 2.4rem);
+  font-family: var(--font-ui);
+  font-size: 0.66rem;
+  letter-spacing: 0.38em;
+  color: var(--caramel);
+}
+.chp__kicker::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  flex: none;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+.chp__title {
+  margin-top: 0.95rem;
+  font-size: clamp(1.7rem, 4.4vw, 2.3rem);
+  font-weight: 500;
+  line-height: 1.46;
+  letter-spacing: 0.035em;
+  color: var(--text);
+}
+
+.chp__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin-top: 1.05rem;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+}
+.chp__meta > span + span::before {
+  content: "·";
+  margin: 0 0.7em;
+  color: var(--line-strong);
+}
+
+.chp__rule {
+  height: 1px;
+  margin-top: clamp(1.6rem, 4vh, 2.3rem);
+  background: linear-gradient(90deg, var(--line-strong), rgba(36, 30, 26, 0.04) 78%, transparent);
+}
+
+/* ---------- 3. 正文 ---------- */
+.chp__body {
+  margin-top: clamp(2rem, 5vh, 2.9rem);
+}
+/* 首段稍微放大一点，像书的起句；只用在这一段 */
+.chp__body > p:first-of-type {
+  font-size: calc(var(--rs) * 1.045);
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+.chp__body > p:first-of-type::first-letter {
+  letter-spacing: 0.06em;
+}
+
+/* ---------- 4. 翻章 ---------- */
+.chp-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  gap: 0.7rem;
+  margin-top: clamp(2.6rem, 6vh, 3.6rem);
+  padding-top: clamp(1.4rem, 3.5vh, 1.9rem);
+  border-top: 1px solid var(--line);
+}
+
+.chp-nav__side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3rem;
+  min-height: 4.1rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  transition: border-color 200ms, background 200ms, transform 200ms var(--ease-out);
+}
+.chp-nav__side:hover,
+.chp-nav__side:focus-visible {
+  border-color: rgba(176, 121, 58, 0.55);
+  background: rgba(255, 179, 71, 0.055);
+}
+.chp-nav__side--next { align-items: flex-end; text-align: right; }
+.chp-nav__side.is-off {
+  opacity: 0.42;
+  border-style: dashed;
+}
+.chp-nav__k {
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  color: var(--text-dim);
+}
+.chp-nav__t {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  letter-spacing: 0.03em;
+  color: var(--text-soft);
+}
+.chp-nav__side:hover .chp-nav__t { color: var(--text); }
+
+.chp-nav__mid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.9rem;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.26em;
+  color: var(--text-dim);
+  transition: color 200ms;
+}
+.chp-nav__mid:hover { color: var(--caramel); }
+
+/* ---------- 5. 阅读器入口 ---------- */
+.chp-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2em 0.9em;
+  margin-top: 1.5rem;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+}
+.chp-tools a {
+  color: var(--honey);
+  border-bottom: 1px solid rgba(138, 90, 34, 0.35);
+  padding-bottom: 1px;
+  transition: border-color 200ms, color 200ms;
+}
+.chp-tools a:hover { color: var(--caramel); border-bottom-color: var(--caramel); }
+.chp-tools__copy {
+  padding: 0 0 1px;
+  border: 0;
+  border-bottom: 1px dashed rgba(138, 90, 34, 0.4);
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color 200ms, border-color 200ms;
+}
+.chp-tools__copy:hover { color: var(--caramel); border-bottom-color: var(--caramel); }
+.chp-tools__ok { color: var(--caramel); }
+
+/* ---------- 5b. 进度条：章节页上比阅读器加粗 1px，手机也看得见 ---------- */
+.progress-top { height: 3px; }
+
+/* ---------- 5c. 手机吸底「下一章」：默认不存在，只在窄屏、且过了章首后滑上来 ---------- */
+.chp-jump { display: none; }
+
+/* ---------- 6. 窄屏 ---------- */
+@media (max-width: 620px) {
+  .chp { padding-left: 7vw; padding-right: 7vw; }
+  .chp__kicker { letter-spacing: 0.3em; }
+  .chp__meta { font-size: 0.66rem; }
+  .chp-nav { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .chp-nav__mid {
+    grid-column: 1 / -1;
+    order: 3;
+    justify-content: center;
+    gap: 0.9em;
+    padding: 0.9rem 0 0.2rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.3em;
+  }
+  /* 窄屏上「目录」单独成行，用两侧细线把它撑成一条有意的分隔，而不是孤零零一个词 */
+  .chp-nav__mid::before,
+  .chp-nav__mid::after {
+    content: "";
+    height: 1px;
+    flex: 1 1 2rem;
+    max-width: 5.5rem;
+    background: var(--line);
+  }
+  .chp-nav__side { min-height: 3.6rem; padding: 0.7rem 0.85rem; }
+  .chp-nav__t { font-size: 0.9rem; }
+}
+
+/* 吸底「下一章」：820 以下都出现（含 iPad 竖屏 768），过了章首才滑上来，读到翻章卡时自动让位 */
+@media (max-width: 820px) {
+  .chp-jump {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+    padding: 0.72rem clamp(18px, 7vw, 54px) calc(0.72rem + env(safe-area-inset-bottom));
+    background: rgba(246, 241, 231, 0.9);
+    -webkit-backdrop-filter: blur(10px) saturate(1.05);
+    backdrop-filter: blur(10px) saturate(1.05);
+    border-top: 1px solid var(--line);
+    opacity: 0;
+    transform: translateY(110%);
+    transition: transform 280ms var(--ease-out), opacity 200ms;
+    pointer-events: none;
+  }
+  .chp-jump.is-on {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .chp-jump__k {
+    flex: none;
+    font-family: var(--font-ui);
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    color: var(--caramel);
+  }
+  .chp-jump__t {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+  .chp-jump__arrow {
+    flex: none;
+    margin-left: auto;
+    color: var(--honey);
+  }
+}
+
+/* 打印：把导航与背景去掉，留纯正文 */
+@media print {
+  .bg, .frame, .nav, .chp-nav, .chp-tools, .progress-top, .chp-jump, .foot, .chp__back { display: none !important; }
+  .chp { padding: 0; }
+  .chp__sheet { width: 100%; }
+  .chp__body { color: #000; }
+}

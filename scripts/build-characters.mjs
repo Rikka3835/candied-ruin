@@ -43,6 +43,8 @@ const cn = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十'
 
 const CASTDIR = join(here, "..", "public", "new", "assets", "cast");
 const hasPlate = (i) => existsSync(join(CASTDIR, "c" + i, "plate-1200.jpg"));
+// 配角过渡头像：肩膀以上的 800×800 方图，没有设定原稿时先顶上（正式立绘到位后可整张替换）
+const hasAvatar = (i) => existsSync(join(CASTDIR, "c" + i, "avatar-800.jpg"));
 const EXP = ['平静', '营业笑', '真笑', '炸毛', '装凶', '耳朵塌', '嫌甜', '认真鉴糖', '紧张', '忍着哭', '得意', '警戒'];
 let ri = 0;
 const rosterItems = real.flatMap((g) => g.people.map((p) => {
@@ -55,7 +57,7 @@ const roster = real.map((g) => {
   const chips = g.people.map((p) => {
     ix += 1;
     const f = (k) => (p.fields.find((x) => x[0] === k) || ['', ''])[1];
-    return `        <button type="button" class="cast__rb" data-idx="${ix}" data-name="${attr(p.name)}" data-tag="${attr(f('一句话'))}" data-hint="${attr(f('剪影'))}" data-plate="${hasPlate(ix) ? '1' : ''}">${esc(p.name)}</button>`;
+    return `        <button type="button" class="cast__rb" data-idx="${ix}" data-name="${attr(p.name)}" data-tag="${attr(f('一句话'))}" data-hint="${attr(f('剪影'))}" data-plate="${hasPlate(ix) ? '1' : ''}" data-avatar="${hasAvatar(ix) ? '1' : ''}">${esc(p.name)}</button>`;
   }).join('\n');
   return `      <div class="idx__row"><span class="idx__g">${esc(g.title.replace(/^[一二三四五六七八九十]+、/, ''))}</span>\n${chips}\n      </div>`;
 }).join('\n');
@@ -368,7 +370,7 @@ ${cards}
   </footer>
 
   <script src="/new/assets/nav-back.js?v=20261028l" defer></script>
-<script src="/new/assets/gallery.js?v=20261030b" defer></script>
+<script src="/new/assets/gallery.js?v=20261030d" defer></script>
 </body>
 </html>
 `;

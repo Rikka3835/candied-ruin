@@ -38,14 +38,36 @@
     const a = q("#castPlate"), im = q("#castImg"), webp = q("#castWebp"), mono = q("#castMono"), ph = q("#castPh"), note = q("#castNote");
     const src = uploaded ? "/api/plate/" + idx : "/new/assets/cast/c" + idx + "/plate-1200.jpg";
     if (im) {
-      im.onerror = function () { showPlaceholder("原稿加载失败 · 点下面重试可刷新"); };
+      // 原稿拿不到时：有过渡头像就退回头像，别停在报错文案上
+      im.onerror = function () {
+        if (btn.dataset.avatar === "1") { showAvatar(idx); return; }
+        showPlaceholder("原稿加载失败 · 点下面重试可刷新");
+      };
       if (im.getAttribute("src") !== src) im.setAttribute("src", src);
+      im.setAttribute("width", "1200"); im.setAttribute("height", "1600");
+      im.setAttribute("alt", "人物设定原稿");
     }
     if (webp) webp.setAttribute("srcset", uploaded ? "" : "/new/assets/cast/c" + idx + "/plate-1200.webp");
     if (a) { a.setAttribute("href", uploaded ? src : "/new/assets/cast/c" + idx + "/plate-2000.jpg"); a.hidden = false; a.style.display = ""; }
     if (ph) { ph.hidden = true; ph.style.display = "none"; }
     if (mono) mono.hidden = true;
     if (note) note.textContent = "点开看原稿全尺寸";
+  }
+  // 没有设定原稿时的过渡头像（800×800 方图，肩膀以上）
+  function showAvatar(idx) {
+    const a = q("#castPlate"), im = q("#castImg"), webp = q("#castWebp"), mono = q("#castMono"), ph = q("#castPh"), note = q("#castNote");
+    const src = "/new/assets/cast/c" + idx + "/avatar-800.jpg";
+    if (webp) webp.setAttribute("srcset", "");
+    if (im) {
+      im.onerror = function () { showPlaceholder("头像加载失败 · 点下面重试可刷新"); };
+      if (im.getAttribute("src") !== src) im.setAttribute("src", src);
+      im.setAttribute("width", "800"); im.setAttribute("height", "800");
+      im.setAttribute("alt", "人物头像（过渡版，正式立绘绘制中）");
+    }
+    if (a) { a.setAttribute("href", src); a.hidden = false; a.style.display = ""; }
+    if (ph) { ph.hidden = true; ph.style.display = "none"; }
+    if (mono) mono.hidden = true;
+    if (note) note.textContent = "过渡头像 · 正式立绘绘制中（点开看 800px）";
   }
   function showPlaceholder(noteText) {
     const a = q("#castPlate"), im = q("#castImg"), webp = q("#castWebp"), mono = q("#castMono"), ph = q("#castPh"), note = q("#castNote");
@@ -89,6 +111,7 @@
       fieldsEl.innerHTML = src ? src.innerHTML : "";
     }
     if (hasPlate) showPlate(on, idx, uploaded);
+    else if (on.dataset.avatar === "1") showAvatar(idx);
     else showPlaceholder("立绘待补");
   }
 

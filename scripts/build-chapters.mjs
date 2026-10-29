@@ -190,7 +190,7 @@ if (fs.existsSync(homePath)) {
         latest
           .map((c) =>
             [
-              `    <a class="updates__item" href="/novel/#ch${c.n}">`,
+              `    <a class="updates__item" href="/novel/${c.n}/">`,
               `      <span class="updates__no">第 ${c.n} 章</span>`,
               `      <span class="updates__t">${escapeHtml(c.title)}</span>`,
               `      <span class="updates__d">${c.chars.toLocaleString('zh-CN')} 字 · ${c.minutes} 分钟</span>`,
