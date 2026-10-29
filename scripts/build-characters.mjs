@@ -66,7 +66,7 @@ const cards = real.map((g, gi) => {
     const id = 'c' + n;
     const tag = p.fields.find((f) => f[0] === '一句话');
     const hint = (p.fields.find((f) => f[0] === '剪影') || ['', ''])[1];
-    const HIDDEN = ['剪影', '一句话', '画师备注'];
+    const HIDDEN = ['剪影', '一句话', '画师备注', '剧情功能'];
     const fields = p.fields.filter((f) => !HIDDEN.includes(f[0]));
     const rows = fields.map(([k, v]) => `        <div class="fld"><span class="fld__k">${esc(k)}</span><p class="fld__v">${inline(v)}</p></div>`).join('\n');
     const body = p.body.length ? `      <p class="card__tight">${inline(p.body.join(' '))}</p>\n` : '';
@@ -96,7 +96,7 @@ const html = `<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>人物档案 · 糖渍旧蜜</title>
-<meta name="description" content="《糖渍旧蜜》人物档案：${total} 位登场人物，每人一份完整设定——种族年龄、身份、愿望、外貌、装束、背景、性格、关系、与糖的关系、剧情功能、口癖。">
+<meta name="description" content="《糖渍旧蜜》人物档案：${total} 位登场人物，每人一份完整设定——种族年龄、身份、愿望、外貌、装束、背景、性格、关系、与糖的关系、口癖。">
 <meta name="theme-color" content="#f6f1e7">
 <link rel="icon" type="image/svg+xml" href="/assets/brand/favicon.svg">
 <link rel="icon" href="/assets/brand/icon-32.png" sizes="32x32" type="image/png">
@@ -289,6 +289,7 @@ const html = `<!DOCTYPE html>
     <span class="nav__spacer"></span><span class="nav__links">
     <a class="nav__link" href="/novel/">小说</a>
     <a class="nav__link is-current" href="/archive/" aria-current="page">人物档案</a>
+    <a class="nav__link" href="/world/">前言</a>
     <a class="nav__link" href="/game/">游戏<i class="nav__tag">开发中</i></a>
     <a class="nav__link" href="/map/">世界地图<i class="nav__tag">开发中</i></a></span>
   </nav>

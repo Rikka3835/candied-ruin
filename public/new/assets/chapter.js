@@ -103,7 +103,10 @@
   const btnPrev = document.createElement("button");
   const btnNext = document.createElement("button");
   btnPrev.type = btnNext.type = "button";
-  nav.append(btnPrev, btnNext);
+  const navHint = document.createElement("p");
+  navHint.className = "reader-nav__hint";
+  navHint.textContent = "左右滑动也能翻页";
+  nav.append(btnPrev, btnNext, navHint);
   const sheet = view.querySelector(".reader-view__sheet");
   if (sheet) sheet.appendChild(nav);
 
@@ -122,6 +125,7 @@
     else { btnNext.hidden = true; }
     btnPrev.onclick = prev ? () => openChapter(String(prev.n)) : null;
     btnNext.onclick = next ? () => openChapter(String(next.n)) : null;
+    navHint.hidden = !(prev || next);
     btnNext.classList.add("to-next");
 
     /* 卷末卡：读完本卷最后一章才出现一次 */

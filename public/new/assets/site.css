@@ -1064,3 +1064,37 @@ body.page-sheet { display: flex; flex-direction: column; min-height: 100svh; }
   }
   .nav__link { order: 3; }
 }
+
+/* 章末：滑动提示（手机） */
+.reader-nav__hint {
+  display: none;
+  margin: 1.1rem 0 0;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--rv-soft);
+  opacity: 0.6;
+}
+
+@media (max-width: 720px) {
+  .reader-view__nav {
+    flex-wrap: wrap;
+    gap: 0.6rem 1.2rem;
+    margin-top: 1.6rem;
+    padding-top: 1.2rem;
+    justify-content: space-between;
+  }
+  .reader-view__nav button {
+    flex: 0 0 auto;
+    padding: 0.25rem 0;
+    border: 0;
+    background: none;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    color: var(--rv-text, #2b2318);
+  }
+  .reader-view__nav button.to-next { color: var(--rv-accent); }
+  .reader-view__nav button:disabled { display: none; }
+  .reader-nav__hint { display: block; flex: 1 0 100%; margin-top: 0.9rem; }
+}
