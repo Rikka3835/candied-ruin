@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    site.css — 全站基础样式
    用途：设计令牌（颜色/字号/间距/动效）、首页一屏、排版基准、通用组件。
    依赖：无。纯 CSS，不依赖任何框架或构建链。
@@ -616,6 +616,40 @@ h1, h2, h3, p { margin: 0; }
   letter-spacing: 0.18em;
   color: var(--text-dim);
 }
+/* 卷末后记入口：章表末尾一行，安静但点得着 */
+.vol__afw {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 1rem 0 2.6rem;
+  padding: 0.85rem 1.15rem 0.85rem calc(1.1rem + 2px);
+  border: 1px solid var(--line);
+  border-left: 2px solid rgba(168, 132, 90, 0.55);
+  background: linear-gradient(180deg, rgba(247, 241, 228, 0.72), rgba(242, 234, 217, 0.5));
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  position: relative;
+  transition: background .18s ease, border-color .18s ease;
+}
+.vol__afw a {
+  color: var(--caramel, #a8845a);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(168, 132, 90, 0.42);
+  padding-bottom: 1px;
+}
+
+.vol__afw a:hover { border-bottom-color: currentColor; }
+.vol__afw span { font-size: 0.72rem; opacity: 0.85; }
+.vol__afw::after {
+  content: "读 →";
+  margin-left: auto;
+  font-size: .7rem;
+  letter-spacing: .2em;
+  color: rgba(168, 132, 90, .8);
+  white-space: nowrap;
+}
+.vol__afw:hover { background: linear-gradient(180deg, rgba(247, 241, 228, .95), rgba(242, 234, 217, .8)); border-left-color: var(--caramel, #a8845a); }
 
 .chap-list { margin-top: 1.6rem; border-top: 1px solid var(--line); }
 .chap {
@@ -909,6 +943,133 @@ body.is-reading { overflow: hidden; }
   border: 0;
   border-top: 1px solid var(--line);
 }
+/* 章末作者注：阅读层是深色，所以这里只是一段更淡的小字，一条细线起头。
+   数据来自 content/notes/NNN.md（不计入字数）；静态页同一套见 chapter-page.css 第 5 节。 */
+.reader-view .author-note {
+  margin: 2.6rem 0 0;
+  padding: 1.4em 0 0;
+  border: 0;
+  border-top: 1px solid rgba(126, 92, 46, 0.22);
+  background: none;
+  box-shadow: none;
+  color: #58462f;
+  font-family: var(--font-serif);
+  font-size: calc(var(--rs) * 0.82);
+  line-height: 2.05;
+  letter-spacing: 0.015em;
+}
+.reader-view .author-note__label {
+  margin: 0 0 0.85em;
+  font-family: var(--font-ui);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  color: rgba(140, 88, 36, 0.92);
+}
+.reader-view .author-note__p {
+  margin: 0;
+  text-indent: 0;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+.reader-view .author-note__p + .author-note__p { margin-top: 0.55em; }
+.reader-view .author-note__sign {
+  margin: 1.1em 0 0;
+  text-align: right;
+  font-family: var(--font-serif);
+  font-size: 0.88em;
+  font-style: italic;
+  letter-spacing: 0.14em;
+  color: rgba(120, 90, 50, 0.9);
+}
+[data-theme="night"] .reader-view .author-note {
+  margin: 2.6rem 0 0;
+  padding: 1.4em 0 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 241, 214, 0.16);
+  background: none;
+  box-shadow: none;
+  color: rgba(240, 230, 212, 0.78);
+  font-family: var(--font-serif);
+  font-size: calc(var(--rs) * 0.8);
+  line-height: 2.05;
+  letter-spacing: 0.015em;
+}
+[data-theme="night"] .reader-view .author-note__label {
+  margin: 0 0 0.85em;
+  font-family: var(--font-ui);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  color: rgba(220, 176, 104, 0.82);
+}
+[data-theme="night"] .reader-view .author-note__p {
+  margin: 0;
+  text-indent: 0;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+}
+[data-theme="night"] .reader-view .author-note__p + .author-note__p { margin-top: 0.55em; }
+[data-theme="night"] .reader-view .author-note__sign {
+  margin: 1.1em 0 0;
+  text-align: right;
+  font-family: var(--font-serif);
+  font-size: 0.88em;
+  font-style: italic;
+  letter-spacing: 0.14em;
+  color: rgba(220, 176, 104, 0.76);
+}
+/* 阅读器里的文书卡：告示 / 封条 / 信件 */
+.reader-view__body .doc-card {
+  position: relative;
+  margin: 2.2rem 0;
+  padding: 1.25em 1.3em 1.1em;
+  border: 1px solid rgba(126, 92, 46, 0.3);
+  border-radius: 2px;
+  background:
+    repeating-linear-gradient(180deg, rgba(126, 92, 46, 0.045) 0 1px, transparent 1px 28px),
+    linear-gradient(180deg, #fcf7ec 0%, #f5ecd8 100%);
+  color: #3d2e19;
+  font-family: var(--font-serif);
+  font-size: calc(var(--rs) * 0.88);
+  line-height: 1.92;
+}
+.reader-view__body .doc-card__label {
+  margin: 0 0 0.7em;
+  font-family: var(--font-serif);
+  font-size: 0.72em;
+  letter-spacing: 0.42em;
+  color: #8a5a22;
+}
+.reader-view__body .doc-card__line {
+  margin: 0;
+  text-indent: 0;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+.reader-view__body .doc-card__line + .doc-card__line { margin-top: 0.22em; }
+.reader-view__body .doc-card--strip {
+  max-width: 23rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  background: linear-gradient(180deg, #f3e6c8 0%, #e7d3a8 100%);
+  border-color: rgba(96, 64, 24, 0.42);
+  letter-spacing: 0.13em;
+  font-size: calc(var(--rs) * 0.82);
+}
+@media (max-width: 560px) {
+  .author-note {
+    padding: 1.2em 0 0;
+    font-size: calc(var(--rs) * 0.78);
+    margin-top: 2.2rem;
+  }
+}
+
 /* 目录空态 */
 .chap-empty {
   margin: 2.4rem 0 0;

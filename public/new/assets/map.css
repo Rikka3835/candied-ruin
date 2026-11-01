@@ -6,13 +6,24 @@
   margin-top: 2.4rem;
   padding: clamp(1rem, 2.4vw, 1.6rem);
   border: 1px solid var(--line);
-  background:
-    radial-gradient(120% 90% at 20% 10%, rgba(255, 179, 71, .05), transparent 60%),
-    linear-gradient(180deg, rgba(255, 255, 255, .5), rgba(255, 255, 255, 0) 40%);
+  background-color: #f2ead9;
+  background-image: url("/assets/map/parchment-city.jpg");
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0 0 40px rgba(126, 98, 58, .10);
 }
 
 .map-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .map-svg { display: block; width: 100%; height: auto; }
+
+/* 手绘毛边：让几何线与色块的边缘轻微抖动，别像 CAD 出图 */
+.map-svg .geo,
+.map-svg .geo-soft,
+.map-svg .block,
+.map-svg .road,
+.map-svg .hill,
+.map-svg .underground,
+.map-svg .water { filter: url(#rough); }
 
 .map-svg text {
   font-family: var(--font-serif);
@@ -100,9 +111,156 @@
 .map-hint { display: none; }
 
 @media (max-width: 720px) {
+  /* 手机：城市图内容密度太高，等比缩到屏宽会挤成一团、字看不清（2026-11-02 实测）。
+     维持 660px 可横向拖动，另加「左右拖动」浮标与右缘渐隐作为可拖提示。 */
   .map-svg { min-width: 660px; }
-  .map-hint { display: inline; color: var(--caramel); }
+  .map-scroll {
+    position: relative;
+    background:
+      linear-gradient(to left, rgba(246,241,231,.95), rgba(246,241,231,0) 26px) right / 26px 100% no-repeat;
+  }
+  .map-hint {
+    display: inline-flex; align-items: center; gap: .35rem;
+    margin: .5rem 0 0; padding: 0;
+    font-size: .72rem; letter-spacing: .08em; color: var(--caramel); opacity: .85;
+  }
   .place-grid { grid-template-columns: 1fr; }
   .place:nth-child(even) { border-left: 0; }
   .map-legend { font-size: .7rem; }
+}
+
+/* ===== v2：世界层 + 进度解锁 ===== */
+.map-tools {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .7rem 1.2rem;
+  margin: 1.6rem 0 0; padding: .7rem 0 0; border-top: 1px solid var(--line);
+  font-size: .82rem; color: var(--muted); letter-spacing: .04em;
+}
+.map-progress b { color: var(--text); font-weight: 600; }
+.map-spoiler {
+  font: inherit; font-size: .78rem; color: var(--text-soft); background: none;
+  border: 1px solid var(--line-strong); border-radius: 2px; padding: .28rem .8rem; cursor: pointer;
+  letter-spacing: .06em;
+}
+.map-spoiler:hover { color: var(--text); border-color: var(--caramel); }
+.map-spoiler[aria-pressed="true"] { color: #fffaf0; background: var(--caramel); border-color: var(--caramel); }
+.map-tip { color: var(--line-strong); font-size: .76rem; }
+.map-h2 {
+  margin: 3.2rem 0 .4rem; font-size: 1.02rem; font-weight: 500;
+  letter-spacing: .16em; color: var(--text);
+}
+.map-h2 + .map-wrap { margin-top: 1.2rem; }
+
+.map-svg .region__body {
+  fill: rgba(176, 121, 58, .06);
+  stroke: var(--line-strong); stroke-width: 1;
+  transition: fill .2s ease, stroke .2s ease;
+}
+.map-svg .region__no { font-size: 12px; fill: var(--caramel); letter-spacing: .1em; }
+.map-svg .region__name { font-size: 11px; fill: var(--text-soft); letter-spacing: .04em; }
+.map-svg .region__q { font-size: 15px; fill: var(--line-strong); opacity: 0; }
+.map-svg .region.is-locked .region__body {
+  fill: url(#fog); fill-opacity: .65; stroke: var(--line); stroke-dasharray: 4 5;
+}
+.map-svg .region.is-locked .region__no { opacity: .35; }
+.map-svg .region.is-locked .region__name { opacity: 0; }
+.map-svg .region.is-locked .region__q { opacity: 1; }
+
+.pin.is-locked { cursor: default; }
+.pin.is-locked circle { fill: #efe9de; stroke: var(--line); stroke-dasharray: 2 3; }
+.pin.is-locked text { fill: var(--line-strong); }
+.pin.is-locked:hover circle { fill: #efe9de; }
+
+.place.is-locked { cursor: default; }
+.place.is-locked .place__no { opacity: .35; }
+.place.is-locked .place__name { color: var(--line-strong); letter-spacing: .2em; }
+.place.is-locked .place__what { color: var(--line-strong); font-style: normal; }
+
+/* 图例：两个小色块，别用线和方块冒充地图 */
+.map-legend i.sw {
+  display: inline-block; width: 18px; height: 11px; margin-right: .45rem;
+  border-radius: 50%; vertical-align: -1px; height: 11px; border-top: 0;
+}
+.map-legend .sw--open { background: rgba(176, 121, 58, .30); border: 1px solid #a8845a; }
+.map-legend .sw--fog {
+  background: repeating-linear-gradient(45deg, #d9d0c1 0 3px, #c6bbaa 3px 4px);
+  border: 1px dashed #9b8f7c;
+}
+
+
+/* 地图装饰线：全部走 currentColor，纸色变它也变 */
+.map-svg--world .deco { color: var(--ink); stroke: currentColor; fill: none; stroke-width: .9; opacity: .5; }
+.map-svg--world .deco .deco--soft { opacity: .11; }
+.map-svg--world .deco text { display: none; }
+
+/* v3 · 羊皮纸底：纸是纸，线是线，字是字 */
+.map-wrap {
+  position: relative;
+  padding: clamp(10px, 1.4vw, 18px);
+  background:
+    linear-gradient(180deg, rgba(255, 250, 240, .10), rgba(88, 62, 28, .05)),
+    url("/new/assets/map-paper-a.jpg") center / 100% 100% no-repeat;
+  border: 1px solid rgba(120, 96, 62, .28);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 232, .45),
+    0 1px 0 rgba(120, 96, 62, .12),
+    0 22px 34px -30px rgba(48, 32, 12, .55);
+  border-radius: 2px;
+}
+.map-wrap .map-scroll { background: transparent; }
+.map-svg--world { color: #4a3622; }
+.map-svg--world .region__body { fill: rgba(190, 150, 96, .16); stroke: rgba(84, 62, 36, .68); }
+.map-svg--world .region.is-locked .region__body { fill: url(#fog); stroke-dasharray: 4 5; }
+.map-svg--world .water { fill: rgba(176, 190, 186, .28); }
+.map-svg--world .lbl-water, .map-svg--world .region__name { fill: #4e3a22; }
+.map-svg--world .region__no { fill: rgba(78, 58, 34, .85); }
+.map-svg--world .road { stroke: #8a6a3e; stroke-opacity: .55; }
+#fog rect { fill: #e2d7bf; }
+#fog line { stroke: #c2b190; }
+.map-legend { margin: 0 0 .5rem; color: #6b5638; }
+@media (max-width: 720px) {
+  .map-wrap { padding: 8px; background-size: cover; }
+}
+
+/* v3 · 城市图也上纸：把冷灰块换成暖墨 */
+.map-svg .blocks { fill: rgba(188, 148, 94, .13); stroke: rgba(84, 62, 36, .45); }
+.map-svg .block { fill: rgba(196, 158, 104, .22); stroke: rgba(84, 62, 36, .62); }
+.map-svg .geo { stroke: rgba(96, 72, 44, .55); }
+.map-svg .geo-soft { stroke: rgba(96, 72, 44, .38); }
+.map-svg .lbl { fill: #4e3a22; }
+.map-svg .lbl-big { fill: #43301c; }
+.map-svg .lbl-water { fill: #5d6a63; }
+.map-svg .water { fill: rgba(176, 190, 186, .32); }
+.map-svg .pin circle { fill: #f7efdd; stroke: #7a5c38; }
+.map-svg .pin text { fill: #4e3a22; }
+
+/* ===== v4 · 城市图换成 AI 羊皮纸鸟瞰图 + 覆盖层点位 ===== */
+.map-wrap--city { padding: 0; background: none; border: 0; box-shadow: none; }
+.map-canvas--city {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 16px 44px rgba(52, 38, 22, .24);
+  background: #ece2cd;
+}
+.map-canvas--city .map-canvas__img { display: block; width: 100%; height: auto; }
+
+.map-svg--overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.map-svg--overlay .pin { pointer-events: auto; cursor: pointer; }
+.map-svg--overlay .pin circle { fill: #fdfaf2; stroke: #8a5a22; stroke-width: 2.6; transition: fill .18s ease; }
+.map-svg--overlay .pin .pin__hit { fill: transparent; stroke: none; }
+.map-svg--overlay .pin:hover circle:not(.pin__hit),
+.map-svg--overlay .pin.is-on circle:not(.pin__hit) { fill: #8a5a22; }
+.map-svg--overlay .pin text { font-size: 19px; fill: #6b3f14; font-weight: 600; letter-spacing: 0; }
+.map-svg--overlay .pin:hover text,
+.map-svg--overlay .pin.is-on text { fill: #fdfaf2; }
+.map-svg--overlay .pin.is-locked { opacity: .5; }
+.map-svg--overlay .lbl {
+  font-size: 24px; fill: #4a3520; letter-spacing: .12em; font-weight: 600;
+  paint-order: stroke; stroke: rgba(252, 247, 236, .92); stroke-width: 9px; stroke-linejoin: round;
+}
+
+@media (max-width: 720px) {
+  .map-canvas--city { min-width: 660px; }
+  .map-svg--overlay { min-width: 0; }
+  .map-wrap--city { padding: 0; }
 }

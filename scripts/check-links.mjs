@@ -44,7 +44,8 @@ function resolves(urlPath) {
 }
 
 const pages = walk(PUBLIC);
-const ATTR = /(?:href|src)\s*=\s*"([^"]*)"/g;
+// 只认 HTML 属性写法；排除 JS 里的对象属性赋值（img.src = "…" 会被误当成链接）
+const ATTR = /(?<![.\w])(?:href|src)\s*=\s*"([^"]*)"/g;
 const broken = [];
 const ext = [];
 let checked = 0;

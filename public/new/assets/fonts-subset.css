@@ -8,14 +8,14 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("sub/noto-serif-sc-400.woff2") format("woff2");
+  src: url("/new/assets/fonts/sub/noto-serif-sc-400.woff2") format("woff2");
 }
 @font-face {
   font-family: "Noto Serif SC";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("sub/noto-serif-sc-700-head.woff2") format("woff2");
+  src: url("/new/assets/fonts/sub/noto-serif-sc-700-head.woff2") format("woff2");
 }
 
 /* 补字：GB2312 一级之外、站点专名会用到的 21 个字（薇 玥 痣 簪 髻 鬓 …），7KB。
@@ -26,6 +26,6 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("sub/noto-serif-sc-400-extra.woff2") format("woff2");
+  src: url("/new/assets/fonts/sub/noto-serif-sc-400-extra.woff2") format("woff2");
   unicode-range: U+54A7, U+55EF, U+5773, U+59CA, U+5B09, U+6123, U+63B0, U+6963, U+6A90, U+73A5, U+75C2, U+75E3, U+7656, U+7699, U+7738, U+7C2A, U+8587, U+8E1D, U+95E9, U+9AFB, U+9B13;
 }

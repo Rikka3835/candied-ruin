@@ -5,7 +5,9 @@
   "description": "《糖渍旧蜜》CANDIED RUIN — 轻小说站点（静态页 + 章节构建）",
   "type": "module",
   "scripts": {
-    "build": "node scripts/build-chapters.mjs && node scripts/build-feed.mjs && node scripts/build-sitemap.mjs && node scripts/build-pages.mjs",
+    "build": "node scripts/build-characters.mjs && node scripts/build-chapters.mjs && node scripts/build-chapter-pages.mjs && node scripts/build-afterwords.mjs && node scripts/build-feed.mjs && node scripts/build-sitemap.mjs && node scripts/build-pages.mjs",
+    "build:cards": "python scripts/make-chapter-cards.py",
+    "build:chapter-pages": "node scripts/build-chapter-pages.mjs",
     "build:feed": "node scripts/build-feed.mjs",
     "build:sitemap": "node scripts/build-sitemap.mjs",
     "backup": "node scripts/backup.mjs",

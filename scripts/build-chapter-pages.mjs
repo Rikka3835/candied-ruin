@@ -51,6 +51,7 @@ function excerpt(text, max = 78) {
   return out + '…';
 }
 
+const AFW_DIR = path.join(ROOT, 'content', 'afterword');
 const idx = JSON.parse(fs.readFileSync(path.join(SRC, 'index.json'), 'utf8'));
 const chapters = idx.chapters.slice().sort((a, b) => a.n - b.n);
 if (!chapters.length) {
@@ -94,6 +95,11 @@ for (let i = 0; i < chapters.length; i++) {
   const prev = chapters[i - 1] || null;
   const next = chapters[i + 1] || null;
   const v = volInfo(c);
+  const volLast = !next || volInfo(next).full !== c.vol;
+  const afwFile = path.join(AFW_DIR, `${vols.indexOf(c.vol) + 1}.md`);
+  const afterwordLink = volLast && fs.existsSync(afwFile)
+    ? `      <p class="chp-afw"><a href="/novel/afterword/${vols.indexOf(c.vol) + 1}/">卷末后记</a><span>作者的话</span></p>`
+    : '';
 
   const fragPath = path.join(SRC, String(c.n).padStart(3, '0') + '.html');
   const body = fs.readFileSync(fragPath, 'utf8').replace(/^<!--[\s\S]*?-->\s*/, '').trim();
@@ -177,9 +183,9 @@ for (let i = 0; i < chapters.length; i++) {
 <link rel="canonical" href="${url}">
 <link rel="preload" href="/new/assets/fonts/sub/noto-serif-sc-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/new/assets/fonts-subset.css?v=20261029b">
-<link rel="stylesheet" href="/new/assets/site.css?v=20261030b">
+<link rel="stylesheet" href="/new/assets/site.css?v=20261030n">
 <link rel="stylesheet" href="/new/assets/paper.css?v=20261029q">
-<link rel="stylesheet" href="/new/assets/chapter-page.css?v=20261030c">
+<link rel="stylesheet" href="/new/assets/chapter-page.css?v=20261030n">
 <script type="application/ld+json">${JSON.stringify(chapterLd)}</script>
 </head>
 <body class="page-sheet">
@@ -207,6 +213,7 @@ for (let i = 0; i < chapters.length; i++) {
       <div class="chp__body reader-view__body">
 ${body}
       </div>
+${afterwordLink}
 
       <nav class="chp-nav" aria-label="翻章">
         ${sideLink(prev, 'prev')}

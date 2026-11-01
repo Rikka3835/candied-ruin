@@ -31,13 +31,17 @@ const rows = fs
       if (i > 0) fm[line.slice(0, i).trim()] = line.slice(i + 1).trim();
     }
     const body = m[2].trim();
+    const n = Number(fm["章"] || 0);
+    /* 作者注：D1 里存正文 + note 标记，functions/_lib.js 的 renderBody 会把它渲染成章末纸条 */
+    const notePath = path.join(ROOT, "content/notes", `${String(n).padStart(3, "0")}.md`);
+    const note = fs.existsSync(notePath) ? fs.readFileSync(notePath, "utf8").trim() : "";
     return {
-      n: Number(fm["章"] || 0),
+      n,
       vol: fm["卷"] || "",
       title: fm["标题"] || "",
       subtitle: fm["副标题"] || "",
       cast: fm["出场"] || "",
-      body,
+      body: note ? `${body}\n\n<!-- note -->\n${note}\n<!-- /note -->` : body,
       file: f,
     };
   });

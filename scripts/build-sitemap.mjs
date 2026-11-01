@@ -23,6 +23,14 @@ for (const [p, pr, lm] of pages) urls.push(`  <url><loc>${SITE}${p}</loc><lastmo
 for (const c of chapters) {
   urls.push(`  <url><loc>${SITE}/novel/${c.n}/</loc><lastmod>${c.updated || newest}</lastmod><priority>0.7</priority></url>`);
 }
+/* 卷末后记：有几卷生成过就收几条 */
+try {
+  const afw = (await import("node:fs")).readdirSync("content/afterword").filter((f) => f.endsWith(".md"));
+  for (const f of afw) {
+    const n = Number(f.replace(/\D+/g, ""));
+    if (n > 0) urls.push(`  <url><loc>${SITE}/novel/afterword/${n}/</loc><lastmod>${newest}</lastmod><priority>0.4</priority></url>`);
+  }
+} catch {}
 await writeFile(
   "public/sitemap.xml",
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`

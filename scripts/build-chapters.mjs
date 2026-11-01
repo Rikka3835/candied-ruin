@@ -25,6 +25,7 @@ import path from 'node:path';
 
 const ROOT = process.cwd();
 const SRC = path.join(ROOT, 'content', 'chapters');
+const NOTES = path.join(ROOT, 'content', 'notes');
 const OUT = path.join(ROOT, 'public', 'novel');
 const OUT_CH = path.join(OUT, 'ch');
 
@@ -46,10 +47,30 @@ function inline(text) {
   return escapeHtml(text).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 }
 
+function renderDoc(block) {
+  const lines = block.split(/\r?\n/);
+  const head = lines[0].replace(/^:::\s*/, '').trim();
+  const body = lines
+    .slice(1)
+    .map((l) => l.trim())
+    .filter((l) => l && !/^:::\s*$/.test(l));
+  const m = head.match(/^([a-z][a-z-]*)\b\s*(.*)$/);
+  const kind = m ? m[1] : 'notice';
+  const label = (m ? m[2] : head).trim();
+  const labelHtml = label ? `<p class="doc-card__label">${inline(label)}</p>` : '';
+  const linesHtml = body.map((l) => `<p class="doc-card__line">${inline(l)}</p>`).join('');
+  const aria = label ? ` aria-label="${escapeHtml(label)}"` : '';
+  return `<aside class="doc-card doc-card--${kind}" role="note"${aria}>${labelHtml}${linesHtml}</aside>`;
+}
+
 function renderBody(body) {
   const blocks = body.split(/\r?\n\s*\r?\n/).map((b) => b.trim()).filter(Boolean);
   const out = [];
   for (const block of blocks) {
+    if (block.startsWith(':::')) {
+      out.push(renderDoc(block));
+      continue;
+    }
     if (block === '---') {
       out.push('<hr>');
       continue;
@@ -73,6 +94,26 @@ function countChars(text) {
   return (text.match(/[\u4e00-\u9fa5]/g) || []).length + (text.match(/[A-Za-z0-9]+/g) || []).length;
 }
 
+/* 作者注：单独存 content/notes/NNN.md，不进正文、不计字数，渲染成章末一张「夹在书页里的纸条」 */
+function renderNote(md) {
+  const paras = md
+    .replace(/\r\n/g, '\n')
+    .split(/\n{2,}/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  if (!paras.length) return '';
+  const body = paras
+    .map((p) => `<p class="author-note__p">${p.split(/\n/).map(inline).join('<br>')}</p>`)
+    .join('\n        ');
+  return [
+    '      <aside class="author-note" aria-label="作者注">',
+    '        <p class="author-note__label">作者注</p>',
+    `        ${body}`,
+    '        <p class="author-note__sign">— Rikka</p>',
+    '      </aside>',
+  ].join('\n');
+}
+
 fs.mkdirSync(OUT_CH, { recursive: true });
 if (!fs.existsSync(SRC)) fs.mkdirSync(SRC, { recursive: true });
 
@@ -90,6 +131,8 @@ for (const file of files) {
   const title = meta['标题'] || `第 ${n} 章`;
   const cast = (meta['出场'] || '').split(/[、,，]/).map((x) => x.trim()).filter(Boolean);
   const chars = countChars(body);
+  const notePath = path.join(NOTES, `${String(n).padStart(3, '0')}.md`);
+  const note = fs.existsSync(notePath) ? fs.readFileSync(notePath, 'utf8').trim() : '';
   chapters.push({
     n,
     vol: meta['卷'] || '未分卷',
@@ -97,12 +140,14 @@ for (const file of files) {
     subtitle: meta['副标题'] || '',
     cast,
     chars,
+    hasNote: Boolean(note),
     minutes: Math.max(1, Math.round(chars / 420)),
     updated: fs.statSync(path.join(SRC, file)).mtime.toISOString().slice(0, 10),
     file: `ch/${String(n).padStart(3, '0')}.html`
   });
 
-  const html = renderBody(body);
+  const noteHtml = renderNote(note);
+  const html = renderBody(body) + (noteHtml ? '\n' + noteHtml : '');
   fs.writeFileSync(
     path.join(OUT_CH, `${String(n).padStart(3, '0')}.html`),
     `<!-- 由 scripts/build-chapters.mjs 从 content/chapters/${file} 生成，不要手改 -->\n${html}\n`
@@ -152,9 +197,22 @@ function renderList(list) {
       html += `</button>\n`;
     }
     html += `        </div>\n`;
+    /* 这一卷写过卷末后记，就在章表末尾挂一行入口 */
+    if (AFW.has(vi)) {
+      html += `        <p class="vol__afw"><a href="/novel/afterword/${vi}/">卷末后记</a><span>作者的话</span></p>\n`;
+    }
   }
   return html.trimEnd();
 }
+
+/* 哪些卷已经有 afterword 文件 */
+const AFW = new Set();
+try {
+  for (const f of fs.readdirSync(path.join(ROOT, 'content', 'afterword'))) {
+    const m = f.match(/^(\d+)\.md$/);
+    if (m) AFW.add(Number(m[1]));
+  }
+} catch {}
 
 const pagePath = path.join(OUT, 'index.html');
 const page = fs.readFileSync(pagePath, 'utf8');

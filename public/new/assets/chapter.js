@@ -188,23 +188,34 @@
     navHint.hidden = !(prev || next);
     btnNext.classList.add("to-next");
 
-    /* 卷末卡：读完本卷最后一章才出现一次 */
+    /* 卷末卡：本卷最后一章读完才出现。
+       条件＝这章之后没有同卷的下一章，且确实存在下一卷（否则说明本卷还在连载，不该盖「完」章）。 */
     const cur = listAll[i] || null;
-    const isVolEnd = !!cur && !next;
+    const sameVolAll = cur ? listAll.filter((c) => c.vol === cur.vol) : [];
+    const isVolLast = !!cur && sameVolAll[sameVolAll.length - 1] === cur;
+    const nextVolChapter = next && cur && next.vol !== cur.vol ? next : null;
+    const isVolEnd = isVolLast && !!nextVolChapter;
     let volend = sheet.querySelector(".volend");
     if (!isVolEnd) { if (volend) volend.remove(); return; }
-    const sameVol = listAll.filter((c) => c.vol === cur.vol);
+    const sameVol = sameVolAll;
     const words = sameVol.reduce((sum, c) => sum + (c.chars || 0), 0);
+    const vols = [];
+    for (const c of listAll) if (!vols.includes(c.vol)) vols.push(c.vol);
+    const CN = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
+    const cn = (v) => CN[vols.indexOf(v)] || String(vols.indexOf(v) + 1);
+    const volNo = "第" + cn(cur.vol) + "卷";
+    const nextNo = "第" + cn(nextVolChapter.vol) + "卷";
+    const nextName = nextVolChapter.vol.replace(/^第[一二三四五六七八九十]+卷\s*·\s*/, "");
     if (!volend) {
       volend = document.createElement("div");
       volend.className = "volend";
       nav.parentNode.insertBefore(volend, nav);
     }
     volend.innerHTML =
-      '<p class="volend__mark">卷一 · 完</p>' +
+      '<p class="volend__mark">' + volNo + ' · 完</p>' +
       '<p class="volend__name">' + cur.vol.replace(/^第[一二三四五六七八九十]+卷\s*·\s*/, "") + '</p>' +
       '<p class="volend__note">' + sameVol.length + " 章 · 约 " + words.toLocaleString("en-US") + " 字</p>" +
-      '<p class="volend__next">第二卷《甜味走私者》——罐子里的东西，得找到一个能说清楚它的人。</p>';
+      '<p class="volend__next">' + nextNo + '《' + nextName + '》——<a href="/novel/' + nextVolChapter.n + '/">从第 ' + nextVolChapter.n + ' 章接着读</a></p>';
   }
 
   /* ---------- R3：阅读进度（每章记一个比例，目录页给「继续读」） ---------- */
